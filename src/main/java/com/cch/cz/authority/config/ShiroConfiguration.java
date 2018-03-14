@@ -1,6 +1,7 @@
 package com.cch.cz.authority.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -9,7 +10,6 @@ import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.apache.shiro.mgt.SecurityManager;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -50,17 +50,8 @@ public class ShiroConfiguration {
         //<!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
         //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
         filterChainDefinitionMap.put("/style/**", "anon");
-        filterChainDefinitionMap.put("/sendSimpleEmail", "anon");
-        filterChainDefinitionMap.put("/register", "anon");
         filterChainDefinitionMap.put("/upPwd", "anon");
-        filterChainDefinitionMap.put("/unique", "anon");
-        filterChainDefinitionMap.put("/", "anon");
-        filterChainDefinitionMap.put("/article/details", "anon");
-        filterChainDefinitionMap.put("/article/index", "anon");
         filterChainDefinitionMap.put("/img/*", "anon");
-        filterChainDefinitionMap.put("/article/articleByType", "anon");
-        filterChainDefinitionMap.put("/article/serch", "anon");
-        filterChainDefinitionMap.put("/article/list", "anon");
 
         //配置记住我或认证通过可以访问的地址
         filterChainDefinitionMap.put("/index", "user");
