@@ -1,13 +1,21 @@
 package com.cch.cz.authority.entity;
 
+import com.cch.cz.base.entity.BaseEntity;
+
+import javax.persistence.*;
+
 /**
  * Created by Administrator on 2018/3/14.
  * 权限类
  */
-public class Power {
+@Entity
+@Table(name = "t_power")
+public class Power extends BaseEntity {
     /**
      * 权限Id
      */
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     /**
      * 权限设计概要

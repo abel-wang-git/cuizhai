@@ -1,15 +1,22 @@
 package com.cch.cz.authority.entity;
 
+import com.cch.cz.base.entity.BaseEntity;
+
+import javax.persistence.*;
 import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/14.
  * 角色
  */
-public class Role {
+@Entity
+@Table(name = "t_role")
+public class Role extends BaseEntity {
     /**
      *角色id
      */
+    @javax.persistence.Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long Id;
     /**
      * 角色名字
@@ -19,10 +26,6 @@ public class Role {
      * 设计概要
      */
     private String design;
-    /**
-     * 权限
-     */
-    private List<Long> PowerId;
 
     public Long getId() {
         return Id;
@@ -48,11 +51,4 @@ public class Role {
         this.design = design;
     }
 
-    public List<Long> getPowerId() {
-        return PowerId;
-    }
-
-    public void setPowerId(List<Long> powerId) {
-        PowerId = powerId;
-    }
 }

@@ -1,33 +1,24 @@
 package com.cch.cz.authority.entity;
 
+import com.cch.cz.authority.entity.key.RolePowerKey;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 /**
  * Created by Administrator on 2018/3/14.
  * 角色和权限多对多映射
  */
+@Entity
+@Table(name = "t_role_power")
 public class RolePower  {
+
     /**
-     * 角色id
+     * 复合主键
      */
-    private Long RoleId;
-    /**
-     * 权限Id
-     */
-    private Long PowerId;
+    @EmbeddedId
+     private RolePowerKey rolePowerKey;
 
 
-    public Long getRoleId() {
-        return RoleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        RoleId = roleId;
-    }
-
-    public Long getPowerId() {
-        return PowerId;
-    }
-
-    public void setPowerId(Long powerId) {
-        PowerId = powerId;
-    }
 }

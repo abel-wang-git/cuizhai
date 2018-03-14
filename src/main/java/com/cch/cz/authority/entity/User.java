@@ -1,16 +1,21 @@
 package com.cch.cz.authority.entity;
 
+import com.cch.cz.base.entity.BaseEntity;
+
+import javax.persistence.*;
 import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/14.
  * 用户基类
  */
-
-public class User {
-
+@Entity
+@Table(name = "t_user")
+public class User extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
+    @Transient
     private List<Long> roleId;
 
     private String userName;
@@ -23,14 +28,6 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<Long> getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(List<Long> roleId) {
-        this.roleId = roleId;
     }
 
     public String getUserName() {

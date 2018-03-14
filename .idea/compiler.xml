@@ -9,7 +9,7 @@
         <module name="cuizai" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="cuizai" target="1.8" />
     </bytecodeTargetLevel>
   </component>

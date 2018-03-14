@@ -1,7 +1,5 @@
 package com.cch.cz.base.dao.provider;
 
-
-
 import com.cch.cz.base.entity.BaseEntity;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -13,6 +11,7 @@ import java.util.Date;
 import java.util.Locale;
 /**
  * Created by Administrator on 2017/12/7.
+ *
  */
 public class BaseProvider<M extends BaseEntity,PK> {
     public String  save(M m) throws IllegalAccessException {
