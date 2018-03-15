@@ -21,11 +21,13 @@
   </properties>
 
   <dependencies>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
       <version>${spring-boot.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -33,21 +35,25 @@
       <!--打包时取消注解 idea的bug-->
       <!--<scope>provided</scope>-->
     </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
       <version>${spring-boot.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jpa</artifactId>
       <version>${spring-boot.version}</version>
     </dependency>
 
+
+
     <dependency>
-      <groupId>org.mybatis.spring.boot</groupId>
-      <artifactId>mybatis-spring-boot-starter</artifactId>
-      <version>1.3.1</version>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+      <version>${spring-boot.version}</version>
     </dependency>
     <!--测试-->
     <dependency>
@@ -70,16 +76,24 @@
     </dependency>
 
     <dependency>
+      <groupId>org.mybatis.spring.boot</groupId>
+      <artifactId>mybatis-spring-boot-starter</artifactId>
+      <version>1.3.1</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.github.pagehelper</groupId>
       <artifactId>pagehelper-spring-boot-starter</artifactId>
       <version>1.1.3</version>
     </dependency>
 
+    <!--文件上传-->
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
       <version>1.3</version>
     </dependency>
+    <!--文件上传-->
 
    <!-- shiro-->
     <dependency>
@@ -98,6 +112,7 @@
       <version>1.2.1</version>
     </dependency>
     <!-- shiro-->
+
     <!--fastjson数据配置start-->
     <dependency>
       <groupId>com.alibaba</groupId>
@@ -105,6 +120,15 @@
       <version>1.2.29</version>
     </dependency>
     <!--fastjson数据配置 end-->
+
+   <!-- 日志-->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.22</version>
+    </dependency>
+    <!-- 日志-->
+
 
 
   </dependencies>

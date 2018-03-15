@@ -33,7 +33,7 @@ public class ShiroConfiguration {
         return authorizationAttributeSourceAdvisor;
     }
 
-    @Bean
+    @Bean()
     public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         // 必须设置 SecurityManager

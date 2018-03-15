@@ -26,18 +26,7 @@
 
             </ul>
         </div>
-        <div class="layui-side layui-bg-black ">
-            <div class="layui-side-scroll">
-                <ul class="layui-nav layui-nav-tree" lay-filter="leftnav">
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:;">默认展开</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="javascript:;" data-url="/host/list" data-id="1">主机列表</a></dd>
-                        </dl>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <div th:include="fragment/menu :: menu"></div>
 
         <div class="layui-body ">
             <div class="layui-tab layui-tab-brief " style="margin:0;position:absolute;top:4px;bottom:0px;width:100%;" lay-filter="tab" lay-allowclose="true">

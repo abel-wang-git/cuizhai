@@ -1,92 +1,46 @@
-{
-	"contentManagement": [
-		{
-			"title": "文章列表",
-			"icon": "icon-text",
-			"href": "page/news/newsList.html",
-			"spread": false
-		},
-		{
-			"title": "图片管理",
-			"icon": "&#xe634;",
-			"href": "page/img/images.html",
-			"spread": false
-		},
-		{
-			"title": "其他页面",
-			"icon": "&#xe630;",
-			"href": "",
-			"spread": false,
-			"children": [
-				{
-					"title": "404页面",
-					"icon": "&#xe61c;",
-					"href": "page/404.html",
-					"spread": false
-				},
-				{
-					"title": "登录",
-					"icon": "&#xe609;",
-					"href": "page/login/login.html",
-					"spread": false,
-					"target": "_blank"
-				}
-			]
-		}
-	],
-	"memberCenter": [
-		{
-			"title": "用户中心",
-			"icon": "&#xe612;",
-			"href": "page/user/userList.html",
-			"spread": false
-		},
-		{
-			"title": "会员等级",
-			"icon": "icon-vip",
-			"href": "page/user/userGrade.html",
-			"spread": false
-		}
-	],
-	"systemeSttings": [
-		{
-			"title": "系统基本参数",
-			"icon": "&#xe631;",
-			"href": "page/systemSetting/basicParameter.html",
-			"spread": false
-		},{
-			"title": "系统日志",
-			"icon": "icon-log",
-			"href": "page/systemSetting/logs.html",
-			"spread": false
-		},{
-			"title": "友情链接",
-			"icon": "&#xe64c;",
-			"href": "page/systemSetting/linkList.html",
-			"spread": false
-		},{
-			"title": "图标管理",
-			"icon": "&#xe857;",
-			"href": "page/systemSetting/icons.html",
-			"spread": false
-		}
-	],
-	"seraphApi": [
-		{
-			"title": "三级联动模块",
-			"icon": "icon-mokuai",
-			"href": "page/doc/addressDoc.html",
-			"spread": false
-		},{
-			"title": "bodyTab模块",
-			"icon": "icon-mokuai",
-			"href": "page/doc/bodyTabDoc.html",
-			"spread": false
-		},{
-			"title": "三级菜单",
-			"icon": "icon-mokuai",
-			"href": "page/doc/navDoc.html",
-			"spread": false
-		}
-	]
-}
+数据管理
+        数据管理
+        委案管理
+        委案分派
+        还款管理
+        转案管理
+        数据修改
+        余额更新
+        批次管理
+        M值管理
+        -------------
+        更新综合数据
+        更新汇总表
+        更新编码表
+
+催收管理
+        工作台
+        催收工作
+        产能统计-人员
+        产能统计-电话
+        电话还款
+        外访管理
+        共债委案
+        减免管理
+失联管理
+
+语音系统
+还款管理
+        还款统计
+信息管理
+        信息修复
+        电话查询
+        短信管理
+        扩展数据
+        信函管理
+催记管理
+委外管理
+统计报表
+大屏视图
+录音管理
+系统管理
+系统帮助
+外访管理
+退出系统
+
+
