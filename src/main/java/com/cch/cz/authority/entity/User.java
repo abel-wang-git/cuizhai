@@ -1,6 +1,7 @@
 package com.cch.cz.authority.entity;
 
 import com.cch.cz.base.entity.BaseEntity;
+import org.apache.shiro.crypto.hash.Md5Hash;
 
 import javax.persistence.*;
 import java.util.List;
@@ -44,5 +45,10 @@ public class User extends BaseEntity {
 
     public void setPassWd(String passWd) {
         this.passWd = passWd;
+    }
+
+
+    public String getSal(){
+        return new Md5Hash(this.getPassWd() + this.getUserName()).toString();
     }
 }
