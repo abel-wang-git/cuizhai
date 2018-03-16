@@ -24,7 +24,7 @@
                 <div class="login-box module-static">
                     <div class="static-form ">
                         <div class="login-title">用户登录</div>
-                        <form action="/login" class="form-login" method="post"
+                        <form action="login" class="form-login" method="post"
                               autocomplete="off" th:object="${user}">
                             <div id="login_Message"
                                  th:unless="${#strings.isEmpty(#strings.toString(errmsg))}"
