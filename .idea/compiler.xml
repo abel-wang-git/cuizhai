@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="cuizai" />
+        <module name="cuizhai" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="cuizai" target="1.8" />
+      <module name="cuizhai" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -4,25 +4,31 @@ import java.util.Map;
 
 /**
  * Created by Administrator on 2017/12/31.
+ * 前台返回值
  */
-public class AjaxRetrun {
+public class AjaxReturn {
+
+    public static  final  int CODE_SUCCESS=0;
+    public static  final  int CODE_FAILD=1;
     private int code;
     private String message;
-    private Map Data;
+    private Map<Object,Object> Data;
 
-    public AjaxRetrun() {
+    public AjaxReturn() {
     }
 
-    public AjaxRetrun(String message) {
+
+
+    public AjaxReturn(String message) {
         this.message = message;
     }
 
-    public AjaxRetrun(int code, String message) {
+    public AjaxReturn(int code, String message) {
         this.code = code;
         this.message = message;
     }
 
-    public AjaxRetrun(int code, String message, Map data) {
+    public AjaxReturn(int code, String message, Map data) {
         this.code = code;
         this.message = message;
         Data = data;

@@ -1,0 +1,36 @@
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+<button type="button" class="layui-btn" id="upload">
+    <i class="layui-icon">&#xe67c;</i>上传委案
+</button>
+
+<script th:src="@{/static/layui/layui.js}"></script>
+<script>
+    layui.use('upload', function(){
+        var upload = layui.upload,$ = layui.$;
+        //执行实例
+        upload.render({
+            elem: '#upload' //绑定元素
+            ,url: '/upload' //上传接口
+            ,accept: 'file'
+            ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                layer.load(); //上传loading
+            }
+            ,done: function(res){
+                layer.msg(res.message)
+                layer.closeAll('loading');
+            }
+            ,error: function(){
+
+                layer.closeAll('loading');
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -5,7 +5,7 @@
   <groupId>com.cch.cz</groupId>
   <artifactId>cuizai</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>cuizai</name>
   <url>http://maven.apache.org</url>
@@ -33,7 +33,7 @@
       <artifactId>spring-boot-starter-tomcat</artifactId>
       <version>${spring-boot.version}</version>
       <!--打包时取消注解 idea的bug-->
-      <!--<scope>provided</scope>-->
+<!--      <scope>provided</scope>-->
     </dependency>
 
     <dependency>
@@ -151,7 +151,7 @@
   </dependencies>
 
   <build>
-    <finalName>cuizai</finalName>
+    <finalName>ROOT</finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -164,6 +164,16 @@
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+          <!--如果想在没有web.xml文件的情况下构建WAR，请设置为false。-->
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+
         </configuration>
       </plugin>
     </plugins>
