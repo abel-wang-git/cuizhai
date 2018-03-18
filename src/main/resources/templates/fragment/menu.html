@@ -1,27 +1,28 @@
-<div  xmlns:th="http://www.thymeleaf.org" th:fragment="menu">
+<div  xmlns:th="http://www.thymeleaf.org" th:fragment="menu" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
     <div class="layui-side layui-bg-black ">
         <div class="layui-side-scroll">
             <ul class="layui-nav layui-nav-tree" lay-filter="leftnav">
 
-                <li class="layui-nav-item layui-nav-itemed">
+                <li class="layui-nav-item ">
                     <a href="javascript:;">委案管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" data-url="case/up" data-id="1">上传委案</a></dd>
                     </dl>
                 </li>
 
-                <li class="layui-nav-item layui-nav-itemed">
+                <li class="layui-nav-item ">
                     <a href="javascript:;">外访管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-url="/host/list" data-id="1">外访管理</a></dd>
+                        <dd><a href="javascript:;" data-url="/host/list" data-id="2">外访管理</a></dd>
                     </dl>
                 </li>
 
-                <li class="layui-nav-item layui-nav-itemed">
+                <li class="layui-nav-item ">
                     <a href="javascript:;">系统配置</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-url="/host/list" data-id="2">白名单</a></dd>
-                        <dd><a href="javascript:;" data-url="/host/list" data-id="2">人员管理</a></dd>
+                        <dd><a href="javascript:;" data-url="/host/list" data-id="3">白名单</a></dd>
+                        <dd><a href="javascript:;" data-url="staff/list" data-id="4">人员管理</a></dd>
+                        <dd shiro:hasPermission="role:add"><a href="javascript:;" data-url="role/list" data-id="5">权限管理</a></dd>
                     </dl>
                 </li>
             </ul>

@@ -9,5 +9,5 @@ import org.apache.ibatis.annotations.Mapper;
  *
  */
 @Mapper
-public interface PowerMapper extends BaseMapper<Power,Long> {
+public interface PowerMapper extends BaseMapper<Power,String> {
 }

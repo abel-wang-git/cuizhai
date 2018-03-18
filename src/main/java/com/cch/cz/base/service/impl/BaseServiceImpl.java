@@ -14,8 +14,8 @@ import java.util.List;
 public class BaseServiceImpl<M extends BaseEntity,PK> implements BaseService<M,PK> {
     @Autowired
     BaseMapper<M ,PK> baseMapper;
-    public PK save(M m) {
-        return baseMapper.save(m);
+    public void save(M m) {
+         baseMapper.save(m);
     }
 
     public void delete(PK pk) {
@@ -28,7 +28,7 @@ public class BaseServiceImpl<M extends BaseEntity,PK> implements BaseService<M,P
         return baseMapper.findAll(getNewInstance());
     }
 
-    public List<M> findOne(PK pk)  {
+    public M findOne(PK pk)  {
 
         return baseMapper.findOne(getNewInstance(),pk);
     }

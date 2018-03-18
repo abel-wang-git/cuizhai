@@ -29,7 +29,7 @@
         <div th:include="fragment/menu :: menu"></div>
 
         <div class="layui-body ">
-            <div class="layui-tab layui-tab-brief " style="margin:0;position:absolute;top:4px;bottom:0px;width:100%;" lay-filter="tab" lay-allowclose="true">
+            <div class="layui-tab layui-tab-brief "  lay-filter="tab" lay-allowclose="true">
                 <ul class="layui-tab-title ">
                     <li lay-id="0" class="layui-this">首页</li>
                 </ul>
@@ -47,7 +47,7 @@
 <!-- layui规范化用法 -->
 <script type="text/javascript">
     layui.config({
-        base: '/static/layui/js/'
+        base: 'static/layui/js/'
     }).use('home');
 </script>
 </body>

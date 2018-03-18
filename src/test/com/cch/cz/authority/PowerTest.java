@@ -22,7 +22,6 @@ public class PowerTest {
     @Test
     public void save(){
         Power power = new Power();
-        power.setDesign("testmiaosu");
         power.setName("test");
 
         powerService.save(power);

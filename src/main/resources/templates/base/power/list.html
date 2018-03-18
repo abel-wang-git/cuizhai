@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>title</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+
+<table id="role" lay-filter="power"></table>
+
+<script th:src="@{/static/layui/layui.js}"></script>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        //第一个实例
+        table.render({
+            elem: '#power'
+            ,height: 315
+            ,url: 'list' //数据接口
+            ,method: 'post'
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                {field: 'name', title: '权限名称', width:'80%' , sort: true, fixed: 'left'}
+            ]]
+        });
+        });
+</script>
+</body>
+</html>

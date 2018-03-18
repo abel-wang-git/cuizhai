@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>title</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+<a class="layui-btn layui-btn-sm" href="toAdd">添加员工</a>
+
+    <table id="staff" lay-filter="staff"></table>
+
+<script th:src="@{/static/layui/layui.js}"></script>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+
+        //第一个实例
+        table.render({
+            elem: '#staff'
+            ,height: 315
+            ,url: 'list' //数据接口
+            ,method: 'post'
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                {field: 'name', title: '员工名称', width:'15%' , sort: true, fixed: 'left'}
+                ,{field: 'number', title: '工号', width:'15%',sort: true,}
+                ,{field: 'place', title: '职位', width:'15%',sort: true,}
+                ,{field: 'phone', title: '电话', width:'15%',sort: true,}
+            ]]
+        });
+
+    });
+</script>
+
+</body>
+</html>

@@ -44,9 +44,15 @@ public class BaseProvider<M extends BaseEntity,PK> {
     }
 
     public String  delete (M m, PK pk){
+
         return new SQL(){{
+            String idname =null;
+            Field[] fields=m.getClass().getDeclaredFields();
+            for (Field f:fields) {
+                if(f.getAnnotation(Id.class)!=null)idname=addUnderscores(f.getName());
+            }
             DELETE_FROM(m.getTablename());
-            WHERE("id="+pk);
+            WHERE(idname.toString()+"='"+pk+"'");
         }}.toString();
     }
 
@@ -59,9 +65,14 @@ public class BaseProvider<M extends BaseEntity,PK> {
 
     public String  findOne(M m,PK pk){
         return new SQL(){{
+            String idname =null;
+            Field[] fields=m.getClass().getDeclaredFields();
+            for (Field f:fields) {
+                if(f.getAnnotation(Id.class)!=null)idname=addUnderscores(f.getName());
+            }
             SELECT("*");
             FROM(m.getTablename());
-            WHERE("id="+pk);
+            WHERE(idname.toString()+"='"+pk+"'");
         }}.toString();
     }
 

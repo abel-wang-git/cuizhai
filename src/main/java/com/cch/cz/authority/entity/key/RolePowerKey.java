@@ -19,7 +19,7 @@ public class RolePowerKey implements Serializable {
      * 权限Id
      */
     @Column(name = "power_id")
-    private Long PowerId;
+    private String PowerId;
 
 
     public Long getRoleId() {
@@ -30,11 +30,11 @@ public class RolePowerKey implements Serializable {
         RoleId = roleId;
     }
 
-    public Long getPowerId() {
+    public String getPowerId() {
         return PowerId;
     }
 
-    public void setPowerId(Long powerId) {
+    public void setPowerId(String powerId) {
         PowerId = powerId;
     }
 }

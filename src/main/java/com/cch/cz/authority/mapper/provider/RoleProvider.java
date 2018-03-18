@@ -1,4 +1,4 @@
-package com.cch.cz.authority.mapper.provoder;
+package com.cch.cz.authority.mapper.provider;
 
 import com.cch.cz.authority.entity.Role;
 import com.cch.cz.base.dao.provider.BaseProvider;

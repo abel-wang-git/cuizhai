@@ -14,13 +14,13 @@ import java.util.List;
  */
 public interface BaseMapper<M extends BaseEntity,PK> {
     @InsertProvider(type = BaseProvider.class,method = "save")
-    PK save(M m);
+    void save(M m);
     @DeleteProvider(type = BaseProvider.class,method = "delete")
     void delete(M m, PK pk);
     @SelectProvider(type = BaseProvider.class,method = "findAll")
     List<M> findAll(M m);
     @SelectProvider(type = BaseProvider.class,method = "findOne")
-    List<M> findOne(M m, PK pk);
+    M findOne(M m, PK pk);
     @SelectProvider(type = BaseProvider.class,method = "count")
     Long count(M m);
 

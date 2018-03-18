@@ -11,8 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
@@ -27,20 +27,20 @@ public class Login {
     @Resource
     private UserService userService;
 
-    @RequestMapping(value = "/")
+    @GetMapping(value = "/")
     private String index(){
         return "/admin";
     }
 
-    @RequestMapping(value = "/login")
+    @GetMapping(value = "/login")
     public String login(Model model){
         User u = new User();
         model.addAttribute(u);
         return "/login";
     }
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public String login(User user,@RequestParam(defaultValue = "false") String rememberMe){
+    @PostMapping(value = "/login")
+    public String login(Model model,User user,@RequestParam(defaultValue = "false") String rememberMe){
 
         UsernamePasswordToken token = new UsernamePasswordToken (user.getUserName (),user.getSal(),rememberMe);
         Subject subject = SecurityUtils.getSubject();
@@ -48,10 +48,7 @@ public class Login {
         try {
             subject.login (token);
         } catch (UnknownAccountException e) {
-            logger.info ("账号或密码错误");
-        } catch (IncorrectCredentialsException e) {
-            logger.info ("账号或密码错误");
-        } catch (Exception e) {
+            model.addAttribute("tig","账号或密码错误");
             e.printStackTrace();
             logger.info ("账号或密码错误");
         }

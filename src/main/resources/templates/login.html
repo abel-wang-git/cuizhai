@@ -46,6 +46,7 @@
                                                 class="login-text" autocomplete="off" placeholder="密码"
                                                 th:field="*{passWd}"/>
                             </div>
+                            <div  th:unless="${#strings.isEmpty(#strings.toString(tig))}" th:text="${#strings.toString(tig)}"></div>
                             <div class="submit">
                                 <button type="submit" id="login_submit">登录</button>
                             </div>

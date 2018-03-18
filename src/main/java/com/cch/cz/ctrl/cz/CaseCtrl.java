@@ -1,4 +1,4 @@
-package com.cch.cz.ctrl.cases;
+package com.cch.cz.ctrl.cz;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +14,6 @@ public class CaseCtrl {
 
     @GetMapping(value = "/up")
     public String toCase(){
-        return "/cases/case";
+        return "/cz/cases/case";
     }
 }

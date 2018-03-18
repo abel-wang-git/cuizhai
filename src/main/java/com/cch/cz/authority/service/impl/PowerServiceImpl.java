@@ -10,5 +10,5 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service
-public class PowerServiceImpl extends BaseServiceImpl<Power,Long> implements PowerService{
+public class PowerServiceImpl extends BaseServiceImpl<Power,String> implements PowerService{
 }

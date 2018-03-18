@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>员工添加</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+<a class="layui-btn layui-btn-sm" href="list">返回</a>
+
+<form class="layui-form"  action=""  th:object="${staff}" method="post" style="padding-top: 10px;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">员工名称</label>
+        <div class="layui-input-inline">
+            <input type="text"  th:field="*{name}" required ="required " lay-verify="required" placeholder="请输入员工姓名" autocomplete="off" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工号</label>
+        <div class="layui-input-inline">
+            <input type="text"  th:field="*{number}" required ="required " lay-verify="required" placeholder="请输入工号" autocomplete="off" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">电话</label>
+        <div class="layui-input-inline">
+            <input type="text" th:field="*{phone}" required ="required " lay-verify="required" placeholder="请输入电话" autocomplete="off" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择框</label>
+        <div class="layui-input-inline">
+            <select th:field="*{place}" required ="required " lay-verify="required">
+                <option value=""></option>
+                <option value="0">催收员</option>
+                <option value="1">管理员</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="lay-submit" lay-filter="staff">立即提交</button>
+        </div>
+    </div>
+</form>
+<script th:src="@{/static/layui/layui.js}"></script>
+
+<script>
+    layui.use('form', function(){
+        var $ = layui.$,
+            form = layui.form;
+        //监听提交
+        form.on('submit(staff)', function(data){
+            $.ajax({
+                    url:"add",
+                    type:"post",
+                    dataType:'json',
+                    contentType:'application/json;charset=utf-8',
+                    data:JSON.stringify(data.field)
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

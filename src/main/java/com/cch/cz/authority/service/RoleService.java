@@ -25,4 +25,7 @@ public interface RoleService  extends BaseService<Role,Long> {
      */
 
     void savePowers(List<RolePowerKey> list);
+
+    Role getByname(String name);
+
 }

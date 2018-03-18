@@ -34,4 +34,13 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,Long> implements RoleS
             roleMapper.savePowers(p.getRoleId(),p.getPowerId());
         }
     }
+
+    @Override
+    public Role getByname(String name) {
+        Role roles = roleMapper.getByName(name);
+        if (roles != null) {
+            return roles;
+        }
+        return null;
+    }
 }

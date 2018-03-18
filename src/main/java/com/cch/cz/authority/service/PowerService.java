@@ -5,7 +5,7 @@ import com.cch.cz.base.service.BaseService;
 
 /**
  * Created by Administrator on 2018/3/14.
- *
+ *权限service
  */
-public interface PowerService extends BaseService<Power,Long> {
+public interface PowerService extends BaseService<Power,String> {
 }

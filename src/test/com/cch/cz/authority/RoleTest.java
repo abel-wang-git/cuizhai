@@ -39,7 +39,7 @@ public class RoleTest {
     public  void savePowers(){
         List<RolePowerKey> list = new ArrayList<>();
         RolePowerKey powerKey = new RolePowerKey();
-        powerKey.setPowerId(2l);
+        powerKey.setPowerId("role:list");
         powerKey.setRoleId(1l);
         list.add(powerKey);
         roleService.savePowers(list);

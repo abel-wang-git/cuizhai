@@ -16,9 +16,10 @@ import java.util.List;
  */
 @Mapper
 public interface RoleMapper extends BaseMapper<Role,Long> {
-    @Select({"select * from t_power p , t_role_power rp where p.id=rp.power_id and rp.role_id=#{roleId}"})
+    @Select({"select * from t_power p , t_role_power rp where p.name=rp.power_id and rp.role_id=#{roleId}"})
     List<Power> getPowers(Long roleId);
     @Insert({"insert into t_role_power (role_id,power_id) values (#{roleId},#{powerId})"})
-    void savePowers(@Param("roleId")Long roleId, @Param("powerId")Long powerId);
-
+    void savePowers(@Param("roleId")Long roleId, @Param("powerId")String powerId);
+    @Select({"select * from t_role where name=#{name}"})
+    Role getByName(@Param("name")String name);
 }

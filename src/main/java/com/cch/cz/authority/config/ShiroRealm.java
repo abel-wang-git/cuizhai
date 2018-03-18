@@ -15,6 +15,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by wanghuiwen on 17-2-13.
@@ -50,6 +51,8 @@ public class ShiroRealm extends AuthorizingRealm {
         User userInfo = (User) principals.getPrimaryPrincipal();
         User user = (User) userService.findOne(userInfo.getId());
         //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
+        List list = userService.getRoleList(user.getId());
+
         for (Role role : userService.getRoleList(user.getId())) {
             authorizationInfo.addRole(role.getName());
             for (Power p : roleService.getPowers(role.getId())) {
