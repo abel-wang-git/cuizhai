@@ -1,4 +1,4 @@
-package com.cch.cz.startloader;
+package com.cch.cz.config;
 
 import com.cch.cz.authority.entity.Power;
 import com.cch.cz.authority.entity.Role;
