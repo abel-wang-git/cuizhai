@@ -8,4 +8,6 @@ import com.cch.cz.entity.Staff;
  * 员工service
  */
 public interface StaffService extends BaseService<Staff,Long>  {
+
+    void save(Staff staff);
 }

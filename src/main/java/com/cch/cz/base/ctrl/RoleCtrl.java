@@ -1,6 +1,7 @@
 package com.cch.cz.base.ctrl;
 
 import com.cch.cz.authority.entity.Role;
+import com.cch.cz.authority.entity.key.RolePowerKey;
 import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/18.
@@ -27,7 +29,6 @@ public class RoleCtrl {
 
     @GetMapping(value = "/list")
     public  String list(Model model){
-        model.addAttribute(roleService.findAll());
         return "/base/role/list";
     }
 
@@ -57,5 +58,16 @@ public class RoleCtrl {
         roleService.save(data);
         return new AjaxReturn(0,"添加成功");
     }
+
+    @PostMapping(value = "/addPower",produces="application/json;charset=UTF-8")
+    @ResponseBody
+    @RequiresPermissions(value = "role:add")
+    public AjaxReturn addPower(@RequestBody List<RolePowerKey> data){
+        roleService.savePowers(data);
+        return new AjaxReturn(0,"添加成功");
+    }
+
+
+
 
 }

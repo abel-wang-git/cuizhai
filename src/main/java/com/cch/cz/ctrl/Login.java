@@ -1,5 +1,6 @@
 package com.cch.cz.ctrl;
 
+import com.alibaba.fastjson.JSON;
 import com.cch.cz.authority.entity.User;
 import com.cch.cz.authority.service.UserService;
 import org.apache.shiro.SecurityUtils;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Administrator on 2018/3/14.
@@ -44,7 +47,7 @@ public class Login {
 
         UsernamePasswordToken token = new UsernamePasswordToken (user.getUserName (),user.getSal(),rememberMe);
         Subject subject = SecurityUtils.getSubject();
-
+        model.addAttribute(user);
         try {
             subject.login (token);
         } catch (UnknownAccountException e) {
@@ -56,7 +59,15 @@ public class Login {
             subject.getSession ().setAttribute ("user",userService.getByuserName (user.getUserName ()));
             return "redirect:/";
         } else {
+
             return "/login";
         }
+    }
+
+    @GetMapping(value = "/loginOut")
+    public String loginout(HttpSession session) {
+        SecurityUtils.getSubject().getSession().removeAttribute("user");
+        SecurityUtils.getSubject ().logout ();
+        return "redirect:/";
     }
 }

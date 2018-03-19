@@ -16,8 +16,6 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    @Transient
-    private List<Long> roleId;
 
     private String userName;
 

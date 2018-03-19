@@ -22,7 +22,6 @@
     layui.use('table', function(){
         var table = layui.table
             ,$ = layui.$;
-        //第一个实例
         table.render({
             elem: '#role'
             ,id:'role'
@@ -48,14 +47,8 @@
             ]]
         });
 
-
-
         table.on('tool(role)', function(obj) {
-            var data = obj.data;
             var layEvent = obj.event;
-            var tr = obj.tr;
-            var checkStatus = table.checkStatus('powers');
-            alert(checkStatus.data.name);
             if (layEvent === 'addpower') { //查看
                 layer.open({
                     type: 1
@@ -64,14 +57,22 @@
                     , content: $('#powerlist')
                     , btn: ['添加', '取消']
                     , yes: function (index, layero) {
-                        console.log(layero)
-                        console.log(parent);
-                        var iframeWin = parent['layui-layer-iframe' + index];
-                        console.log(iframeWin);
+                        var checkStatus = table.checkStatus('powers');
+                        var rolePowerKeys = [];
+                        var rolePowerKey={};
+                        for(var i = 0 ; i<checkStatus.data.length;i++){
+                            rolePowerKey.powerId=checkStatus.data[i].name;
+                            rolePowerKey.roleId=obj.data.id;
+                            rolePowerKeys.push(rolePowerKey)
+                        }
 
-                        var checkStatus3 = layero.table.checkStatus('tableUserList');
-                        console.log(checkStatus3);
-                        alert(obj.data.id)
+                        $.ajax({
+                            url:"addPower",
+                            type:"post",
+                            dataType:'json',
+                            contentType:'application/json;charset=utf-8',
+                            data:JSON.stringify(rolePowerKeys)
+                        });
                     }
                 })
             }

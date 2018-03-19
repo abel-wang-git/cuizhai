@@ -10,11 +10,11 @@
         <div class="layui-header">
             <ul class="layui-nav layui-nav-right">
                 <li class="layui-nav-item">
-                    <a><img src="http://t.cn/RCzsdCq" class="layui-nav-img"/>我</a>
+                    <a th:text="${session.user.userName}"><img src="http://t.cn/RCzsdCq" class="layui-nav-img"/></a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;"><i class="layui-icon">&#xe6b2;</i><cite> 修改信息</cite></a></dd>
                         <dd><a href="javascript:;"><i class="layui-icon">&#xe6b2;</i> 安全管理</a></dd>
-                        <dd><a href="javascript:;"><i class="layui-icon">&#xe6b2;</i> 退出</a></dd>
+                        <dd><a href="loginOut"><i class="layui-icon">&#xe6b2;</i> 退出</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">

@@ -10,14 +10,26 @@
 
     <table id="staff" lay-filter="staff"></table>
 
-<script th:src="@{/static/layui/layui.js}"></script>
-<script>
-    layui.use('table', function(){
-        var table = layui.table;
 
-        //第一个实例
+
+
+<script type="text/html" id="role">
+    <a class="layui-btn  layui-btn-xs" lay-event="addrole">增加权限</a>
+</script>
+
+<div style="width: 500px;display: none;" id="rolelist">
+    <table id="roles" lay-filter="roles"></table>
+</div>
+<script th:src="@{/static/layui/layui.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    layui.use('table', function(){
+        var table = layui.table
+                ,$ = layui.$;
+        //员工
         table.render({
             elem: '#staff'
+            ,id:'staff'
             ,height: 315
             ,url: 'list' //数据接口
             ,method: 'post'
@@ -27,10 +39,51 @@
                 ,{field: 'number', title: '工号', width:'15%',sort: true,}
                 ,{field: 'place', title: '职位', width:'15%',sort: true,}
                 ,{field: 'phone', title: '电话', width:'15%',sort: true,}
+                ,{fixed: 'picture', title: '选中', width: '20%', align: 'center', toolbar: '#role', fixed: 'right'}
+            ]]
+        });
+        //隐藏角色
+        table.render({
+            elem: '#roles'
+            ,id:'roles'
+            ,height: 315
+            ,url: [[${ctx}]]+'/role/list' //数据接口
+            ,method: 'post'
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                {field: 'name', title: '权限名称', width:300 , sort: true, fixed: 'left'}
+                ,{field: 'chk', width:200 , type:'checkbox',fixed: 'right'}
             ]]
         });
 
+        table.on('tool(staff)', function(obj) {
+            var layEvent = obj.event;
+            if (layEvent === 'addrole') {
+                var ctx = [[${ctx}]];
+                layer.open({
+                    type:1
+                    , title: '增加权限'
+                    , area: ['500px', '500px']
+                    , content:$("#rolelist")
+                    , btn: ['添加', '取消']
+                    , yes: function (index, layero) {
+                        var checkStatus = table.checkStatus('roles');
+                        console.log(obj.data.id)
+                        var userRoleKeys = [];
+                        var userRoleKey={};
+                        for(var i = 0 ; i<checkStatus.data.length;i++){
+                            userRoleKey.roleId=checkStatus.data[i].id;
+                            userRoleKey.userId=obj.data.id;
+                            userRoleKeys.push(userRoleKey)
+                        }
+                        console.log(JSON.stringify(userRoleKeys))
+                    }
+                })
+            }
+        });
+
     });
+/*]]>*/
 </script>
 
 </body>
