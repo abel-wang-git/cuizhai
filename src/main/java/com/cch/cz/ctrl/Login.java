@@ -45,7 +45,7 @@ public class Login {
     @PostMapping(value = "/login")
     public String login(Model model,User user,@RequestParam(defaultValue = "false") String rememberMe){
 
-        UsernamePasswordToken token = new UsernamePasswordToken (user.getUserName (),user.getSal(),rememberMe);
+        UsernamePasswordToken token = new UsernamePasswordToken (user.getUserName (),user.Sal(),rememberMe);
         Subject subject = SecurityUtils.getSubject();
         model.addAttribute(user);
         try {

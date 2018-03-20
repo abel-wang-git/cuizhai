@@ -1,6 +1,9 @@
 package com.cch.cz.ctrl.cz;
 
 import com.alibaba.fastjson.JSON;
+import com.cch.cz.authority.entity.key.RolePowerKey;
+import com.cch.cz.authority.entity.key.UserRoleKey;
+import com.cch.cz.authority.service.UserService;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.entity.Staff;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +29,8 @@ public class StaffCtrl {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Resource
     private StaffService staffService;
+    @Resource
+    private UserService userService;
 
     @GetMapping(value = "/list")
     public  String list(Model model){
@@ -40,6 +46,13 @@ public class StaffCtrl {
         table.setData(staffService.findAll());
         table.setCount(staffService.count(new Staff()).intValue());
         return table;
+    }
+
+    @PostMapping(value = "/addRole")
+    @ResponseBody
+    public AjaxReturn addRole(@RequestBody List<UserRoleKey> data){
+        userService.saveRoles(data);
+        return new AjaxReturn(0,"添加成功");
     }
 
 

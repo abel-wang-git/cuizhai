@@ -15,18 +15,18 @@ public class UserRoleKey implements Serializable {
      * 用户ID
      */
     @Column(name = "user_id")
-    private Long UserId;
+    private String UserId;
     /**
      * 角色Id
      */
     @Column(name = "role_id")
     private Long RoleId;
 
-    public Long getUserId() {
+    public String getUserId() {
         return UserId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         UserId = userId;
     }
 

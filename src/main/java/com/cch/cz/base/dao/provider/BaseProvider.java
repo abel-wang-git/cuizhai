@@ -2,6 +2,8 @@ package com.cch.cz.base.dao.provider;
 
 import com.cch.cz.base.entity.BaseEntity;
 import org.apache.ibatis.jdbc.SQL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,8 +17,9 @@ import java.util.Locale;
  *
  */
 public class BaseProvider<M extends BaseEntity,PK> {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     public String  save(M m) throws IllegalAccessException {
-        return new SQL(){{
+         String sql = new SQL(){{
             StringBuilder clo=new StringBuilder();
             StringBuilder val=new StringBuilder();
             Field[] fields=m.getClass().getDeclaredFields();
@@ -41,11 +44,14 @@ public class BaseProvider<M extends BaseEntity,PK> {
             INTO_COLUMNS(clo.deleteCharAt(clo.length()-1).toString());
             INTO_VALUES(val.deleteCharAt(val.length()-1).toString());
         }}.toString();
+        logger.info(sql);
+        return sql;
+
     }
 
     public String  delete (M m, PK pk){
 
-        return new SQL(){{
+         String sql=new SQL(){{
             String idname =null;
             Field[] fields=m.getClass().getDeclaredFields();
             for (Field f:fields) {
@@ -54,17 +60,22 @@ public class BaseProvider<M extends BaseEntity,PK> {
             DELETE_FROM(m.getTablename());
             WHERE(idname.toString()+"='"+pk+"'");
         }}.toString();
+        logger.info(sql);
+        return sql;
     }
 
     public String  findAll(M m){
-        return new SQL(){{
+       String sql=  new SQL(){{
             SELECT("*");
             FROM(m.getTablename());
         }}.toString();
+
+       logger.info(sql);
+        return sql;
     }
 
     public String  findOne(M m,PK pk){
-        return new SQL(){{
+         String sql= new SQL(){{
             String idname =null;
             Field[] fields=m.getClass().getDeclaredFields();
             for (Field f:fields) {
@@ -74,13 +85,17 @@ public class BaseProvider<M extends BaseEntity,PK> {
             FROM(m.getTablename());
             WHERE(idname.toString()+"='"+pk+"'");
         }}.toString();
+        logger.info(sql);
+        return sql;
     }
 
     public String  count(M m){
-        return new SQL(){{
+         String sql= new SQL(){{
             SELECT("count(*)");
             FROM(m.getTablename());
         }}.toString();
+        logger.info(sql);
+        return sql;
     }
     private static String addUnderscores(String name) {
         StringBuilder buf = new StringBuilder(name.replace('.', '_'));
@@ -92,6 +107,4 @@ public class BaseProvider<M extends BaseEntity,PK> {
         }
         return buf.toString().toLowerCase(Locale.ROOT);
     }
-
-
 }

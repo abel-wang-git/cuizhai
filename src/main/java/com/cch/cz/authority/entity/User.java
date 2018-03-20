@@ -3,8 +3,9 @@ package com.cch.cz.authority.entity;
 import com.cch.cz.base.entity.BaseEntity;
 import org.apache.shiro.crypto.hash.Md5Hash;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by Administrator on 2018/3/14.
@@ -13,21 +14,13 @@ import java.util.List;
 @Entity
 @Table(name = "t_user")
 public class User extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
 
+
+    @Id
     private String userName;
 
     private String passWd ;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUserName() {
         return userName;
@@ -46,7 +39,7 @@ public class User extends BaseEntity {
     }
 
 
-    public String getSal(){
+    public String Sal(){
         return new Md5Hash(this.getPassWd() + this.getUserName()).toString();
     }
 }

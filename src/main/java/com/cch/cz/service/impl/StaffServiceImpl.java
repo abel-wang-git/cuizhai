@@ -31,7 +31,7 @@ public class StaffServiceImpl extends BaseServiceImpl<Staff,Long> implements Sta
         User user = new User();
         user.setUserName(Integer.toString(staff.getNumber()));
         user.setPassWd("123456");
-        user.setPassWd(user.getSal());
+        user.setPassWd(user.Sal());
         userMapper.save(user);
     }
 }

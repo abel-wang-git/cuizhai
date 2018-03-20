@@ -12,7 +12,7 @@ import java.util.List;
  *
  */
 @Mapper
-public interface UserMapper extends BaseMapper<User,Long> {
+public interface UserMapper extends BaseMapper<User,String> {
 
     /**
      * 根据用户名获取用户
@@ -21,7 +21,6 @@ public interface UserMapper extends BaseMapper<User,Long> {
      */
     @Select("select * from t_user where user_name=#{username}")
     @Results({
-            @Result(property = "id", column = "id"),
             @Result(property = "passWd", column = "pass_wd"),
             @Result(property = "userName",column = "user_name"),
     })
@@ -32,12 +31,13 @@ public interface UserMapper extends BaseMapper<User,Long> {
      * @param userId
      * @return
      */
-    @Select("select * from t_role r,t_user_role ur where r.id=ur.role_id and ur.user_id=#{userId}")
-    List<Role> getRoleList(@Param("userId") Long userId);
+    @Select("select r.* from t_role r,t_user_role ur where r.id=ur.role_id and ur.user_id=#{userId}")
+    List<Role> getRoleList(@Param("userId") String userId);
 
     /**
      * 保存用户角色
      */
     @Insert({"insert into t_user_role (user_id,role_id) values(#{userId},#{roleId})"})
-    void saveRoles(@Param("userId") Long userId,@Param("roleId") Long roleId);
+    void saveRoles(@Param("userId") String userId,@Param("roleId") Long roleId);
+
 }

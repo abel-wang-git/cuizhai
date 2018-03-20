@@ -5,6 +5,7 @@ import com.cch.cz.App;
 import com.cch.cz.authority.entity.User;
 import com.cch.cz.authority.entity.key.UserRoleKey;
 import com.cch.cz.authority.service.UserService;
+import com.cch.cz.common.UtilFun;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,28 +29,33 @@ public class Usertest {
         User user = new User();
         user.setPassWd("123456");
         user.setUserName("admin");
-        user.setPassWd(user.getSal());
+     /*   user.setPassWd(user.Sal());*/
         userService.save(user);
     }
 
     @Test
     public void getByuserName() throws Exception {
-        User user = userService.getByuserName("test");
+        User user = userService.getByuserName("admin");
         System.err.println(JSON.toJSONString(user));
     }
 
     @Test
     public void getRoleList() throws Exception {
-        System.err.println(JSON.toJSONString(userService.getRoleList(1l)));
+        System.err.println(JSON.toJSONString(userService.getRoleList("678")));
     }
 
     @Test
     public void saveRoles() throws Exception {
         List<UserRoleKey> roleKeys=new ArrayList<>();
         UserRoleKey userRoleKey = new UserRoleKey();
-        userRoleKey.setUserId(1l);
+        userRoleKey.setUserId("678");
         userRoleKey.setRoleId(1l);
         roleKeys.add(userRoleKey);
         userService.saveRoles(roleKeys);
+    }
+    @Test
+    public void findone(){
+        User u=userService.findOne("admin");
+        UtilFun.prinrObject(u);
     }
 }

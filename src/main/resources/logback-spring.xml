@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
     <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
-    <property name="LOG_HOME" value="/var/log" />
+    <property name="LOG_HOME" value="log" />
     <!--"%black", "%red", "%green","%yellow","%blue", "%magenta","%cyan", "%white", "%gray", "%boldRed","%boldGreen", "%boldYellow", "%boldBlue", "%boldMagenta""%boldCyan", "%boldWhite" and "%highlight"-->
     <property name="CONSOLE_LOG_PATTERN"
               value="%blue(%n%date{yyyy-MM-dd HH:mm:ss}) | %highlight(%-5level) | %yellow(%thread) | %magenta(%logger)  %cyan(%n%msg)"/>

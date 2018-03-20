@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Administrator on 2018/3/14.
  *
  */
-public interface UserService  extends BaseService<User,Long> {
+public interface UserService  extends BaseService<User,String> {
     /**
      * 根据用户名获取用户
      * @param username
@@ -25,9 +25,11 @@ public interface UserService  extends BaseService<User,Long> {
      * @param userId
      * @return
      */
-    List<Role> getRoleList(Long userId);
+    List<Role> getRoleList(String userId);
     /**
      * 保存用户角色
      */
     void saveRoles(List<UserRoleKey> list);
+
+
 }

@@ -68,15 +68,20 @@
                     , btn: ['添加', '取消']
                     , yes: function (index, layero) {
                         var checkStatus = table.checkStatus('roles');
-                        console.log(obj.data.id)
                         var userRoleKeys = [];
                         var userRoleKey={};
                         for(var i = 0 ; i<checkStatus.data.length;i++){
                             userRoleKey.roleId=checkStatus.data[i].id;
-                            userRoleKey.userId=obj.data.id;
+                            userRoleKey.userId=obj.data.number;
                             userRoleKeys.push(userRoleKey)
                         }
-                        console.log(JSON.stringify(userRoleKeys))
+                        $.ajax({
+                            url:"addRole",
+                            type:"post",
+                            dataType:'json',
+                            contentType:'application/json;charset=utf-8',
+                            data:JSON.stringify(userRoleKeys)
+                        });
                     }
                 })
             }

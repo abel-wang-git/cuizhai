@@ -17,7 +17,7 @@ import java.util.List;
  *
  */
 @Service
-public class UserServiceImpl extends BaseServiceImpl<User,Long> implements UserService{
+public class UserServiceImpl extends BaseServiceImpl<User,String> implements UserService{
 
     @Resource
     private UserMapper userMapper;
@@ -26,7 +26,7 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long> implements UserS
         return userMapper.getByUserName(username);
     }
 
-    public List<Role> getRoleList(Long userId) {
+    public List<Role> getRoleList(String  userId) {
         return userMapper.getRoleList(userId);
     }
 
@@ -37,4 +37,6 @@ public class UserServiceImpl extends BaseServiceImpl<User,Long> implements UserS
             userMapper.saveRoles(u.getUserId(),u.getRoleId());
         }
     }
+
+
 }

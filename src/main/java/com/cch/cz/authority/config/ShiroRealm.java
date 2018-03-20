@@ -49,11 +49,8 @@ public class ShiroRealm extends AuthorizingRealm {
         */
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         User userInfo = (User) principals.getPrimaryPrincipal();
-        User user = (User) userService.findOne(userInfo.getId());
-        //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
-        List list = userService.getRoleList(user.getId());
-
-        for (Role role : userService.getRoleList(user.getId())) {
+        User user = userService.getByuserName(userInfo.getUserName());
+        for (Role role : userService.getRoleList(user.getUserName())) {
             authorizationInfo.addRole(role.getName());
             for (Power p : roleService.getPowers(role.getId())) {
                 authorizationInfo.addStringPermission(p.getName());

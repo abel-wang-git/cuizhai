@@ -14,6 +14,7 @@ import java.util.List;
 public class BaseServiceImpl<M extends BaseEntity,PK> implements BaseService<M,PK> {
     @Autowired
     BaseMapper<M ,PK> baseMapper;
+
     public void save(M m) {
          baseMapper.save(m);
     }

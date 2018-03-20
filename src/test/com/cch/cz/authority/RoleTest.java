@@ -5,6 +5,7 @@ import com.cch.cz.App;
 import com.cch.cz.authority.entity.Role;
 import com.cch.cz.authority.entity.key.RolePowerKey;
 import com.cch.cz.authority.service.RoleService;
+import com.cch.cz.common.UtilFun;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,5 +44,11 @@ public class RoleTest {
         powerKey.setRoleId(1l);
         list.add(powerKey);
         roleService.savePowers(list);
+    }
+
+    @Test
+    public void findOne(){
+         Role r= roleService.findOne(1l);
+        UtilFun.prinrObject(r);
     }
 }

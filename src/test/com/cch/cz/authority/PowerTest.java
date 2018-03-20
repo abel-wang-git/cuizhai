@@ -3,6 +3,7 @@ package com.cch.cz.authority;
 import com.cch.cz.App;
 import com.cch.cz.authority.entity.Power;
 import com.cch.cz.authority.service.PowerService;
+import com.cch.cz.common.UtilFun;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,5 +26,9 @@ public class PowerTest {
         power.setName("test");
 
         powerService.save(power);
+    }
+    @Test
+    public void findOne(){
+        UtilFun.prinrObject(powerService.findOne("role:add"));
     }
 }

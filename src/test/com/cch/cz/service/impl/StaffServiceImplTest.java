@@ -2,6 +2,7 @@ package com.cch.cz.service.impl;
 
 
 import com.cch.cz.App;
+import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.service.StaffService;
 import org.junit.Test;
@@ -16,8 +17,17 @@ import javax.annotation.Resource;
 @SpringBootTest(classes = App.class)
 @WebAppConfiguration
 public class StaffServiceImplTest {
+
+
+
     @Resource
     private StaffService staffService;
+
+    @Test
+    public void findOne() throws Exception {
+        UtilFun.prinrObject(staffService.findOne(7001l));
+    }
+
 
     @Test
     public void save(){

@@ -22,7 +22,7 @@
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;" data-url="/host/list" data-id="3">白名单</a></dd>
                         <dd><a href="javascript:;" data-url="staff/list" data-id="4">人员管理</a></dd>
-                        <dd shiro:hasPermission="role:add"><a href="javascript:;" data-url="role/list" data-id="5">权限管理</a></dd>
+                        <dd shiro:hasRole="admin"><a href="javascript:;" data-url="role/list" data-id="5">权限管理</a></dd>
                     </dl>
                 </li>
             </ul>
