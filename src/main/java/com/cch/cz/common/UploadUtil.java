@@ -19,7 +19,7 @@ import java.util.List;
  *
  */
 @Component
-public class ImageUploadUtil {
+public class UploadUtil {
 
     // 图片类型
     private static List<String> fileTypes = new ArrayList<>();
@@ -43,50 +43,51 @@ public class ImageUploadUtil {
      * @throws IllegalStateException i
      * @throws IOException io
      */
-    public static String upload (HttpServletRequest request, String DirectoryName) throws IllegalStateException, IOException {
+    public static File upload (HttpServletRequest request, String DirectoryName) throws IllegalStateException, IOException {
         // 创建一个通用的多部分解析器
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession ().getServletContext ());
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         // 图片名称
         String fileName = null;
         // 判断 request 是否有文件上传,即多部分请求
-        if (multipartResolver.isMultipart (request)) {
+        File uploadFile =null;
+        if (multipartResolver.isMultipart(request)) {
             // 转换成多部分request
-             MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
             // 取得request中的所有文件名
-            Iterator<String> iter = multiRequest.getFileNames ();
-            while (iter.hasNext ()) {
+            Iterator<String> iter = multiRequest.getFileNames();
+            while (iter.hasNext()) {
                 // 记录上传过程起始时的时间，用来计算上传时间
                 // int pre = (int) System.currentTimeMillis();
                 // 取得上传文件
-                MultipartFile file = multiRequest.getFile (iter.next ());
+                MultipartFile file = multiRequest.getFile(iter.next());
                 if (file != null) {
                     // 取得当前上传文件的文件名称
-                    String myFileName = file.getOriginalFilename ();
+                    String myFileName = file.getOriginalFilename();
                     // 如果名称不为“”,说明该文件存在，否则说明该文件不存在
-                    if (!myFileName.trim ().equals("")) {
+                    if (!myFileName.trim().equals("")) {
                         // 获得图片的原始名称
-                        String originalFilename = file.getOriginalFilename ();
+                        String originalFilename = file.getOriginalFilename();
                         // 获得图片后缀名称,如果后缀不为图片格式，则不上传
-                        String suffix = originalFilename.substring (originalFilename.lastIndexOf (".")).toLowerCase ();
-                        if (!fileTypes.contains (suffix)) {
+                        String suffix = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
+                        if (!fileTypes.contains(suffix)) {
                             continue;
                         }
                         // 获得上传路径的绝对路径地址(/upload)-->
-                        String realPath = request.getSession ().getServletContext ().getRealPath ("");
+                        String realPath = request.getSession().getServletContext().getRealPath("");
 
                         // 如果路径不存在，则创建该路径
-                        File realPathDirectory = new File (realPath);
+                        File realPathDirectory = new File(realPath);
 
-                        File upload = new File (realPathDirectory.getParent () + File.separator + DirectoryName + File.separator);
+                        File upload = new File(realPathDirectory.getParent() + File.separator + DirectoryName + File.separator);
 
-                        if (!upload.exists ()) {
-                            upload.mkdirs ();
+                        if (!upload.exists()) {
+                            upload.mkdirs();
                         }
                         // 重命名上传后的文件名 111112323.jpg
-                        fileName = new Date ().getTime () + suffix;
+                        fileName = new Date().getTime() + suffix;
                         // 定义上传路径 .../upload/111112323.jpg
-                        File uploadFile = new File (upload + File.separator + fileName);
-                        file.transferTo (uploadFile);
+                        uploadFile = new File(upload + File.separator + fileName);
+                        file.transferTo(uploadFile);
                     }
                 }
                 // 记录上传该文件后的时间
@@ -94,6 +95,6 @@ public class ImageUploadUtil {
                 // System.out.println(finaltime - pre);
             }
         }
-        return fileName;
+        return uploadFile;
     }
 }
