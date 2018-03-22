@@ -1,3 +1,4 @@
+
 layui.define(['element', 'layer', 'util', 'form'], function (exports) {
     var $ = layui.jquery;
     var element = layui.element;
@@ -28,5 +29,32 @@ layui.define(['element', 'layer', 'util', 'form'], function (exports) {
             }, 500);
         }
     })
+
+    $('#chang').on('click', function(){
+        layer.open({
+            type:1
+            , title: '修改密码'
+            , area: ['500px', '350px']
+            , content:$("#changPwd")
+        })
+    });
+
+    form.on('submit(user)', function(data){
+/*        */
+        if(data.field['passWd'].length<6){
+            $("#pas").text("密码必须大于六位");
+        }else if(data.field['passWd']!=data.field['rePassWd']){
+            $("#tig").text("两次输入的密码不一致");
+        }else {
+            $.ajax({
+                url:"changpwd",
+                type:"post",
+                dataType:'json',
+                contentType:'application/json;charset=utf-8',
+                data:JSON.stringify(data.field)
+            });
+        }
+        return false;
+    });
     exports('home', {});
 });

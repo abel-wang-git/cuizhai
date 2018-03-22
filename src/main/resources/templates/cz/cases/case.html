@@ -26,9 +26,14 @@
                 layer.load(); //上传loading
             }
             ,done: function(res){
-                layer.msg(res.message)
-                console.log(res.data.data);
-                layer.closeAll('loading');
+
+                $.ajax({
+                    url:"exp",
+                    type:"post",
+                    dataType:'json',
+                    contentType:'application/json;charset=utf-8',
+                    data:JSON.stringify(res.data.data)
+                });
                 table.render({
                     elem: '#cases'
                     ,id:'cases'
@@ -48,6 +53,8 @@
                         ,{field: 'arrears', title: '欠款金额', width:'10%' }
                     ]]
                 });
+                layer.msg(res.message)
+                layer.closeAll('loading');
             }
             ,error: function(){
 

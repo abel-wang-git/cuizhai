@@ -66,7 +66,13 @@ public class BaseProvider<M extends BaseEntity,PK> {
 
     public String  findAll(M m){
        String sql=  new SQL(){{
-            SELECT("*");
+           StringBuilder sele=new StringBuilder();
+           Field[] fields=m.getClass().getDeclaredFields();
+           for (Field f: fields) {
+               sele.append(addUnderscores(f.getName())).append(" as ").append(f.getName()).append(" ,");
+           }
+           sele.deleteCharAt(sele.length()-1);
+            SELECT(sele.toString());
             FROM(m.getTablename());
         }}.toString();
 
@@ -85,6 +91,35 @@ public class BaseProvider<M extends BaseEntity,PK> {
             FROM(m.getTablename());
             WHERE(idname.toString()+"='"+pk+"'");
         }}.toString();
+        logger.info(sql);
+        return sql;
+    }
+
+    public String  update(M m) throws IllegalAccessException {
+        String sql = new SQL(){{
+            UPDATE(m.getTablename());
+            Field[] fields=m.getClass().getDeclaredFields();
+            StringBuilder where = new StringBuilder(" ");
+            for (Field f: fields) {
+                f.setAccessible(true);
+                if(f.getAnnotation(Id.class)!=null){
+                    where.append(addUnderscores(f.getName())).append("='").append(f.get(m)).append("'");
+                    continue;
+                }
+                if (f.getType()==Date.class){
+                    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd KK:mm:ss");
+                    String ctime = formatter.format((Date) f.get(m));
+                    SET(addUnderscores(f.getName())+"='"+ctime+"'");
+                }else {
+                    SET(addUnderscores(f.getName())+"='"+f.get(m)+"'");
+
+                }
+                f.setAccessible(false);
+            }
+
+            WHERE(where.toString());
+        }}.toString();
+
         logger.info(sql);
         return sql;
     }

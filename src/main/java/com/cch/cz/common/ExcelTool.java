@@ -46,7 +46,7 @@ public class ExcelTool {
         for (int i = 0; i <=row_num; i++) {
             setAttr(result, sheet, title, i);
         }
-        UtilFun.prinrObject(result);
+        /*UtilFun.prinrObject(result);*/
         return result;
     }
 

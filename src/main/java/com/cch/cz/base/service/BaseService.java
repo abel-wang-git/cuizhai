@@ -15,4 +15,5 @@ public interface BaseService<M,PK> {
     M findOne(PK pk) ;
 
     Long count(M m);
+    void update(M m);
 }

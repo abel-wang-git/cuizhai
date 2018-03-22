@@ -29,8 +29,18 @@ public class Usertest {
         User user = new User();
         user.setPassWd("123456");
         user.setUserName("admin");
-     /*   user.setPassWd(user.Sal());*/
+        user.setPassWd(user.Sal());
         userService.save(user);
+    }
+
+
+    @Test
+    public void update(){
+        User user = new User();
+        user.setPassWd("123456");
+        user.setUserName("admin");
+        user.setPassWd(user.Sal());
+        userService.update(user);
     }
 
     @Test
@@ -49,7 +59,7 @@ public class Usertest {
         List<UserRoleKey> roleKeys=new ArrayList<>();
         UserRoleKey userRoleKey = new UserRoleKey();
         userRoleKey.setUserId("678");
-        userRoleKey.setRoleId(1l);
+        userRoleKey.setRoleId(1L);
         roleKeys.add(userRoleKey);
         userService.saveRoles(roleKeys);
     }

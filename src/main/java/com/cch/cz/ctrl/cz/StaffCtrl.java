@@ -1,6 +1,7 @@
 package com.cch.cz.ctrl.cz;
 
 import com.alibaba.fastjson.JSON;
+import com.cch.cz.authority.entity.User;
 import com.cch.cz.authority.entity.key.RolePowerKey;
 import com.cch.cz.authority.entity.key.UserRoleKey;
 import com.cch.cz.authority.service.UserService;
@@ -71,5 +72,9 @@ public class StaffCtrl {
         staffService.save(data);
         return new AjaxReturn(0,"添加成功");
     }
+
+
+
+
 
 }

@@ -64,53 +64,20 @@
  访问控制
 
 
-合同号"
-委外公司"
-委派日期"
-退案日期"
-城市"
-地区"
-CUSTOMERID"
-客户姓名"
-性别"
-合同数量"
-身份证"
-合同申请日"
-贷款类型"
-贷款本金"
-期款"
-期数"
-已还款金额"
-最后还款日"
-逾期天数"
-取消分期时间"
-未付期款"
-未付滞纳金"
-欠款金额"
-委外催收费"
-总欠款"
-还款账号"
-户名"
-开户行"
-商品"
-品牌"
-POS点"
-客户手机"
-客户户籍地址"
-客户办公电话"
-客户公司名称"
-客户公司地址"
-客户公司部门"
-客户住宅电话"
-客户住宅地址"
-客户配偶姓名"
-客户配偶联系电话"
-客户亲戚姓名"
-客户与亲戚关系"
-客户亲戚联系电话"
-其他联系人姓名"
-其他联系人关系"
-其他联系人电话"
-客户邮箱"
-代扣开户行"
-代扣账号"
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8"/>
+    <title>委案管理</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+#[[$END$]]#
+</body>
+<script th:src="@{/static/layui/layui.js}"></script>
+<script th:inline="javascript">
+
+/*<![CDATA[*/
+
+/*]]>*/
+</script>
+</html>

@@ -38,6 +38,11 @@ public class BaseServiceImpl<M extends BaseEntity,PK> implements BaseService<M,P
         return baseMapper.count(m);
     }
 
+    @Override
+    public void update(M m) {
+        baseMapper.update(m);
+    }
+
     M getNewInstance(){
         M m = null;
         try {

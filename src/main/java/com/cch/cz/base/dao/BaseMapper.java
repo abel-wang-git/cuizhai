@@ -6,6 +6,7 @@ import com.cch.cz.base.entity.BaseEntity;
 import org.apache.ibatis.annotations.DeleteProvider;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.UpdateProvider;
 
 import java.util.List;
 
@@ -23,6 +24,8 @@ public interface BaseMapper<M extends BaseEntity,PK> {
     M findOne(M m, PK pk);
     @SelectProvider(type = BaseProvider.class,method = "count")
     Long count(M m);
+    @UpdateProvider(type = BaseProvider.class,method = "update")
+    void update(M m);
 
 
 }

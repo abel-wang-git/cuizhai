@@ -12,17 +12,17 @@
                 <li class="layui-nav-item">
                     <a th:text="${session.user.userName}"><img src="http://t.cn/RCzsdCq" class="layui-nav-img"/></a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;"><i class="layui-icon">&#xe6b2;</i><cite> 修改信息</cite></a></dd>
-                        <dd><a href="javascript:;"><i class="layui-icon">&#xe6b2;</i> 安全管理</a></dd>
+                        <dd><a id="chang"><i class="layui-icon">&#xe6b2;</i><cite> 修改密码</cite></a></dd>
+                        <!--<dd><a href="javascript:;"><i class="layui-icon">&#xe6b2;</i> 安全管理</a></dd>-->
                         <dd><a href="loginOut"><i class="layui-icon">&#xe6b2;</i> 退出</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
+                <!--<li class="layui-nav-item">
                     <a href="">控制台<span class="layui-badge">9</span></a>
                 </li>
                 <li class="layui-nav-item">
                     <a href="">个人中心<span class="layui-badge-dot"></span></a>
-                </li>
+                </li>-->
 
             </ul>
         </div>
@@ -43,12 +43,40 @@
         </div>
     </div>
 </div>
+
+<div style="display: none" id="changPwd">
+    <form  class="layui-form" method="post">
+        <input type="hidden" name="userName" th:value="${session.user.userName}" required ="required " lay-verify="required" placeholder="新密码" autocomplete="off" class="layui-input"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">新密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="passWd" required ="required " lay-verify="required" placeholder="新密码" autocomplete="off" class="layui-input"/>
+            </div>
+            <div class="layui-form-mid layui-word-aux" id="pas"></div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">重复密码</label>
+            <div class="layui-input-inline">
+                <input type="password"  name="rePassWd" required ="required " lay-verify="required" placeholder="重复密码" autocomplete="off" class="layui-input"/>
+            </div>
+            <div class="layui-form-mid layui-word-aux" id="tig"></div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="lay-submit" lay-filter="user">确认修改</button>
+            </div>
+        </div>
+    </form>
+</div>
 <script th:src="@{/static/layui/layui.js}"></script>
 <!-- layui规范化用法 -->
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
     layui.config({
         base: 'static/layui/js/'
     }).use('home');
+    /*]]>*/
+
 </script>
 </body>
 

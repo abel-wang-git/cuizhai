@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8"/>
     <title>title</title>
@@ -8,9 +8,7 @@
 <body>
 <a class="layui-btn layui-btn-sm" href="toAdd">添加员工</a>
 
-    <table id="staff" lay-filter="staff"></table>
-
-
+<table id="staff" lay-filter="staff"></table>
 
 
 <script type="text/html" id="role">
@@ -23,64 +21,64 @@
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    layui.use('table', function(){
+    layui.use('table', function () {
         var table = layui.table
-                ,$ = layui.$;
+            , $ = layui.$;
         //员工
         table.render({
             elem: '#staff'
-            ,id:'staff'
-            ,height: 315
-            ,url: 'list' //数据接口
-            ,method: 'post'
-            ,page: true //开启分页
-            ,cols: [[ //表头
-                {field: 'name', title: '员工名称', width:'15%' , sort: true, fixed: 'left'}
-                ,{field: 'number', title: '工号', width:'15%',sort: true,}
-                ,{field: 'place', title: '职位', width:'15%',sort: true,}
-                ,{field: 'phone', title: '电话', width:'15%',sort: true,}
-                ,{fixed: 'picture', title: '选中', width: '20%', align: 'center', toolbar: '#role', fixed: 'right'}
+            , id: 'staff'
+            , height: 315
+            , url: 'list' //数据接口
+            , method: 'post'
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'name', title: '员工名称', width: '15%', sort: true, fixed: 'left'}
+                , {field: 'number', title: '工号', width: '15%', sort: true,}
+                , {field: 'place', title: '职位', width: '15%', sort: true,}
+                , {field: 'phone', title: '电话', width: '15%', sort: true,}
+                , {fixed: 'picture', title: '选中', width: '20%', align: 'center', toolbar: '#role', fixed: 'right'}
             ]]
         });
         //隐藏角色
         table.render({
             elem: '#roles'
-            ,id:'roles'
-            ,height: 315
-            ,url: [[${ctx}]]+'/role/list' //数据接口
-            ,method: 'post'
-            ,page: true //开启分页
-            ,cols: [[ //表头
-                {field: 'name', title: '权限名称', width:300 , sort: true, fixed: 'left'}
-                ,{field: 'chk', width:200 , type:'checkbox',fixed: 'right'}
+            , id: 'roles'
+            , height: 315
+            , url: [[${ctx}]] + '/role/list' //数据接口
+            , method: 'post'
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'name', title: '权限名称', width: 300, sort: true, fixed: 'left'}
+                , {field: 'chk', width: 200, type: 'checkbox', fixed: 'right'}
             ]]
         });
 
-        table.on('tool(staff)', function(obj) {
+        table.on('tool(staff)', function (obj) {
             var layEvent = obj.event;
             if (layEvent === 'addrole') {
                 var ctx = [[${ctx}]];
                 layer.open({
-                    type:1
+                    type: 1
                     , title: '增加权限'
                     , area: ['500px', '500px']
-                    , content:$("#rolelist")
+                    , content: $("#rolelist")
                     , btn: ['添加', '取消']
                     , yes: function (index, layero) {
                         var checkStatus = table.checkStatus('roles');
                         var userRoleKeys = [];
-                        var userRoleKey={};
-                        for(var i = 0 ; i<checkStatus.data.length;i++){
-                            userRoleKey.roleId=checkStatus.data[i].id;
-                            userRoleKey.userId=obj.data.number;
+                        var userRoleKey = {};
+                        for (var i = 0; i < checkStatus.data.length; i++) {
+                            userRoleKey.roleId = checkStatus.data[i].id;
+                            userRoleKey.userId = obj.data.number;
                             userRoleKeys.push(userRoleKey)
                         }
                         $.ajax({
-                            url:"addRole",
-                            type:"post",
-                            dataType:'json',
-                            contentType:'application/json;charset=utf-8',
-                            data:JSON.stringify(userRoleKeys)
+                            url: "addRole",
+                            type: "post",
+                            dataType: 'json',
+                            contentType: 'application/json;charset=utf-8',
+                            data: JSON.stringify(userRoleKeys)
                         });
                     }
                 })
@@ -88,7 +86,7 @@
         });
 
     });
-/*]]>*/
+    /*]]>*/
 </script>
 
 </body>

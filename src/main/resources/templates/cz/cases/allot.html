@@ -1,0 +1,47 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8"/>
+    <title>委案管理</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+<!--委案列表-->
+<table id="cases" lay-filter="cases"></table>
+
+
+<script type="text/html" id="allot">
+    <a class="layui-btn  layui-btn-xs" lay-event="allot">分配委案</a>
+</script>
+
+</body>
+<script th:src="@{/static/layui/layui.js}"></script>
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    layui.use('table', function(){
+        var table = layui.table
+            ,$ = layui.$;
+        //员工
+        table.render({
+            elem: '#cases'
+            ,id:'cases'
+            ,height: "full-60"
+            ,url: 'noallot' //数据接口
+            ,method: 'post'
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                {field: 'name', title: '姓名', width:'10%' , sort: true, fixed: 'left'}
+                ,{field: 'customerPhoneNumber', title: '手机', width:'10%' }
+                ,{field: 'idCard', title: '身份证', width:'10%' }
+                ,{field: 'loanPrincipal', title: '贷款本金', width:'10%' }
+                ,{field: 'lateFee', title: '滞纳金', width:'10%' }
+                ,{field: 'deadline', title: '最后还款日', width:'10%' }
+                ,{field: 'nnpaidInstallment', title: '未付期款', width:'10%' }
+                ,{field: 'arrears', title: '欠款金额', width:'10%' }
+                ,{fixed: 'picture', width: '20%', align: 'center', toolbar: '#allot', fixed: 'right'}
+            ]]
+        });
+    });
+    /*]]>*/
+</script>
+</html>

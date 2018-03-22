@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/18.
@@ -19,5 +20,14 @@ import javax.transaction.Transactional;
  */
 @Service
 public class CasesServiceImpl extends BaseServiceImpl<Cases,Long> implements CasesService {
+    @Resource
+    private CasesService casesService;
 
+    @Override
+    @Transactional
+    public void expCase(List<Cases> casesList) {
+        for (Cases c:casesList) {
+            casesService.save(c);
+        }
+    }
 }

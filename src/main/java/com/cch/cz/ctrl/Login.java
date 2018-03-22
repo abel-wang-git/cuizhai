@@ -54,6 +54,10 @@ public class Login {
             model.addAttribute("tig","账号或密码错误");
             e.printStackTrace();
             logger.info ("账号或密码错误");
+        } catch (Exception e){
+            model.addAttribute("tig","账号或密码错误");
+            e.printStackTrace();
+            logger.info ("账号或密码错误");
         }
         if (subject.isAuthenticated()) {
             subject.getSession ().setAttribute ("user",userService.getByuserName (user.getUserName ()));
