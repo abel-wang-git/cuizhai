@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>title</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+
+<a class="layui-btn layui-btn-sm" href="add">添加员工</a>
+
+<table id="white" lay-filter="white"></table>
+
+<script th:src="@{/static/layui/layui.js}"></script>
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    layui.use('table', function () {
+        var table = layui.table
+            , $ = layui.$;
+        table.render({
+            elem: '#white'
+            , id: 'white'
+            , height: 315
+            , url: 'list' //数据接口
+            , method: 'post'
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'ip', title: 'IP', width: '100%', sort: true}
+            ]]
+        });
+    });
+    /*]]>*/
+</script>
+</html>

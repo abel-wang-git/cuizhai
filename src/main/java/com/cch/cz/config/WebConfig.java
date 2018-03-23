@@ -28,10 +28,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registration.addUrlPatterns("/*");
         return registration;
     }
+    @Bean
+    CzInterceptor czInterceptor(){
+        return new CzInterceptor();
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new CzInterceptor()).addPathPatterns("/**").excludePathPatterns("/loginOut");
+        registry.addInterceptor(czInterceptor()).addPathPatterns("/**").excludePathPatterns("/loginOut");
         super.addInterceptors(registry);
     }
 

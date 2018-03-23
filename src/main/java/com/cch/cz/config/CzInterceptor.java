@@ -1,27 +1,34 @@
 package com.cch.cz.config;
 
+import com.cch.cz.common.UtilFun;
+import com.cch.cz.entity.WhiteList;
+import com.cch.cz.service.WhiteListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by wang on 17-2-16.
  *
  */
-@PropertySource({"classpath:application.properties"})
 public class CzInterceptor implements HandlerInterceptor {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-
-    private String con="/cuizhai";
+    @Resource
+    private WhiteListService whiteListService;
+    @Value("${server.context-path}")
+    private String con;
 
     /**
      * preHandle方法是进行处理器拦截用的，顾名思义，该方法将在Controller处理之前进行调用，SpringMVC中的Interceptor拦截器是链式的，可以同时存在
@@ -30,8 +37,17 @@ public class CzInterceptor implements HandlerInterceptor {
      * 回值为false，当preHandle的返回值为false的时候整个请求就结束了。
      */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        WhiteList whiteList = new WhiteList();
+        whiteList.setIp(UtilFun.getIP(request));
+        List<WhiteList> list = whiteListService.findAll();
+        boolean falg=false;
+        for (WhiteList w:list) {
+            if(UtilFun.getIP(request).equals(w.getIp())||UtilFun.getIP(request).equals("0:0:0:0:0:0:0:1")){
+                falg=true;
+            }
+        }
 
-        return true;
+        return falg;
     }
 
     /**
@@ -47,8 +63,6 @@ public class CzInterceptor implements HandlerInterceptor {
             HandlerMethod method = (HandlerMethod) o;
             Class controller = method.getBeanType();
             if(controller.isAnnotationPresent(RequestMapping.class)){
-                RequestMapping requestMapping= (RequestMapping)controller.getAnnotation (RequestMapping.class);
-
                 if(modelAndView!=null)
                     modelAndView.addObject ("ctx", con);
             }

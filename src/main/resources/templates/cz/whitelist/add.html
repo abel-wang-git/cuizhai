@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>title</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+<a class="layui-btn layui-btn-sm" href="list">返回</a>
+<form class="layui-form"  action=""   method="post" style="padding-top: 10px;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">IP</label>
+        <div class="layui-input-inline">
+            <input type="text" name="ip" required ="required " lay-verify="required"
+                   placeholder="IP" autocomplete="off" class="layui-input"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="lay-submit" lay-filter="write">添加</button>
+        </div>
+    </div>
+</form>
+
+<script th:src="@{/static/layui/layui.js}"></script>
+
+<script>
+    layui.use('form', function(){
+        var $ = layui.$,
+            form = layui.form;
+        //监听提交
+        form.on('submit(write)', function(data){
+            $.ajax({
+                url:"add",
+                type:"post",
+                dataType:'json',
+                contentType:'application/json;charset=utf-8',
+                data:JSON.stringify(data.field)
+                ,success:function (data) {
+                    layer.msg(data.message)
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
