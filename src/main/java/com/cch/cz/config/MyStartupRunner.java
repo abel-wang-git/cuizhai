@@ -2,8 +2,11 @@ package com.cch.cz.config;
 
 import com.cch.cz.authority.entity.Power;
 import com.cch.cz.authority.entity.Role;
+import com.cch.cz.authority.entity.User;
+import com.cch.cz.authority.entity.key.UserRoleKey;
 import com.cch.cz.authority.service.PowerService;
 import com.cch.cz.authority.service.RoleService;
+import com.cch.cz.authority.service.UserService;
 import com.cch.cz.common.ClassUtil;
 import com.cch.cz.common.UtilFun;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -33,6 +38,9 @@ public class MyStartupRunner implements CommandLineRunner {
     @Resource
     private RoleService roleService;
 
+    @Resource
+    private UserService userService;
+
 
 
     public void run(String... strings) throws Exception {
@@ -43,20 +51,32 @@ public class MyStartupRunner implements CommandLineRunner {
             RequiresPermissions r = m.getAnnotation (RequiresPermissions.class);
             Power p = new Power ();
             p.setName (r.value ()[0]);
-            Power ps= powerService.findOne(r.value()[0]);
             if(powerService.findOne(r.value()[0])==null)
                 powerService.save(p);
 
         }
-        logger.info ("————————————————————init role——————————————");
         Role roles = roleService.getByname ("admin");
-        if (roles!=null) {
-            logger.debug ("————————————————————role admin is  ——————————————");
-        } else {
+        if (roles==null) {
+            logger.info ("————————————————————init role——————————————");
             Role role = new Role ();
             role.setName ("admin");
             roleService.save (role);
         }
+
+        User u = userService.getByuserName("admin");
+        if (u==null){
+            u=new User();
+            logger.info ("————————————————————init user——————————————");
+            u.setPassWd("123456");
+            u.setUserName("admin");
+            u.setPassWd(u.Sal());
+            userService.save(u);
+        }
+
+        UserRoleKey admin = new UserRoleKey();
+        admin.setRoleId(roleService.getByname ("admin").getId());
+        admin.setUserId("admin");
+        userService.saveRoles(Arrays.asList(admin));
     }
 
 }
