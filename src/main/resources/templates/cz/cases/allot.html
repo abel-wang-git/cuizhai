@@ -5,6 +5,9 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
+<button type="button" class="layui-btn" id="upload">
+    <i class="layui-icon">&#xe67c;</i>分配委案
+</button>
 <!--委案列表-->
 <table id="cases" lay-filter="cases"></table>
 
@@ -38,7 +41,6 @@
                 ,{field: 'deadline', title: '最后还款日', width:'10%' }
                 ,{field: 'nnpaidInstallment', title: '未付期款', width:'10%' }
                 ,{field: 'arrears', title: '欠款金额', width:'10%' }
-                ,{fixed: 'picture', width: '20%', align: 'center', toolbar: '#allot', fixed: 'right'}
             ]]
         });
     });
