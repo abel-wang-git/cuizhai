@@ -71,12 +71,13 @@ public class MyStartupRunner implements CommandLineRunner {
             u.setUserName("admin");
             u.setPassWd(u.Sal());
             userService.save(u);
+            UserRoleKey admin = new UserRoleKey();
+            admin.setRoleId(roleService.getByname ("admin").getId());
+            admin.setUserId("admin");
+            userService.saveRoles(Arrays.asList(admin));
         }
 
-        UserRoleKey admin = new UserRoleKey();
-        admin.setRoleId(roleService.getByname ("admin").getId());
-        admin.setUserId("admin");
-        userService.saveRoles(Arrays.asList(admin));
+
     }
 
 }

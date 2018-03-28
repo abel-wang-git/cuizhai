@@ -115,6 +115,14 @@ public class Cases extends BaseEntity {
     private String withholding;
     /*代扣账号*/
     private String withholdingAccount;
+    /**
+     * 分配公司
+     */
+    private Long CompanyId;
+    /**
+     * 分配人员
+     */
+    private Long StaffId;
 
     public Long getId() {
         return id;

@@ -30,6 +30,10 @@ public class Staff  extends BaseEntity{
      * 电话
      */
     private  String phone;
+    /**
+     * 所属公司
+     */
+    private  Long CompanyId;
 
 
     public String getName() {
