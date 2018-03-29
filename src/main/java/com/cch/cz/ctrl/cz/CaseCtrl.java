@@ -59,4 +59,16 @@ public class CaseCtrl {
 
         return new AjaxReturn(0,"导入成功");
     }
+
+    @PostMapping(value = "/grouparea")
+    @ResponseBody
+    public Table groupArea(){
+       List list=casesService.getCasesByArea();
+        Table table = new Table();
+        table.setData(list);
+        table.setCount(list.size());
+        return table;
+    }
+
+
 }

@@ -6,29 +6,66 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
-<a class="layui-btn layui-btn-sm" href="add">添加公司</a>
+<a class="layui-btn layui-btn-sm" id="add">添加公司</a>
+
+<table id="company" lay-filter="company"></table>
+
+<div id="form" style="display: none">
+<form class="layui-form"  method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司名称</label>
+        <div class="layui-input-inline">
+            <input type="text" name="name" required ="required " lay-verify="required" placeholder="请输入员工姓名" autocomplete="off" class="layui-input"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">负责地区</label>
+        <div class="layui-input-inline">
+            <input type="text" name="area"  required ="required " lay-verify="required" placeholder="请输入员工姓名" autocomplete="off" class="layui-input"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="lay-submit" lay-filter="company">立即提交</button>
+        </div>
+    </div>
+</form>
+</div>
 
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
 
     /*<![CDATA[*/
-    layer.open({
-        type: 1
-        , title: '添加公司'
-        , area: ['500px', '300px']
-        , content: $('#powerlist')
-        , btn: ['添加', '取消']
-        , yes: function (index, layero) {
-            var checkStatus = table.checkStatus('powers');
-            var rolePowerKeys = [];
-            var rolePowerKey={};
-            for(var i = 0 ; i<checkStatus.data.length;i++){
-                rolePowerKey.powerId=checkStatus.data[i].name;
-                rolePowerKey.roleId=obj.data.id;
-                rolePowerKeys.push(rolePowerKey)
-            }
-        }
-    })
+    layui.use('table', function () {
+        var table = layui.table
+            , $ = layui.$;
+        //员工
+        table.render({
+            elem: '#company'
+            , id: 'company'
+            , url: 'list' //数据接口
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'name', title: '公司名称', width: '100%', sort: true}
+            ]]
+        });
+        $("#add").click(function(){
+            layer.open({
+                type: 1
+                , title: '添加公司'
+                , area: ['500px', '300px']
+                , content: $('#form')
+                , btn: ['添加', '取消']
+                , yes: function (index, layero) {
+                }
+            })
+        })
+    });
+
+
     /*]]>*/
 </script>
 </body>

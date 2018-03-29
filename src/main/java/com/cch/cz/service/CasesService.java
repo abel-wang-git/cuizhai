@@ -5,6 +5,7 @@ import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/18.
@@ -14,4 +15,6 @@ public interface CasesService extends BaseService<Cases,Long>  {
 
 
     void expCase(List<Cases> casesList);
+
+    List<Map> getCasesByArea();
 }

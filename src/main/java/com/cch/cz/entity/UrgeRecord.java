@@ -9,7 +9,7 @@ import javax.persistence.*;
  * 崔记
  */
 @Entity
-@Table(name = "urge_record")
+@Table(name = "t_urge_record")
 public class UrgeRecord extends BaseEntity {
 
     @Id

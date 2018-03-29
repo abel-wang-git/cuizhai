@@ -9,7 +9,7 @@ import javax.persistence.*;
  * 公司
  */
 @Entity
-@Table(name = "company")
+@Table(name = "t_company")
 public class Company  extends BaseEntity{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

@@ -1,18 +1,15 @@
 package com.cch.cz.service.impl;
 
-import com.cch.cz.authority.entity.User;
-import com.cch.cz.authority.mapper.UserMapper;
 import com.cch.cz.base.service.impl.BaseServiceImpl;
 import com.cch.cz.entity.Cases;
-import com.cch.cz.entity.Staff;
-import com.cch.cz.mapper.StaffMapper;
+import com.cch.cz.mapper.CasesMapper;
 import com.cch.cz.service.CasesService;
-import com.cch.cz.service.StaffService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/18.
@@ -21,13 +18,18 @@ import java.util.List;
 @Service
 public class CasesServiceImpl extends BaseServiceImpl<Cases,Long> implements CasesService {
     @Resource
-    private CasesService casesService;
+    private CasesMapper casesMapper;
 
     @Override
     @Transactional
     public void expCase(List<Cases> casesList) {
         for (Cases c:casesList) {
-            casesService.save(c);
+            casesMapper.save(c);
         }
+    }
+
+    @Override
+    public List<Map> getCasesByArea() {
+        return casesMapper.getCasesByArea();
     }
 }
