@@ -2,7 +2,6 @@ package com.cch.cz.service;
 
 import com.cch.cz.base.service.BaseService;
 import com.cch.cz.entity.Cases;
-import com.cch.cz.entity.Staff;
 
 import java.util.List;
 import java.util.Map;
@@ -16,5 +15,9 @@ public interface CasesService extends BaseService<Cases,Long>  {
 
     void expCase(List<Cases> casesList);
 
-    List<Map> getCasesByArea();
+    List<Map> groupCasesByArea();
+
+    void allotCaseToCompany(List<String> data, String company);
+
+    void allotStaff(List<String> cases, String staff);
 }

@@ -3,13 +3,17 @@ package com.cch.cz.ctrl.cz;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.entity.Cases;
+import com.cch.cz.entity.Company;
 import com.cch.cz.service.CasesService;
 import com.github.pagehelper.PageHelper;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/16.
@@ -52,23 +56,38 @@ public class CaseCtrl {
         return "/cz/cases/allot";
     }
 
-    @PostMapping(value = "/allot")
-    public AjaxReturn allotCase(List<Cases> data){
-
-        casesService.expCase(data);
-
-        return new AjaxReturn(0,"导入成功");
-    }
-
     @PostMapping(value = "/grouparea")
     @ResponseBody
     public Table groupArea(){
-       List list=casesService.getCasesByArea();
+        List list=casesService.groupCasesByArea();
         Table table = new Table();
         table.setData(list);
         table.setCount(list.size());
         return table;
     }
+
+    @PostMapping(value = "/allot")
+    @ResponseBody
+    public AjaxReturn allotCompany(@RequestParam("area[]")List<String>  areas,
+                                @RequestParam("company")String  company){
+        /*根据城市给委案分配公司ID*/
+        casesService.allotCaseToCompany(areas,company);
+        return new AjaxReturn(0,"分配成功");
+    }
+
+    @PostMapping(value = "/allotstaff")
+    @ResponseBody
+    public AjaxReturn allotStaff(@RequestParam("cases[]")List<String>  cases,
+                                   @RequestParam("staff")String  staff){
+        /*根据城市给委案分配公司ID*/
+        casesService.allotStaff(cases,staff);
+        return new AjaxReturn(0,"分配成功");
+    }
+
+
+
+
+
 
 
 }

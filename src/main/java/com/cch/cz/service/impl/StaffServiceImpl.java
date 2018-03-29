@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/3/18.
@@ -34,4 +35,11 @@ public class StaffServiceImpl extends BaseServiceImpl<Staff,Long> implements Sta
         user.setPassWd(user.Sal());
         userMapper.save(user);
     }
+
+    @Override
+    public List<Staff> listByCompany(String company) {
+        return staffMapper.listByCompany(company);
+    }
+
+
 }

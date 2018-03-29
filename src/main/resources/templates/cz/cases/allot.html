@@ -5,18 +5,27 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
-<button type="button" class="layui-btn" id="allot">
-    <i class="layui-icon">&#xe67c;</i>分配委案
+<button type="button" class="layui-btn" id="cases">
+    <i class="layui-icon">&#xe609;</i>分配到公司
 </button>
-<!--委案列表-->
-<!--<table id="cases" lay-filter="cases"></table>-->
+<button type="button" class="layui-btn" id="staff">
+    <i class="layui-icon">&#xe609;</i>分配到员工
+</button>
+
+<!--公司列表-->
 <table id="allots" lay-filter="allots"></table>
+
+<!--当登录所属公司的员工列表-->
+
+<table id="staffs" lay-filter="staffs"></table>
+
+<!--操作栏-->
 <script type="text/html" id="allotcase">
     <a class="layui-btn  layui-btn-xs" lay-event="allotcase">分配委案</a>
 </script>
 
 <!--弹出层-->
-<div style="display: none;width: 400px;" id="caseArea" >
+<div style="display: none; width: 100%" id="caseArea" >
 
     <table id="casetab" lay-filter="casetab"></table>
 
@@ -26,28 +35,9 @@
 <script th:inline="javascript">
 
     /*<![CDATA[*/
-    layui.use('table', function(){
+    layui.use(['table','form'], function(){
         var table = layui.table
             ,$ = layui.$;
-        //员工
-/*        table.render({
-            elem: '#cases'
-            ,id:'cases'
-            ,height: "full-60"
-            ,url: 'noallot' //数据接口
-            ,method: 'post'
-            ,page: true //开启分页
-            ,cols: [[ //表头
-                {field: 'name', title: '姓名', width:'10%' , sort: true, fixed: 'left'}
-                ,{field: 'customerPhoneNumber', title: '手机', width:'10%' }
-                ,{field: 'idCard', title: '身份证', width:'10%' }
-                ,{field: 'loanPrincipal', title: '贷款本金', width:'10%' }
-                ,{field: 'lateFee', title: '滞纳金', width:'10%' }
-                ,{field: 'deadline', title: '最后还款日', width:'10%' }
-                ,{field: 'nnpaidInstallment', title: '未付期款', width:'10%' }
-                ,{field: 'arrears', title: '欠款金额', width:'10%' }
-            ]]
-        });*/
         table.render({
             elem: '#allots'
             ,id:'allots'
@@ -60,14 +50,25 @@
         });
 
         table.render({
+            elem: '#staffs'
+            ,id:'staffs'
+            ,url: [[${ctx}]] + '/staff/listbycompany' //数据接口
+            ,method: 'post'
+            ,cols: [[ //表头
+                {field: 'name', title: '公司名称', width:'60%' , sort: true, fixed: 'left'}
+                , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase', }
+            ]]
+        });
+
+        var areas=table.render({
             elem: '#casetab'
             ,id:'casetab'
             ,url: [[${ctx}]] + '/case/grouparea' //数据接口
             ,method: 'post'
             ,cols: [[ //表头
-                {field: 'area', title: '委案所属地区', width:'30%' , sort: true, fixed: 'left'}
-               , {field: 'count', title: '委案数量', width:'20%' , sort: true}
-                ,{field: 'chk', title: '分配', width:'10%' , type:'checkbox'}
+                {field: 'area', title: '委案所属地区', width:300 , sort: true,}
+               , {field: 'count', title: '委案数量', width:100 , sort: true}
+                ,{field: 'chk', title: '分配', width:90 , type:'checkbox'}
             ]]
         });
 
@@ -78,10 +79,30 @@
                 layer.open({
                     type: 1
                     , title: '分配委案'
-                    , area: ['500', '400px']
+                    , area: ['500', '500px']
                     , content:$("#caseArea")
                     , btn: ['添加', '取消']
                     , yes: function (index) {
+                        var datas = [];
+
+                        var checkStatus = table.checkStatus('casetab');
+                        for(var i = 0 ; i<checkStatus.data.length;i++){
+                        datas.push(checkStatus.data[i].area);
+
+                        }
+                        console.log(datas)
+                        console.log(obj.data.id)
+                        $.ajax({
+                            url:ctx+"/case/allot",
+                            type:"post",
+                            dataType:'json',
+                            data:{area:datas,company:obj.data.id},
+                            success:function (data) {
+                                areas.reload()
+                                layer.close(index);
+                                layer.msg(data.message);
+                            }
+                        });
                     }
                 })
             }

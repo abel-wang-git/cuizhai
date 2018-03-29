@@ -29,7 +29,23 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases,Long> implements Cas
     }
 
     @Override
-    public List<Map> getCasesByArea() {
-        return casesMapper.getCasesByArea();
+    public List<Map> groupCasesByArea() {
+        return casesMapper.groupCasesByArea();
+    }
+
+    @Override
+    @Transactional
+    public void allotCaseToCompany(List<String> areas, String company) {
+        for (String area:areas) {
+            casesMapper.allotCompany(company,"%"+area+"%");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void allotStaff(List<String> cases, String staff) {
+        for (String c:cases) {
+            casesMapper.allotStaff(c,staff);
+        }
     }
 }

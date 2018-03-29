@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.cch.cz.authority.entity.User;
 import com.cch.cz.authority.entity.key.RolePowerKey;
 import com.cch.cz.authority.entity.key.UserRoleKey;
+import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.authority.service.UserService;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.entity.Staff;
+import com.cch.cz.service.CompanyService;
 import com.cch.cz.service.StaffService;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
@@ -32,6 +34,10 @@ public class StaffCtrl {
     private StaffService staffService;
     @Resource
     private UserService userService;
+    @Resource
+    private CompanyService companyService;
+    @Resource
+    private RoleService roleService;
 
     @GetMapping(value = "/list")
     public  String list(Model model){
@@ -62,6 +68,8 @@ public class StaffCtrl {
     public String toAdd(Model model){
 
         model.addAttribute(new Staff());
+        model.addAttribute("companys",companyService.findAll());
+        model.addAttribute("roles",roleService.findAll());
 
         return "/cz/staff/add";
     }
@@ -69,8 +77,22 @@ public class StaffCtrl {
     @PostMapping(value = "/add",produces="application/json;charset=UTF-8")
     @ResponseBody
     public AjaxReturn add(@RequestBody Staff  data){
-        staffService.save(data);
-        return new AjaxReturn(0,"添加成功");
+        try {
+            staffService.save(data);
+            return new AjaxReturn(0,"添加成功");
+        }catch (Exception e){
+            return new AjaxReturn(1,"添加失败");
+        }
+    }
+
+    @PostMapping(value = "/listbycompany")
+    @ResponseBody
+    public Table listByCompany(@RequestParam("company")String company){
+        List<Staff> staffs= staffService.listByCompany(company);
+        Table table = new Table();
+        table.setData(staffs);
+        table.setCount(staffs.size());
+        return table;
     }
 
 

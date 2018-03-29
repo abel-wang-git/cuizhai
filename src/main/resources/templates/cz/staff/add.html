@@ -27,12 +27,23 @@
             <input type="text" th:field="*{phone}" required ="required " lay-verify="required" placeholder="请输入电话" autocomplete="off" class="layui-input"/>
         </div>
     </div>
+
     <div class="layui-form-item">
-        <label class="layui-form-label">选择框</label>
+        <label class="layui-form-label">岗位</label>
         <div class="layui-input-inline">
             <select th:field="*{place}" required ="required " lay-verify="required">
                 <option value=""></option>
-                <option value="0">催收员</option>
+                <option th:each="a:${roles}" th:text="${a.name}" th:value="${a.id}"></option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司</label>
+        <div class="layui-input-inline">
+            <select th:field="*{companyId}" required ="required " lay-verify="required">
+                <option value=""></option>
+                <option th:each="c:${companys}" th:text="${c.name}" th:value="${c.id}"></option>
                 <option value="1">管理员</option>
             </select>
         </div>

@@ -27,5 +27,4 @@ public interface BaseMapper<M extends BaseEntity,PK> {
     @UpdateProvider(type = BaseProvider.class,method = "update")
     void update(M m);
 
-
 }

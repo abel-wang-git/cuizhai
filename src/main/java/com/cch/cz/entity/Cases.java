@@ -10,6 +10,14 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_case")
 public class Cases extends BaseEntity {
+    /**
+     * 被撤回的case
+     */
+    public  final  static  int REVOKE=1;
+    /**
+     * 留案的case
+     */
+    public  final  static  int RETAIN=2;
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -123,6 +131,20 @@ public class Cases extends BaseEntity {
      * 分配人员
      */
     private Long StaffId;
+
+    /**
+     * case 的状态 撤案=1 留案-2 正常=0
+     * @return
+     */
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public Long getId() {
         return id;
@@ -530,5 +552,21 @@ public class Cases extends BaseEntity {
 
     public void setWithholdingAccount(String withholdingAccount) {
         this.withholdingAccount = withholdingAccount;
+    }
+
+    public Long getCompanyId() {
+        return CompanyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        CompanyId = companyId;
+    }
+
+    public Long getStaffId() {
+        return StaffId;
+    }
+
+    public void setStaffId(Long staffId) {
+        StaffId = staffId;
     }
 }

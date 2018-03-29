@@ -67,4 +67,12 @@ public class Staff  extends BaseEntity{
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public Long getCompanyId() {
+        return CompanyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        CompanyId = companyId;
+    }
 }

@@ -1,5 +1,6 @@
 package com.cch.cz.ctrl.cz;
 
+import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.entity.Company;
 import com.cch.cz.entity.Staff;
@@ -35,6 +36,13 @@ public class CompanyCtrl {
         table.setData(companyService.findAll());
         table.setCount(companyService.count(new Company()).intValue());
         return table;
+    }
+
+    @PostMapping(value = "/add")
+    @ResponseBody
+    public AjaxReturn list(@RequestBody Company company){
+       companyService.save(company);
+       return new AjaxReturn(0,"添加成功");
     }
 
 

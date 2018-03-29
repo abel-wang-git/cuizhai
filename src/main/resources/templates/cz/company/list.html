@@ -11,7 +11,7 @@
 <table id="company" lay-filter="company"></table>
 
 <div id="form" style="display: none">
-<form class="layui-form"  method="post">
+<form class="layui-form"  method="post" id="addcompany">
 
     <div class="layui-form-item">
         <label class="layui-form-label">公司名称</label>
@@ -29,7 +29,7 @@
 
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button type="submit" class="layui-btn" lay-submit="lay-submit" lay-filter="company">立即提交</button>
+            <button  class="layui-btn" lay-submit="lay-submit" lay-filter="company">立即提交</button>
         </div>
     </div>
 </form>
@@ -39,11 +39,12 @@
 <script th:inline="javascript">
 
     /*<![CDATA[*/
-    layui.use('table', function () {
+    layui.use(['table','form'], function () {
         var table = layui.table
-            , $ = layui.$;
+            , $ = layui.$
+            ,form=layui.form;
         //员工
-        table.render({
+        var cpmpanys=table.render({
             elem: '#company'
             , id: 'company'
             , url: 'list' //数据接口
@@ -58,11 +59,25 @@
                 , title: '添加公司'
                 , area: ['500px', '300px']
                 , content: $('#form')
-                , btn: ['添加', '取消']
-                , yes: function (index, layero) {
-                }
             })
-        })
+        });
+
+        //监听提交
+        form.on('submit(company)', function(data){
+            $.ajax({
+                url:"add",
+                type:"post",
+                dataType:'json',
+                contentType:'application/json;charset=utf-8',
+                data:JSON.stringify(data.field),
+                success:function (data) {
+                   $("#addcompany")[0].reset();
+                   layer.msg(data.message);
+                   cpmpanys.reload()
+                }
+            });
+            return false;
+        });
     });
 
 
