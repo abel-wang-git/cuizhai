@@ -3,6 +3,8 @@ package com.cch.cz.ctrl;
 import com.alibaba.fastjson.JSON;
 import com.cch.cz.authority.entity.User;
 import com.cch.cz.authority.service.UserService;
+import com.cch.cz.entity.Staff;
+import com.cch.cz.service.StaffService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -29,6 +31,8 @@ public class Login {
 
     @Resource
     private UserService userService;
+    @Resource
+    private StaffService staffService;
 
     @GetMapping(value = "/")
     private String index(){
@@ -61,6 +65,7 @@ public class Login {
         }
         if (subject.isAuthenticated()) {
             subject.getSession ().setAttribute ("user",userService.getByuserName (user.getUserName ()));
+            subject.getSession().setAttribute("staff",(user.getUserName().equals("admin"))?new  Staff():staffService.findOne(user.getUserName()));
             return "redirect:/";
         } else {
 

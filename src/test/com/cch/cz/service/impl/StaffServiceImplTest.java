@@ -25,7 +25,7 @@ public class StaffServiceImplTest {
 
     @Test
     public void findOne() throws Exception {
-        UtilFun.prinrObject(staffService.findOne(7001l));
+        UtilFun.prinrObject(staffService.findOne(""));
     }
 
 
@@ -33,7 +33,7 @@ public class StaffServiceImplTest {
     public void save(){
         Staff staff = new Staff();
         for (int i =1 ;i<30 ;i++){
-            staff.setNumber(i);
+            staff.setLoginName("");
             staff.setName("test");
             staff.setPhone("1234567890");
             staff.setPlace("sdfasdf");

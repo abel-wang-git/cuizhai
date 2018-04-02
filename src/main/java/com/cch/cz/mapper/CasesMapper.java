@@ -1,7 +1,9 @@
 package com.cch.cz.mapper;
 
 import com.cch.cz.base.dao.BaseMapper;
+import com.cch.cz.base.dao.provider.BaseProvider;
 import com.cch.cz.entity.Cases;
+import com.cch.cz.mapper.provider.CasesProvider;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -23,6 +25,9 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
     @Update("UPDATE t_case SET company_id=#{company} WHERE customer_residence_address like #{area}")
     void allotCompany(@Param("company") String company,@Param("area") String area);
 
-    @Update("UPDATE t_case SET company_id=#{case} WHERE customer_residence_address like #{staff}")
-    void allotStaff(@Param("case") String caseId, @Param("staff") String staff);
+    @Update("UPDATE t_case SET staff_id=#{staff} WHERE id=#{case}")
+    void allotStaff(@Param("case") Long caseId, @Param("staff") String staff);
+
+    @SelectProvider(type = CasesProvider.class,method = "listByCompanyNoStaff")
+    List<Cases> listByCompanyNoStaff(@Param("company") Long company);
 }

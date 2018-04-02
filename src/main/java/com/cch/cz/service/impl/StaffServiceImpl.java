@@ -17,7 +17,7 @@ import java.util.List;
  *
  */
 @Service
-public class StaffServiceImpl extends BaseServiceImpl<Staff,Long> implements StaffService {
+public class StaffServiceImpl extends BaseServiceImpl<Staff,String> implements StaffService {
 
     @Resource
     private StaffMapper staffMapper;
@@ -30,7 +30,7 @@ public class StaffServiceImpl extends BaseServiceImpl<Staff,Long> implements Sta
     public void save(Staff staff) {
         staffMapper.save(staff);
         User user = new User();
-        user.setUserName(Integer.toString(staff.getNumber()));
+        user.setUserName(staff.getLoginName());
         user.setPassWd("123456");
         user.setPassWd(user.Sal());
         userMapper.save(user);

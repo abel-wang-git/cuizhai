@@ -44,7 +44,6 @@ public class RoleCtrl {
     }
 
     @GetMapping(value = "/add")
-    @RequiresPermissions(value = "role:add")
     public String add(Model model){
 
         model.addAttribute(new Role());
@@ -54,7 +53,6 @@ public class RoleCtrl {
 
     @PostMapping(value = "/add",produces="application/json;charset=UTF-8")
     @ResponseBody
-    @RequiresPermissions(value = "role:add")
     public AjaxReturn add(@RequestBody Role data){
         roleService.save(data);
         return new AjaxReturn(0,"添加成功");
@@ -62,7 +60,6 @@ public class RoleCtrl {
 
     @PostMapping(value = "/addPower",produces="application/json;charset=UTF-8")
     @ResponseBody
-    @RequiresPermissions(value = "role:add")
     public AjaxReturn addPower(@RequestBody List<RolePowerKey> data){
         roleService.savePowers(data);
         return new AjaxReturn(0,"添加成功");

@@ -16,9 +16,9 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">工号</label>
+        <label class="layui-form-label">用户名</label>
         <div class="layui-input-inline">
-            <input type="text"  th:field="*{number}" required ="required " lay-verify="required" placeholder="请输入工号" autocomplete="off" class="layui-input"/>
+            <input type="text"  th:field="*{loginName}" required ="required " lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input"/>
         </div>
     </div>
     <div class="layui-form-item">
@@ -44,7 +44,6 @@
             <select th:field="*{companyId}" required ="required " lay-verify="required">
                 <option value=""></option>
                 <option th:each="c:${companys}" th:text="${c.name}" th:value="${c.id}"></option>
-                <option value="1">管理员</option>
             </select>
         </div>
     </div>
@@ -67,7 +66,11 @@
                     type:"post",
                     dataType:'json',
                     contentType:'application/json;charset=utf-8',
-                    data:JSON.stringify(data.field)
+                    data:JSON.stringify(data.field),
+                    success:function (data) {
+                        layer.msg(data.message)
+                    }
+
             });
             return false;
         });

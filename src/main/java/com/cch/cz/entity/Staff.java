@@ -19,7 +19,7 @@ public class Staff  extends BaseEntity{
      * 工号
      */
     @Id
-    private  int number;
+    private  String loginName;
 
     /**
      * 职位
@@ -44,12 +44,12 @@ public class Staff  extends BaseEntity{
         this.name = name;
     }
 
-    public int getNumber() {
-        return number;
+    public String getLoginName() {
+        return loginName;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public String getPlace() {

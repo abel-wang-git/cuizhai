@@ -17,7 +17,10 @@ import java.util.Locale;
  *
  */
 public class BaseProvider<M extends BaseEntity,PK> {
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
     public String  save(M m) throws IllegalAccessException {
          String sql = new SQL(){{
             StringBuilder clo=new StringBuilder();
@@ -40,7 +43,7 @@ public class BaseProvider<M extends BaseEntity,PK> {
                 }
             }
 
-            INSERT_INTO(m.getTablename());
+            INSERT_INTO(m.Tablename());
             INTO_COLUMNS(clo.deleteCharAt(clo.length()-1).toString());
             INTO_VALUES(val.deleteCharAt(val.length()-1).toString());
         }}.toString();
@@ -57,7 +60,7 @@ public class BaseProvider<M extends BaseEntity,PK> {
             for (Field f:fields) {
                 if(f.getAnnotation(Id.class)!=null)idname=addUnderscores(f.getName());
             }
-            DELETE_FROM(m.getTablename());
+            DELETE_FROM(m.Tablename());
             WHERE(idname.toString()+"='"+pk+"'");
         }}.toString();
         logger.info(sql);
@@ -66,19 +69,16 @@ public class BaseProvider<M extends BaseEntity,PK> {
 
     public String  findAll(M m){
        String sql=  new SQL(){{
-           StringBuilder sele=new StringBuilder();
-           Field[] fields=m.getClass().getDeclaredFields();
-           for (Field f: fields) {
-               sele.append(addUnderscores(f.getName())).append(" as ").append(f.getName()).append(" ,");
-           }
-           sele.deleteCharAt(sele.length()-1);
+           String sele = getSelect(m);
             SELECT(sele.toString());
-            FROM(m.getTablename());
+            FROM(m.Tablename());
         }}.toString();
 
        logger.info(sql);
         return sql;
     }
+
+
 
     public String  findOne(M m,PK pk){
          String sql= new SQL(){{
@@ -87,8 +87,9 @@ public class BaseProvider<M extends BaseEntity,PK> {
             for (Field f:fields) {
                 if(f.getAnnotation(Id.class)!=null)idname=addUnderscores(f.getName());
             }
-            SELECT("*");
-            FROM(m.getTablename());
+             String sele = getSelect(m);
+            SELECT(sele);
+            FROM(m.Tablename());
             WHERE(idname.toString()+"='"+pk+"'");
         }}.toString();
         logger.info(sql);
@@ -97,7 +98,7 @@ public class BaseProvider<M extends BaseEntity,PK> {
 
     public String  update(M m) throws IllegalAccessException {
         String sql = new SQL(){{
-            UPDATE(m.getTablename());
+            UPDATE(m.Tablename());
             Field[] fields=m.getClass().getDeclaredFields();
             StringBuilder where = new StringBuilder(" ");
             for (Field f: fields) {
@@ -127,12 +128,12 @@ public class BaseProvider<M extends BaseEntity,PK> {
     public String  count(M m){
          String sql= new SQL(){{
             SELECT("count(*)");
-            FROM(m.getTablename());
+            FROM(m.Tablename());
         }}.toString();
         logger.info(sql);
         return sql;
     }
-    private static String addUnderscores(String name) {
+    public static String addUnderscores(String name) {
         StringBuilder buf = new StringBuilder(name.replace('.', '_'));
 
         for(int i = 1; i < buf.length() - 1; ++i) {
@@ -141,5 +142,15 @@ public class BaseProvider<M extends BaseEntity,PK> {
             }
         }
         return buf.toString().toLowerCase(Locale.ROOT);
+    }
+
+    private String getSelect(M m) {
+        StringBuilder sele=new StringBuilder();
+        Field[] fields=m.getClass().getDeclaredFields();
+        for (Field f: fields) {
+            sele.append(addUnderscores(f.getName())).append(" as ").append(f.getName()).append(" ,");
+        }
+        sele.deleteCharAt(sele.length()-1);
+        return sele.toString();
     }
 }

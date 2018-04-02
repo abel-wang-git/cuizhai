@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
-    public String getTablename() {
+    public String Tablename() {
         Table table = this.getClass().getAnnotation(Table.class);
         if(table != null)
             return table.name();

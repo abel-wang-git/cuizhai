@@ -1,9 +1,11 @@
 package com.cch.cz.ctrl.cz;
 
+import com.alibaba.fastjson.JSON;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Company;
+import com.cch.cz.entity.Staff;
 import com.cch.cz.service.CasesService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.http.HttpRequest;
@@ -52,7 +54,6 @@ public class CaseCtrl {
 
     @GetMapping(value = "/allot")
     public String allotCase(){
-
         return "/cz/cases/allot";
     }
 
@@ -75,14 +76,31 @@ public class CaseCtrl {
         return new AjaxReturn(0,"分配成功");
     }
 
+
+    @PostMapping(value = "/list/nostaff")
+    @ResponseBody
+    public Table allotStaff(@RequestParam("company") Long company){
+       List<Cases> cases= casesService.listByCompanyNoStaff(company);
+
+        return new Table(cases.size(),cases);
+    }
+
+    /**
+     * 分配给员工
+     * @param cases
+     * @param staff
+     * @return
+     */
     @PostMapping(value = "/allotstaff")
     @ResponseBody
-    public AjaxReturn allotStaff(@RequestParam("cases[]")List<String>  cases,
-                                   @RequestParam("staff")String  staff){
+    public AjaxReturn allotStaff(@RequestParam("cases")String cases,
+                                 @RequestParam("staff") String staff){
         /*根据城市给委案分配公司ID*/
-        casesService.allotStaff(cases,staff);
+        casesService.allotStaff(JSON.parseArray(cases,Cases.class),JSON.parseObject(staff,Staff.class));
         return new AjaxReturn(0,"分配成功");
     }
+
+
 
 
 

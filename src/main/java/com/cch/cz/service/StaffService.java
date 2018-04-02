@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Administrator on 2018/3/18.
  * 员工service
  */
-public interface StaffService extends BaseService<Staff,Long>  {
+public interface StaffService extends BaseService<Staff,String>  {
     /**
      * 密码加密
      * @param staff

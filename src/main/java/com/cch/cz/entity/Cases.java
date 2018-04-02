@@ -13,10 +13,12 @@ public class Cases extends BaseEntity {
     /**
      * 被撤回的case
      */
+    @Transient
     public  final  static  int REVOKE=1;
     /**
      * 留案的case
      */
+    @Transient
     public  final  static  int RETAIN=2;
 
     @Id
@@ -130,7 +132,7 @@ public class Cases extends BaseEntity {
     /**
      * 分配人员
      */
-    private Long StaffId;
+    private String StaffId;
 
     /**
      * case 的状态 撤案=1 留案-2 正常=0
@@ -562,11 +564,11 @@ public class Cases extends BaseEntity {
         CompanyId = companyId;
     }
 
-    public Long getStaffId() {
+    public String getStaffId() {
         return StaffId;
     }
 
-    public void setStaffId(Long staffId) {
+    public void setStaffId(String staffId) {
         StaffId = staffId;
     }
 }

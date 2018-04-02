@@ -2,6 +2,7 @@ package com.cch.cz.service.impl;
 
 import com.cch.cz.base.service.impl.BaseServiceImpl;
 import com.cch.cz.entity.Cases;
+import com.cch.cz.entity.Staff;
 import com.cch.cz.mapper.CasesMapper;
 import com.cch.cz.service.CasesService;
 import org.springframework.stereotype.Service;
@@ -43,9 +44,14 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases,Long> implements Cas
 
     @Override
     @Transactional
-    public void allotStaff(List<String> cases, String staff) {
-        for (String c:cases) {
-            casesMapper.allotStaff(c,staff);
+    public void allotStaff(List<Cases> cases, Staff staff) {
+        for (Cases c:cases) {
+            casesMapper.allotStaff(c.getId(),staff.getLoginName());
         }
+    }
+
+    @Override
+    public List<Cases> listByCompanyNoStaff(Long company) {
+        return casesMapper. listByCompanyNoStaff(company);
     }
 }

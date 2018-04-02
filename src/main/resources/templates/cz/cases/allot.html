@@ -24,11 +24,13 @@
     <a class="layui-btn  layui-btn-xs" lay-event="allotcase">分配委案</a>
 </script>
 
-<!--弹出层-->
+<!--弹出层地区列表-->
 <div style="display: none; width: 100%" id="caseArea" >
-
     <table id="casetab" lay-filter="casetab"></table>
+</div>
 
+<div  style="display: none; width: 100%" id="casesStaff">
+    <table id="staffcase" lay-filter="staffcase"></table>
 </div>
 </body>
 <script th:src="@{/static/layui/layui.js}"></script>
@@ -49,16 +51,19 @@
             ]]
         });
 
+
         table.render({
             elem: '#staffs'
             ,id:'staffs'
             ,url: [[${ctx}]] + '/staff/listbycompany' //数据接口
+            ,where: {company: [[${session.staff.companyId}]]}
             ,method: 'post'
             ,cols: [[ //表头
-                {field: 'name', title: '公司名称', width:'60%' , sort: true, fixed: 'left'}
+                {field: 'name', title: '员工姓名', width:'60%' , sort: true, fixed: 'left'}
                 , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase', }
             ]]
         });
+
 
         var areas=table.render({
             elem: '#casetab'
@@ -68,6 +73,19 @@
             ,cols: [[ //表头
                 {field: 'area', title: '委案所属地区', width:300 , sort: true,}
                , {field: 'count', title: '委案数量', width:100 , sort: true}
+                ,{field: 'chk', title: '分配', width:90 , type:'checkbox'}
+            ]]
+        });
+
+        var staff=table.render({
+            elem: '#staffcase'
+            ,id:'staffcase'
+            ,url: [[${ctx}]] + '/case/list/nostaff' //数据接口
+            ,where:{company:[[${session.staff.companyId}]]}
+            ,method: 'post'
+            ,cols: [[ //表头
+                {field: 'name', title: '姓名', width:60 , sort: true}
+                ,{field: 'idCard', title: '户籍', width:80 , sort: true}
                 ,{field: 'chk', title: '分配', width:90 , type:'checkbox'}
             ]]
         });
@@ -84,21 +102,18 @@
                     , btn: ['添加', '取消']
                     , yes: function (index) {
                         var datas = [];
-
                         var checkStatus = table.checkStatus('casetab');
                         for(var i = 0 ; i<checkStatus.data.length;i++){
                         datas.push(checkStatus.data[i].area);
-
                         }
-                        console.log(datas)
-                        console.log(obj.data.id)
                         $.ajax({
                             url:ctx+"/case/allot",
                             type:"post",
                             dataType:'json',
                             data:{area:datas,company:obj.data.id},
                             success:function (data) {
-                                areas.reload()
+                                areas.reload();
+                                staff.reload();
                                 layer.close(index);
                                 layer.msg(data.message);
                             }
@@ -107,6 +122,34 @@
                 })
             }
         });
+
+
+
+        table.on('tool(staffs)',function (obj) {
+            var ctx = [[${ctx}]];
+            layer.open({
+                type: 1
+                , title: '分配委案'
+                , area: ['500px', '300px']
+                , content:$("#casesStaff")
+                , btn: ['添加', '取消']
+                , yes: function (index) {
+                    var checkStatus = table.checkStatus('staffcase');
+                    $.ajax({
+                        url:"allotstaff",
+                        type:"post",
+                        dataType:'json',
+                        data:{staff:JSON.stringify(obj.data),
+                                    cases:JSON.stringify(checkStatus.data)},
+                        success:function (data) {
+                            staff.reload()
+                            layer.close(index);
+                            layer.msg(data.message);
+                        }
+                    });
+                }
+            })
+        })
 
     });
     /*]]>*/

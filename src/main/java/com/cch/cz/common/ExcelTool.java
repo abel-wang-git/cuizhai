@@ -54,6 +54,7 @@ public class ExcelTool {
         Cases cases= new Cases();
         Row r = sheet.getRow(i);
         int cell_num = r.getLastCellNum();
+        cases.setStatus(0);
         for (int j = 0; j < cell_num; j++) {
            Object o =title.get(j).toString();
             if(title.get(j).toString().equals("合同号")){
