@@ -11,28 +11,7 @@
 <table id="company" lay-filter="company"></table>
 
 <div id="form" style="display: none">
-<form class="layui-form"  method="post" id="addcompany">
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">公司名称</label>
-        <div class="layui-input-inline">
-            <input type="text" name="name" required ="required " lay-verify="required" placeholder="请输入员工姓名" autocomplete="off" class="layui-input"/>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <label class="layui-form-label">负责地区</label>
-        <div class="layui-input-inline">
-            <input type="text" name="area"  required ="required " lay-verify="required" placeholder="请输入员工姓名" autocomplete="off" class="layui-input"/>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button  class="layui-btn" lay-submit="lay-submit" lay-filter="company">立即提交</button>
-        </div>
-    </div>
-</form>
 </div>
 
 <script th:src="@{/static/layui/layui.js}"></script>
@@ -50,34 +29,24 @@
             , url: 'list' //数据接口
             , method: 'post'
             , cols: [[ //表头
-                {field: 'name', title: '公司名称', width: '100%', sort: true}
+                {field: 'name', title: '公司名称', width: '50%', sort: true}
+                ,{field: 'area', title: '负责地区', width: '50%', sort: true}
             ]]
         });
         $("#add").click(function(){
             layer.open({
-                type: 1
+                type: 2
                 , title: '添加公司'
                 , area: ['500px', '300px']
-                , content: $('#form')
+                , content: ["add","no"]
+                ,cancel: function(){
+                    cpmpanys.reload();
+                }
+
             })
         });
 
-        //监听提交
-        form.on('submit(company)', function(data){
-            $.ajax({
-                url:"add",
-                type:"post",
-                dataType:'json',
-                contentType:'application/json;charset=utf-8',
-                data:JSON.stringify(data.field),
-                success:function (data) {
-                   $("#addcompany")[0].reset();
-                   layer.msg(data.message);
-                   cpmpanys.reload()
-                }
-            });
-            return false;
-        });
+
     });
 
 

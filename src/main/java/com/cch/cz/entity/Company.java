@@ -16,6 +16,10 @@ public class Company  extends BaseEntity{
     private Long id;
 
     private String name;
+    /**
+     * 上级公司
+     */
+    private Long pId;
 
     private String area;
 
@@ -41,5 +45,13 @@ public class Company  extends BaseEntity{
 
     public void setArea(String area) {
         this.area = area;
+    }
+
+    public Long getpId() {
+        return pId;
+    }
+
+    public void setpId(Long pId) {
+        this.pId = pId;
     }
 }

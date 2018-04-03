@@ -34,6 +34,7 @@ public class StaffServiceImpl extends BaseServiceImpl<Staff,String> implements S
         user.setPassWd("123456");
         user.setPassWd(user.Sal());
         userMapper.save(user);
+        userMapper.saveRoles(user.getUserName(),Long.parseLong(staff.getPlace()));
     }
 
     @Override

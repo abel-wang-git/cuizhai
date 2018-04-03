@@ -3,6 +3,7 @@ package com.cch.cz.base.dao;
 import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
 
+import javax.persistence.Table;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -26,6 +27,11 @@ public class BuildSql {
         }
         sele.deleteCharAt(sele.length()-1);
         return sele.toString();
+    }
+
+    public static  String tablename(Class c){
+        Table table = (Table) c.getAnnotation(Table.class);
+        return table.name();
     }
 
 }

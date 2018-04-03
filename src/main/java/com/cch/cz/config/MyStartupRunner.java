@@ -60,6 +60,7 @@ public class MyStartupRunner implements CommandLineRunner {
             logger.info ("————————————————————init role——————————————");
             Role role = new Role ();
             role.setName ("admin");
+            role.setDesign("超级管理员");
             roleService.save (role);
         }
 

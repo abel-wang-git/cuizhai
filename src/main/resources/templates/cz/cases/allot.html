@@ -1,35 +1,31 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8"/>
     <title>委案管理</title>
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
-<button type="button" class="layui-btn" id="cases">
-    <i class="layui-icon">&#xe609;</i>分配到公司
-</button>
-<button type="button" class="layui-btn" id="staff">
-    <i class="layui-icon">&#xe609;</i>分配到员工
-</button>
-
-<!--公司列表-->
-<table id="allots" lay-filter="allots"></table>
-
+<fieldset class="layui-elem-field">
+    <legend>分配到公司</legend>
+    <!--公司列表-->
+    <table id="allots" lay-filter="allots"></table>
+</fieldset>
 <!--当登录所属公司的员工列表-->
-
+<fieldset class="layui-elem-field">
+    <legend>分配到员工</legend>
 <table id="staffs" lay-filter="staffs"></table>
-
+</fieldset>
 <!--操作栏-->
 <script type="text/html" id="allotcase">
     <a class="layui-btn  layui-btn-xs" lay-event="allotcase">分配委案</a>
 </script>
 
 <!--弹出层地区列表-->
-<div style="display: none; width: 100%" id="caseArea" >
+<div style="display: none; width: 100%" id="caseArea">
     <table id="casetab" lay-filter="casetab"></table>
 </div>
 
-<div  style="display: none; width: 100%" id="casesStaff">
+<div style="display: none; width: 100%" id="casesStaff">
     <table id="staffcase" lay-filter="staffcase"></table>
 </div>
 </body>
@@ -37,56 +33,56 @@
 <script th:inline="javascript">
 
     /*<![CDATA[*/
-    layui.use(['table','form'], function(){
+    layui.use(['table', 'form'], function () {
         var table = layui.table
-            ,$ = layui.$;
+            , $ = layui.$;
         table.render({
             elem: '#allots'
-            ,id:'allots'
-            ,url: [[${ctx}]] + '/company/list' //数据接口
-            ,method: 'post'
-            ,cols: [[ //表头
-                {field: 'name', title: '公司名称', width:'60%' , sort: true, fixed: 'left'}
-                , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase', }
+            , id: 'allots'
+            , url: [[${ctx}]] + '/company/list' //数据接口
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'name', title: '公司名称', width: '60%', sort: true, fixed: 'left'}
+                , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase',}
             ]]
         });
 
 
         table.render({
             elem: '#staffs'
-            ,id:'staffs'
-            ,url: [[${ctx}]] + '/staff/listbycompany' //数据接口
-            ,where: {company: [[${session.staff.companyId}]]}
-            ,method: 'post'
-            ,cols: [[ //表头
-                {field: 'name', title: '员工姓名', width:'60%' , sort: true, fixed: 'left'}
-                , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase', }
+            , id: 'staffs'
+            , url: [[${ctx}]] + '/staff/listbycompany' //数据接口
+            , where: {company: [[${session.staff.companyId}]]}
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'name', title: '员工姓名', width: '60%', sort: true, fixed: 'left'}
+                , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase',}
             ]]
         });
 
 
-        var areas=table.render({
+        var areas = table.render({
             elem: '#casetab'
-            ,id:'casetab'
-            ,url: [[${ctx}]] + '/case/grouparea' //数据接口
-            ,method: 'post'
-            ,cols: [[ //表头
-                {field: 'area', title: '委案所属地区', width:300 , sort: true,}
-               , {field: 'count', title: '委案数量', width:100 , sort: true}
-                ,{field: 'chk', title: '分配', width:90 , type:'checkbox'}
+            , id: 'casetab'
+            , url: [[${ctx}]] + '/case/grouparea' //数据接口
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'area', title: '委案所属地区', width: 300, sort: true,}
+                , {field: 'count', title: '委案数量', width: 100, sort: true}
+                , {field: 'chk', title: '分配', width: 90, type: 'checkbox'}
             ]]
         });
 
-        var staff=table.render({
+        var staff = table.render({
             elem: '#staffcase'
-            ,id:'staffcase'
-            ,url: [[${ctx}]] + '/case/list/nostaff' //数据接口
-            ,where:{company:[[${session.staff.companyId}]]}
-            ,method: 'post'
-            ,cols: [[ //表头
-                {field: 'name', title: '姓名', width:60 , sort: true}
-                ,{field: 'idCard', title: '户籍', width:80 , sort: true}
-                ,{field: 'chk', title: '分配', width:90 , type:'checkbox'}
+            , id: 'staffcase'
+            , url: [[${ctx}]] + '/case/list/nostaff' //数据接口
+            , where: {company: [[${session.staff.companyId}]]}
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'name', title: '姓名', width: 60, sort: true}
+                , {field: 'idCard', title: '户籍', width: 80, sort: true}
+                , {field: 'chk', title: '分配', width: 90, type: 'checkbox'}
             ]]
         });
 
@@ -97,21 +93,21 @@
                 layer.open({
                     type: 1
                     , title: '分配委案'
-                    , area: ['500', '500px']
-                    , content:$("#caseArea")
+                    , area: ['500', '400px']
+                    , content: $("#caseArea")
                     , btn: ['添加', '取消']
                     , yes: function (index) {
                         var datas = [];
                         var checkStatus = table.checkStatus('casetab');
-                        for(var i = 0 ; i<checkStatus.data.length;i++){
-                        datas.push(checkStatus.data[i].area);
+                        for (var i = 0; i < checkStatus.data.length; i++) {
+                            datas.push(checkStatus.data[i].area);
                         }
                         $.ajax({
-                            url:ctx+"/case/allot",
-                            type:"post",
-                            dataType:'json',
-                            data:{area:datas,company:obj.data.id},
-                            success:function (data) {
+                            url: ctx + "/case/allot",
+                            type: "post",
+                            dataType: 'json',
+                            data: {area: datas, company: obj.data.id},
+                            success: function (data) {
                                 areas.reload();
                                 staff.reload();
                                 layer.close(index);
@@ -124,24 +120,25 @@
         });
 
 
-
-        table.on('tool(staffs)',function (obj) {
+        table.on('tool(staffs)', function (obj) {
             var ctx = [[${ctx}]];
             layer.open({
                 type: 1
                 , title: '分配委案'
                 , area: ['500px', '300px']
-                , content:$("#casesStaff")
+                , content: $("#casesStaff")
                 , btn: ['添加', '取消']
                 , yes: function (index) {
                     var checkStatus = table.checkStatus('staffcase');
                     $.ajax({
-                        url:"allotstaff",
-                        type:"post",
-                        dataType:'json',
-                        data:{staff:JSON.stringify(obj.data),
-                                    cases:JSON.stringify(checkStatus.data)},
-                        success:function (data) {
+                        url: "allotstaff",
+                        type: "post",
+                        dataType: 'json',
+                        data: {
+                            staff: JSON.stringify(obj.data),
+                            cases: JSON.stringify(checkStatus.data)
+                        },
+                        success: function (data) {
                             staff.reload()
                             layer.close(index);
                             layer.msg(data.message);
