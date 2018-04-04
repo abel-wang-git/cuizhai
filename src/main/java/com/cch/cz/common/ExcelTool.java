@@ -19,17 +19,7 @@ import java.util.List;
  */
 public class ExcelTool {
 
-    public static void main(String[] args) {
-        try {
-            read(null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidFormatException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static List<Cases> read(File excel) throws IOException, InvalidFormatException {
+    public static List<Cases> read(File excel,int index) throws IOException, InvalidFormatException {
 
         // 创建对Excel工作簿文件的引用
         Workbook workbook = WorkbookFactory.create(new FileInputStream(excel));
@@ -43,7 +33,7 @@ public class ExcelTool {
         List title= IteratorUtils.toList(sheet.getRow(0).cellIterator());
 
         int row_num = sheet.getLastRowNum();
-        for (int i = 0; i <=row_num; i++) {
+        for (int i = index; i <=row_num; i++) {
             setAttr(result, sheet, title, i);
         }
         /*UtilFun.prinrObject(result);*/
@@ -55,6 +45,8 @@ public class ExcelTool {
         Row r = sheet.getRow(i);
         int cell_num = r.getLastCellNum();
         cases.setStatus(0);
+        //员工id设置为未分配
+        cases.setStaffId(Cases.NOSTAFF);
         for (int j = 0; j < cell_num; j++) {
            Object o =title.get(j).toString();
             if(title.get(j).toString().equals("合同号")){

@@ -21,6 +21,8 @@ public class Cases extends BaseEntity {
     @Transient
     public  final  static  int RETAIN=2;
 
+    public final static String NOSTAFF="0";
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -131,6 +133,7 @@ public class Cases extends BaseEntity {
     private Long CompanyId;
     /**
      * 分配人员
+     * 0 为未分配
      */
     private String StaffId;
 

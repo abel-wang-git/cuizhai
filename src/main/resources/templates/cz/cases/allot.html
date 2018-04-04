@@ -5,8 +5,8 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
-<fieldset class="layui-elem-field">
-    <legend>分配到公司</legend>
+<fieldset th:if="${company.pId==null}" class="layui-elem-field">
+    <legend >分配到公司</legend>
     <!--公司列表-->
     <table id="allots" lay-filter="allots"></table>
 </fieldset>
@@ -80,8 +80,8 @@
             , where: {company: [[${session.staff.companyId}]]}
             , method: 'post'
             , cols: [[ //表头
-                {field: 'name', title: '姓名', width: 60, sort: true}
-                , {field: 'idCard', title: '户籍', width: 80, sort: true}
+                {field: 'name', title: '姓名', width: 75, sort: true}
+                , {field: 'customerResidenceAddress', title: '户籍', width: 195, sort: true}
                 , {field: 'chk', title: '分配', width: 90, type: 'checkbox'}
             ]]
         });
@@ -139,7 +139,7 @@
                             cases: JSON.stringify(checkStatus.data)
                         },
                         success: function (data) {
-                            staff.reload()
+                            staff.reload();
                             layer.close(index);
                             layer.msg(data.message);
                         }

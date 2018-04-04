@@ -7,9 +7,12 @@ import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Company;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.service.CasesService;
+import com.cch.cz.service.CompanyService;
 import com.github.pagehelper.PageHelper;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,6 +29,8 @@ import java.util.Map;
 public class CaseCtrl {
     @Resource
     private CasesService casesService;
+    @Resource
+    private CompanyService companyService;
 
     @GetMapping(value = "/up")
     public String toCase(){
@@ -53,7 +58,10 @@ public class CaseCtrl {
     }
 
     @GetMapping(value = "/allot")
-    public String allotCase(){
+    public String allotCase(Model model){
+        Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
+        Company company=companyService.findOne(staff.getCompanyId());
+        model.addAttribute((company==null?new Company():company));
         return "/cz/cases/allot";
     }
 

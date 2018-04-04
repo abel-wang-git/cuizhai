@@ -44,6 +44,12 @@ public class MyStartupRunner implements CommandLineRunner {
 
 
     public void run(String... strings) throws Exception {
+        initPower();
+        initRole();
+        initUser();
+    }
+
+    private void initPower() {
         logger.info ("————————————————————init power——————————————");
         List<Method> methods = ClassUtil.MethodHasAnnotation (true,RequiresPermissions.class,"com.cch.cz");
         for (Method m : methods) {
@@ -55,30 +61,47 @@ public class MyStartupRunner implements CommandLineRunner {
                 powerService.save(p);
 
         }
-        Role roles = roleService.getByname ("admin");
-        if (roles==null) {
-            logger.info ("————————————————————init role——————————————");
-            Role role = new Role ();
-            role.setName ("admin");
-            role.setDesign("超级管理员");
-            roleService.save (role);
-        }
+    }
 
-        User u = userService.getByuserName("admin");
+    private void initUser() {
+        logger.info ("————————————————————init user——————————————");
+        User u = userService.getByuserName("superadmin");
         if (u==null){
             u=new User();
-            logger.info ("————————————————————init user——————————————");
             u.setPassWd("123456");
-            u.setUserName("admin");
+            u.setUserName("superadmin");
             u.setPassWd(u.Sal());
             userService.save(u);
             UserRoleKey admin = new UserRoleKey();
-            admin.setRoleId(roleService.getByname ("admin").getId());
-            admin.setUserId("admin");
+            admin.setRoleId(roleService.getByname ("superadmin").getId());
+            admin.setUserId("superadmin");
             userService.saveRoles(Arrays.asList(admin));
         }
+    }
 
-
+    private void initRole() {
+        logger.info ("————————————————————init role——————————————");
+        Role roles = roleService.getByname ("superadmin");
+        if (roles==null) {
+            Role role = new Role ();
+            role.setName ("superadmin");
+            role.setDesign("超级管理员");
+            roleService.save (role);
+        }
+        Role admin = roleService.getByname ("admin");
+        if (admin==null){
+            Role role = new Role ();
+            role.setName ("admin");
+            role.setDesign("管理员");
+            roleService.save (role);
+        }
+        Role urge = roleService.getByname ("urge");
+        if(urge==null){
+            Role role = new Role ();
+            role.setName ("urge");
+            role.setDesign("催收员");
+            roleService.save (role);
+        }
     }
 
 }

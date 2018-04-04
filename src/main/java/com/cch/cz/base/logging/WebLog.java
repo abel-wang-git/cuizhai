@@ -40,7 +40,7 @@ public class WebLog {
      * ~ 第五个 * 任意方法
      * ~ .. 匹配任意数量的参数.
      */
-    @Pointcut("execution(public * com.cch.cz.*.*..*.*(..))")
+    @Pointcut("execution(public * com.cch.cz.ctrl.*..*.*(..))")
     public void webLog(){}
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint){

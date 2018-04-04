@@ -12,7 +12,7 @@ import java.util.List;
 public interface CompanyService extends BaseService<Company,Long>  {
 
     /**
-     * 根据用户获取公司
+     * 根据用户获取公司和下级公司
      */
 
     List<Company> listBystaff(Staff staff);

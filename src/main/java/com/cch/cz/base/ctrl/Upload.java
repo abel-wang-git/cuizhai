@@ -33,7 +33,7 @@ public class Upload {
         Map data = new HashMap();
         try {
             File name = UploadUtil.upload(request,"image/");
-            List<Cases> list= ExcelTool.read(name);
+            List<Cases> list= ExcelTool.read(name,1);
             data.put("path","http://localhost:8080/image/"+name);
             data.put("data",list);
         } catch (IOException e) {

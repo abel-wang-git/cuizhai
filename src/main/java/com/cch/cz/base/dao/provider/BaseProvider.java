@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -28,7 +29,7 @@ public class BaseProvider<M extends BaseEntity,PK> {
             Field[] fields=m.getClass().getDeclaredFields();
 
             for (Field f:fields) {
-                if(f.getAnnotation(Transient.class)!=null)continue;
+                if(f.getAnnotation(Transient.class)!=null|| !Modifier.isPrivate(f.getModifiers()))continue;
                 if(f.getAnnotation(Id.class)!=null&&f.getAnnotation(GeneratedValue.class)!=null) continue;
                 clo.append(addUnderscores(f.getName())+",");
                 f.setAccessible(true);

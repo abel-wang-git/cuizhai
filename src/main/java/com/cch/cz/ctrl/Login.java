@@ -65,7 +65,7 @@ public class Login {
         }
         if (subject.isAuthenticated()) {
             subject.getSession ().setAttribute ("user",userService.getByuserName (user.getUserName ()));
-            subject.getSession().setAttribute("staff",(user.getUserName().equals("admin"))?new  Staff():staffService.findOne(user.getUserName()));
+            subject.getSession().setAttribute("staff",(staffService.findOne(user.getUserName())==null)?new  Staff():staffService.findOne(user.getUserName()));
             return "redirect:/";
         } else {
 
