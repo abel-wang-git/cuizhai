@@ -33,7 +33,7 @@
       <artifactId>spring-boot-starter-tomcat</artifactId>
       <version>${spring-boot.version}</version>
       <!--打包时取消注解 idea的bug-->
-<!--      <scope>provided</scope>-->
+      <!--<scope>provided</scope>-->
     </dependency>
 
     <dependency>
@@ -161,11 +161,23 @@
   </dependencies>
 
   <build>
-    <finalName>ROOT</finalName>
+    <finalName>cuizhai</finalName>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
+        <configuration>
+          <mainClass>com.cch.cz.App</mainClass>
+          <fork>true</fork>
+        </configuration>
+          <executions>
+              <execution>
+                  <goals>
+                      <goal>repackage</goal>
+                  </goals>
+              </execution>
+          </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -176,8 +188,16 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.18.1</version>
+            <configuration>
+                <skipTests>true</skipTests>
+            </configuration>
+        </plugin>
 
-      <plugin>
+        <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <version>2.6</version>
         <configuration>

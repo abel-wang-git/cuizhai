@@ -145,10 +145,11 @@ public class BaseProvider<M extends BaseEntity,PK> {
         return buf.toString().toLowerCase(Locale.ROOT);
     }
 
-    private String getSelect(M m) {
+    protected String getSelect(M m) {
         StringBuilder sele=new StringBuilder();
         Field[] fields=m.getClass().getDeclaredFields();
         for (Field f: fields) {
+            if(Modifier.isPrivate(f.getModifiers()))
             sele.append(addUnderscores(f.getName())).append(" as ").append(f.getName()).append(" ,");
         }
         sele.deleteCharAt(sele.length()-1);

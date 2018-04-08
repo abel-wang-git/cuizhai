@@ -6,8 +6,52 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
-<a class="layui-btn layui-btn-sm" href="add">崔记</a>
+
+<table id="cases" lay-filter="cases"></table>
+
+
+<script type="text/html" id="urge">
+    <a class="layui-btn  layui-btn-xs" lay-event="urge">催记</a>
+</script>
 
 <script th:src="@{/static/layui/layui.js}"></script>
 </body>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    layui.use(['table','form'], function () {
+        var table = layui.table
+            , $ = layui.$
+            , form = layui.form;
+        var cases = table.render({
+            elem: '#cases'
+            , id: 'cases'
+            , url: [[${ctx}]] + '/case/list/bystaff' //数据接口
+            , where: {staff: [[${session.staff.loginName}]]}
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'name', title: '姓名', width: 75, sort: true}
+                , {field: 'customerResidenceAddress', title: '户籍', width: 195, sort: true}
+                , {field: 'loanPrincipal', title: '贷款本金', width: 80, sort: true}
+                , {field: 'repaymentMoney', title: '已还金额', width: 80, sort: true}
+                , {field: 'overrangingDay', title: '逾期天数', width: 80, sort: true}
+                , {field: 'sumArrears', title: '总欠款', width: 80, sort: true}
+                , {fixed: 'urge', title: '分配', width: 80, align: 'center', toolbar: '#urge',fixed:'right'}
+            ]]
+        });
+
+
+        table.on('tool(cases)', function (obj) {
+/*            其他联系人 customerOtherPhone  姓名 customerRelativeOther 关系 customerRelaOther
+            本人 customerPhoneNumber
+            亲戚 customerRelativePhone 姓名 customerRelativeName 关系 customerRelationship
+            住宅 customerResidencePhone
+             配偶 customerSpousePhone 姓名 customerSpouse*/
+            window.location.href=[[${ctx}]]+'/urge/add?cases='+obj.data.id;
+        });
+
+    })
+    /*]]>*/
+</script>
 </html>

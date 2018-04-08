@@ -27,4 +27,6 @@ public interface CasesService extends BaseService<Cases,Long>  {
      * @param company
      */
     List<Cases> listByCompanyNoStaff(Long company);
+
+    List<Cases> listByStaff(String staff);
 }

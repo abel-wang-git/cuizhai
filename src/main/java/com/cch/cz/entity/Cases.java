@@ -138,7 +138,7 @@ public class Cases extends BaseEntity {
     private String StaffId;
 
     /**
-     * case 的状态 撤案=1 留案-2 正常=0
+     * case 的状态 撤案=1 留案=-2 正常=0 已完成=3
      * @return
      */
     private int status;

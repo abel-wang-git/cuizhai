@@ -25,6 +25,7 @@ layui.define(['element', 'layer', 'util', 'form'], function (exports) {
                 layer.close(index);
                 var h = $("div.layui-body").outerHeight(true)-$("div.layui-tab").outerHeight(true);
 
+
                 element.tabAdd('tab', { title: title, content: '<iframe src="' + url + '" style="position: absolute;width: 100%;border: none;height: '+h+';"></iframe>', id: id });
                 //切换到指定索引的卡片
                 element.tabChange('tab', id);

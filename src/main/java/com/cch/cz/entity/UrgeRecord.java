@@ -3,6 +3,8 @@ package com.cch.cz.entity;
 import com.cch.cz.base.entity.BaseEntity;
 
 import javax.persistence.*;
+import javax.xml.crypto.Data;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2018/3/28.
@@ -15,14 +17,31 @@ public class UrgeRecord extends BaseEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
+    /**
+     * 备注
+     */
     private String  rmarks;
-
+    /**
+     * 催收结果
+     */
     private String result;
-
+    /**
+     * 接通状态
+     */
     private String status;
-
+    /**
+     * 催收对象
+     */
     private String target;
+    /**
+     * 关联cases
+     */
+    private  Long caseId;
+    /**
+     * 催收日期
+     */
+    private Date createDate;
+
 
     public Long getId() {
         return id;
@@ -63,4 +82,21 @@ public class UrgeRecord extends BaseEntity {
     public void setTarget(String target) {
         this.target = target;
     }
+
+    public Long getCaseId() {
+        return caseId;
+    }
+
+    public void setCaseId(Long caseId) {
+        this.caseId = caseId;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
 }

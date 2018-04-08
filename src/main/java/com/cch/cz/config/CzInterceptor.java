@@ -41,6 +41,7 @@ public class CzInterceptor implements HandlerInterceptor {
         whiteList.setIp(UtilFun.getIP(request));
         List<WhiteList> list = whiteListService.findAll();
         boolean falg=false;
+        logger.info(UtilFun.getIP(request));
         if (UtilFun.getIP(request).equals("0:0:0:0:0:0:0:1")){
             falg = true;
         }
@@ -49,7 +50,7 @@ public class CzInterceptor implements HandlerInterceptor {
                 falg=true;
             }
         }
-        return falg;
+        return true;
     }
 
     /**

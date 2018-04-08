@@ -65,6 +65,10 @@ public class CaseCtrl {
         return "/cz/cases/allot";
     }
 
+    /**
+     *
+     * @return 按地区分组后的case
+     */
     @PostMapping(value = "/grouparea")
     @ResponseBody
     public Table groupArea(){
@@ -75,6 +79,12 @@ public class CaseCtrl {
         return table;
     }
 
+    /**
+     *把悬着的地区的case分配个该公司
+     * @param areas  要分配的地区
+     * @param company 公司的id
+     * @return
+     */
     @PostMapping(value = "/allot")
     @ResponseBody
     public AjaxReturn allotCompany(@RequestParam("area[]")List<String>  areas,
@@ -84,10 +94,14 @@ public class CaseCtrl {
         return new AjaxReturn(0,"分配成功");
     }
 
-
+    /**
+     * 查找该公司未分配的case
+     * @param company 公司id
+     * @return
+     */
     @PostMapping(value = "/list/nostaff")
     @ResponseBody
-    public Table allotStaff(@RequestParam("company") Long company){
+    public Table noStaff(@RequestParam("company") Long company){
        List<Cases> cases= casesService.listByCompanyNoStaff(company);
 
         return new Table(cases.size(),cases);
@@ -108,6 +122,20 @@ public class CaseCtrl {
         return new AjaxReturn(0,"分配成功");
     }
 
+
+    /**
+     * 查找属于该公司的case
+     * @param staff 员工
+     * @return
+     */
+    @PostMapping(value = "/list/bystaff")
+    @ResponseBody
+    public Table listByStaff(@RequestParam("staff") String staff){
+
+        List<Cases> cases= casesService.listByStaff(staff);
+
+        return new Table(cases.size(),cases);
+    }
 
 
 

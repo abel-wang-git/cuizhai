@@ -54,4 +54,9 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases,Long> implements Cas
     public List<Cases> listByCompanyNoStaff(Long company) {
         return casesMapper. listByCompanyNoStaff(company);
     }
+
+    @Override
+    public List<Cases> listByStaff(String staff) {
+        return casesMapper.listByStaff(staff);
+    }
 }
