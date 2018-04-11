@@ -35,7 +35,8 @@ public class Login {
     private StaffService staffService;
 
     @GetMapping(value = "/")
-    private String index(){
+    private String index(Model model){
+        model.addAttribute("cases",112);
         return "/admin";
     }
 
