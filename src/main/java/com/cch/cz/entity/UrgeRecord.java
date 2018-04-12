@@ -40,7 +40,7 @@ public class UrgeRecord extends BaseEntity {
     /**
      * 催收日期
      */
-    private Date createDate;
+    private String createDate;
 
 
     public Long getId() {
@@ -91,12 +91,11 @@ public class UrgeRecord extends BaseEntity {
         this.caseId = caseId;
     }
 
-    public Date getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
-
 }

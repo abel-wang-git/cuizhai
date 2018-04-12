@@ -12,6 +12,22 @@
 
 <script type="text/html" id="urge">
     <a class="layui-btn  layui-btn-xs" lay-event="urge">催记</a>
+    <a class="layui-btn  layui-btn-xs" lay-event="end">结案</a>
+</script>
+<script type="text/html" id="status">
+    {{#  if(d.status === 3){ }}
+    结案
+    {{#  } }}
+    {{#  if(d.status === 0){ }}
+    正常
+    {{#  } }}
+    {{#  if(d.status === 2){ }}
+    {{# }}
+    留案
+    {{#  } }}
+    {{#  if(d.status === 1){ }}
+    撤案
+    {{#  } }}
 </script>
 
 <script th:src="@{/static/layui/layui.js}"></script>
@@ -20,10 +36,11 @@
 <script th:inline="javascript">
     /*<![CDATA[*/
 
-    layui.use(['table','form'], function () {
+    layui.use(['table','form','laytpl'], function () {
         var table = layui.table
             , $ = layui.$
-            , form = layui.form;
+            , form = layui.form
+            ,laytpl = layui.laytpl;
         var cases = table.render({
             elem: '#cases'
             , id: 'cases'
@@ -37,18 +54,45 @@
                 , {field: 'repaymentMoney', title: '已还金额', width: 80, sort: true}
                 , {field: 'overrangingDay', title: '逾期天数', width: 80, sort: true}
                 , {field: 'sumArrears', title: '总欠款', width: 80, sort: true}
-                , {fixed: 'urge', title: '分配', width: 80, align: 'center', toolbar: '#urge',fixed:'right'}
+                , {field: 'lastUrge', title: '最后一次催记时间', width: 80, sort: true}
+                , {field: 'status', title: '状态', width: 80,templet:'#status'}
+                , {fixed: 'urge', title: '分配', width: 150, align: 'center', toolbar: '#urge',fixed:'right'}
             ]]
+            ,done: function(res, curr, count){
+                layui.$('table tbody tr ').each(function () {
+
+                    if($(this).children().eq(7).text().trim()=='结案'){
+                        $(this).css('background-color','#5FB878');
+                        $(this).css('color','#2F4056');
+                    }
+                })
+            }
         });
 
 
         table.on('tool(cases)', function (obj) {
+            console.log(obj.event);
 /*            其他联系人 customerOtherPhone  姓名 customerRelativeOther 关系 customerRelaOther
             本人 customerPhoneNumber
             亲戚 customerRelativePhone 姓名 customerRelativeName 关系 customerRelationship
             住宅 customerResidencePhone
              配偶 customerSpousePhone 姓名 customerSpouse*/
-            window.location.href=[[${ctx}]]+'/urge/add?cases='+obj.data.id;
+            if(obj.event=='urge'){
+                window.location.href=[[${ctx}]]+'/urge/add?cases='+obj.data.id;
+            }else if(obj.event=='end'){
+                var id=[];
+                id.push(obj.data.id);
+                $.ajax({
+                    url: [[${ctx}]] + "/case/manager",
+                    type: "post",
+                    dataType: 'json',
+                    data: {cases:id,status:3},
+                    success: function (data) {
+                        layer.msg(data.message);
+                        cases.reload();
+                    }
+                });
+            }
         });
 
     })

@@ -2,6 +2,8 @@ package com.cch.cz.ctrl.cz;
 
 import com.alibaba.fastjson.JSON;
 import com.cch.cz.base.AjaxReturn;
+import com.cch.cz.base.Table;
+import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.UrgeRecord;
 import com.cch.cz.service.CasesService;
@@ -34,15 +36,26 @@ public class UrgeRecordCtrl {
     public  String add(Model model,@RequestParam("cases")String casesId){
         Cases cases = casesService.findOne(Long.parseLong(casesId));
         model.addAttribute(cases);
-        List<UrgeRecord> list = urgeRecordService.findByCase(cases.getId());
-        model.addAttribute("urges",list);
+
         return "/cz/urge/add";
     }
     @PostMapping(value = "/add")
     @ResponseBody
     public AjaxReturn add(@RequestBody UrgeRecord urgeRecord){
-        urgeRecord.setCreateDate(new Date());
+        urgeRecord.setCreateDate(UtilFun.DateToString(new Date(),UtilFun.YYYYMMDD));
         urgeRecordService.save(urgeRecord);
         return new AjaxReturn(0,"添加成功");
     }
+
+    @PostMapping(value = "/bycase")
+    @ResponseBody
+    public Table listByCase(@RequestParam Long cases){
+        List<UrgeRecord> list = urgeRecordService.findByCase(cases);
+        Table table = new Table();
+        table.setData(list);
+        table.setCount(list.size());
+        return table;
+    }
+
+
 }

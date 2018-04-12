@@ -1,14 +1,19 @@
 package com.cch.cz.service.impl;
 
 import com.cch.cz.base.service.impl.BaseServiceImpl;
+import com.cch.cz.common.UtilFun;
+import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.UrgeRecord;
 import com.cch.cz.entity.WhiteList;
+import com.cch.cz.mapper.CasesMapper;
 import com.cch.cz.mapper.UrgeRecordMapper;
 import com.cch.cz.service.UrgeRecordService;
 import com.cch.cz.service.WhiteListService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
+import java.beans.Transient;
 import java.util.List;
 
 /**
@@ -20,9 +25,20 @@ public class UrgeRecordServiceImpl extends BaseServiceImpl<UrgeRecord,Long> impl
     @Resource
     private UrgeRecordMapper urgeRecordMapper;
 
+    @Resource
+    private CasesMapper casesMapper;
     @Override
     public List<UrgeRecord> findByCase(Long id) {
 
         return urgeRecordMapper.findByCase(id);
+    }
+
+    @Override
+    @Transactional
+    public void save(UrgeRecord urgeRecord) {
+        Cases cases= casesMapper.findOne(new Cases(),urgeRecord.getCaseId());
+        cases.setLastUrge(urgeRecord.getCreateDate());
+        casesMapper.update(cases);
+        super.save(urgeRecord);
     }
 }

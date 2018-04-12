@@ -5,61 +5,175 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
-<button type="button" class="layui-btn" id="upload">
-    <i class="layui-icon">&#xe67c;</i>上传委案
-</button>
 
+<button type="button" class="layui-btn layui-btn-sm" id="revoke">撤案</button>
+<button type="button" class="layui-btn layui-btn-sm" id="retain">留案</button>
+<button type="button" class="layui-btn layui-btn-sm" id="upload">上传委案</button>
+<form  class="layui-form where"  method="post" id="search">
+    <div class="layui-inline" >
+        <label class="layui-form-label">状态：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <select name="status" class="layui-input">
+                <option value="-1">全部</option>
+                <option value="0">正常</option>
+                <option value="1">撤案</option>
+                <option value="2">留案</option>
+                <option value="3">结案</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-inline" >
+        <label class="layui-form-label">姓名：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="name" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-inline" >
+        <label class="layui-form-label">手机：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="customerPhoneNumber" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <button class="layui-btn layui-btn-sm"  lay-submit="lay-submit"  lay-filter="search" >查询</button>
+</form>
 <table id="cases" lay-filter="cases"></table>
-
+<script type="text/html" id="status">
+    {{#  if(d.status === 3){ }}
+    结案
+    {{#  } }}
+    {{#  if(d.status === 0){ }}
+    正常
+    {{#  } }}
+    {{#  if(d.status === 2){ }}
+    {{# }}
+    留案
+    {{#  } }}
+    {{#  if(d.status === 1){ }}
+    撤案
+    {{#  } }}
+</script>
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
 
 /*<![CDATA[*/
-    layui.use(['upload','table'], function(){
-        var upload = layui.upload,$ = layui.$, table = layui.table;
-        //执行实例
-        upload.render({
-            elem: '#upload' //绑定元素
-            ,url: [[${ctx}]]+'/upload' //上传接口
-            ,accept: 'file'
-            ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
-                layer.load(); //上传loading
+    layui.use(['upload','table','form'], function(){
+        var upload = layui.upload,$ = layui.$, table = layui.table,form=layui.form;
+        var cases = table.render({
+            elem: '#cases'
+            , id: 'cases'
+            , height: 500
+            , url: 'noallot'//数据接口
+            , method: 'post'
+            , size: 'sm'
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'chk', width: 35, type: 'checkbox', fixed: 'left'}
+                , {field: 'name', title: '姓名', width: '8%', sort: true}
+                , {field: 'customerPhoneNumber', title: '手机', width: '10%'}
+                , {field: 'idCard', title: '身份证', width: '10%'}
+                , {field: 'loanPrincipal', title: '贷款本金', width: '10%'}
+                , {field: 'installmentMoney', title: '期款', width: '8%'}
+                , {field: 'installmentNum', title: '期数', width: '6%'}
+                , {field: 'lateFee', title: '滞纳金', width: '10%'}
+                , {field: 'deadline', title: '最后还款日', width: '10%'}
+                , {field: 'nnpaidInstallment', title: '未付期款', width: '10%'}
+                , {field: 'status', title: '状态', width: '10%', templet: '#status'}
+            ]]
+            , done: function (res, curr, count) {
+                layui.$('table tbody tr ').each(function () {
+                    if ($(this).children().eq(10).text().trim() == '撤案') {
+                        $(this).css('background-color', '#FF5722');
+                        $(this).css('color', '#FFB90F');
+                    }
+                    if ($(this).children().eq(10).text().trim() == '留案') {
+                        $(this).css('background-color', '#5FB878');
+                        $(this).css('color', '#FFB800');
+                    }
+                    if ($(this).children().eq(10).text().trim() == '结案') {
+                        $(this).css('background-color', '#36b811');
+                        $(this).css('color', '#ffd98c');
+                    }
+                })
             }
-            ,done: function(res){
+        });
+
+        upload.render({
+            elem: '#upload'
+            , url: [[${ctx}]] + '/upload'
+            , accept: 'file'
+            , before: function (obj) {
+                layer.load();
+            }
+            , done: function (res) {
 
                 $.ajax({
-                    url:"exp",
-                    type:"post",
-                    dataType:'json',
-                    contentType:'application/json;charset=utf-8',
-                    data:JSON.stringify(res.data.data)
+                    url: "exp",
+                    type: "post",
+                    dataType: 'json',
+                    contentType: 'application/json;charset=utf-8',
+                    data: JSON.stringify(res.data.data),
+                    success:function (data) {
+                        cases.reload();
+                        layer.msg(res.message);
+                        layer.closeAll('loading');
+                    }
                 });
-                table.render({
-                    elem: '#cases'
-                    ,id:'cases'
-                    ,height:500
-                    ,data: res.data.data //数据接口
-                    ,page: true //开启分页
-                    ,cols: [[ //表头
-                        {field: 'name', title: '姓名', width:'10%' , sort: true, fixed: 'left'}
-                        ,{field: 'customerPhoneNumber', title: '手机', width:'10%' }
-                        ,{field: 'idCard', title: '身份证', width:'10%' }
-                        ,{field: 'loanPrincipal', title: '贷款本金', width:'10%' }
-                        ,{field: 'installmentMoney', title: '期款', width:'10%' }
-                        ,{field: 'installmentNum', title: '期数', width:'10%' }
-                        ,{field: 'lateFee', title: '滞纳金', width:'10%' }
-                        ,{field: 'deadline', title: '最后还款日', width:'10%' }
-                        ,{field: 'nnpaidInstallment', title: '未付期款', width:'10%' }
-                        ,{field: 'arrears', title: '欠款金额', width:'10%' }
-                    ]]
-                });
-                layer.msg(res.message)
-                layer.closeAll('loading');
+
             }
             ,error: function(){
-
+                layer.msg('上传出错');
                 layer.closeAll('loading');
             }
+        });
+        //撤案
+        $('#revoke').click(function () {
+            var checkStatus = table.checkStatus('cases');
+            var ids = [];
+            for (var i = 0; i < checkStatus.data.length; i++) {
+                ids.push(checkStatus.data[i].id);
+            }
+            $.ajax({
+                url: [[${ctx}]] + "/case/manager",
+                type: "post",
+                dataType: 'json',
+                data: {cases: ids, status: 1},
+                success: function (data) {
+                    layer.msg(data.message);
+                    cases.reload();
+                }
+            });
+        });
+        //留案
+        $('#retain').click(function () {
+            var checkStatus = table.checkStatus('cases');
+            var ids = [];
+            for (var i = 0; i < checkStatus.data.length; i++) {
+                ids.push(checkStatus.data[i].id);
+            }
+            $.ajax({
+                url: [[${ctx}]] + "/case/manager",
+                type: "post",
+                dataType: 'json',
+                data: {cases: ids, status: 2},
+                success: function (data) {
+                    layer.msg(data.message);
+                    cases.reload();
+                }
+            });
+        });
+
+        form.on('submit(search)', function(data){
+            $.ajax({
+                url:"dynamic",
+                type:"post",
+                dataType:'json',
+                contentType:'application/json;charset=utf-8',
+                data:JSON.stringify(data.field),
+                success:function (data) {
+                    cases.reload({url:'',data:data});
+                }
+            });
+            return false;
         });
     });
 /*]]>*/

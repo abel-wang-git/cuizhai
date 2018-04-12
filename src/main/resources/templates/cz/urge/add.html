@@ -1,11 +1,11 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>委案管理</title>
+    <title>催记管理</title>
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
-
+<a class="layui-btn layui-btn-sm" href="list">返回</a>
 <div class="layui-row">
     <div class="layui-col-md6">
         <div class="layui-col-md6">
@@ -39,14 +39,7 @@
         <div class="layui-col-md6">
             <fieldset class="layui-elem-field ">
                 <legend>历史催收记录</legend>
-                <table class="layui-table">
-                    <tr th:each="urge:${urges}">
-                        <td th:text="${urge.createDate}"></td>
-                        <td th:text="${urge.target }"></td>
-                        <td th:text="${urge.status}"></td>
-                        <td th:text="${urge.result}"></td>
-                    </tr>
-                </table>
+                <table id="log" lay-filter="log"></table>
             </fieldset>
         </div>
     </div>
@@ -113,7 +106,7 @@
                 <label class="layui-form-label">备注</label>
                 <div class="layui-input-inline">
                     <textarea type="text" name="rmarks" required="required " lay-verify="required" placeholder=""
-                              autocomplete="off" class="layui-input"></textarea>
+                              autocomplete="off" class="layui-input" style="height: 100px;"></textarea>
                 </div>
             </div>
 
@@ -130,14 +123,15 @@
 </div>
 </body>
 <script th:src="@{/static/layui/layui.js}"></script>
+<script th:src="@{/static/layui/layui.all.js}"></script>
 <script th:inline="javascript">
 
     /*<![CDATA[*/
     layui.use(['table', 'form'], function () {
         var $ = layui.$,
-            form = layui.form;
+            form = layui.form,
+        table=layui.table;
         form.on('submit(urge)', function (data) {
-            console.log(data)
             $.ajax({
                 url: [[${ctx}]] + "/urge/add",
                 type: "post",
@@ -145,10 +139,26 @@
                 contentType: 'application/json;charset=utf-8',
                 data: JSON.stringify(data.field),
                 success: function (data) {
-                    layer.msg(data.message)
+                    layer.msg(data.message);
+                    $('form')[0].reset();
+                    log.reload();
                 }
             });
             return false;
+        });
+        var log= table.render({
+            elem: '#log'
+            , id: 'log'
+            , height: 315
+            , url: 'bycase' //数据接口
+            ,where:{cases:[[${cases.id}]]}
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'target', title: '催收对象', width: '30%', sort: true, fixed: 'left'}
+                , {field: 'result', title: '结果', width: '30%', sort: true}
+                , {field: 'status', title: '状态', width: '15%', sort: true}
+                , {field: 'createDate', title: '催收日期', width: '20%', sort: true}
+            ]]
         });
     })
     /*]]>*/

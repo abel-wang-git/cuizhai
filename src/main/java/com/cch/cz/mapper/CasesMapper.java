@@ -18,7 +18,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
      * 按地区分组
      * @return
      */
-    @Select("SELECT count(*) count,left(customer_residence_address,instr(customer_residence_address,'市')) as area FROM cuizhai.t_case  where company_id is null and status!=1  group by area")
+    @Select("SELECT count(*) count,left(customer_residence_address,instr(customer_residence_address,'市')) as area FROM cuizhai.t_case  where company_id =-1 and status!=1  group by area")
     @Results({
             @Result(property = "count", column = "count"),
             @Result(property = "area",column = "area"),
@@ -57,4 +57,13 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
      */
     @SelectProvider(type = CasesProvider.class,method = "listByStaff")
     List<Cases> listByStaff(@Param("staff") String staff);
+
+    @SelectProvider(type = CasesProvider.class,method = "listByCompany")
+    @Results({
+            @Result(property = "num", column = "num"),
+            @Result(property = "money",column = "money"),
+    })
+    List<Map> listByCompany(@Param("company") Long company,@Param("staff") String staff, @Param("status") int status);
+    @SelectProvider(type = CasesProvider.class,method = "dynamicList")
+    List<Cases> dynamicList(Cases cases);
 }

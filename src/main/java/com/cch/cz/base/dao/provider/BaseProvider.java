@@ -104,6 +104,7 @@ public class BaseProvider<M extends BaseEntity,PK> {
             StringBuilder where = new StringBuilder(" ");
             for (Field f: fields) {
                 f.setAccessible(true);
+                if(!Modifier.isPrivate(f.getModifiers()))continue;
                 if(f.getAnnotation(Id.class)!=null){
                     where.append(addUnderscores(f.getName())).append("='").append(f.get(m)).append("'");
                     continue;

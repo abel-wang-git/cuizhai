@@ -28,5 +28,31 @@ public interface CasesService extends BaseService<Cases,Long>  {
      */
     List<Cases> listByCompanyNoStaff(Long company);
 
+    /**
+     * 查找某个员工的cases
+     * @param staff
+     * @return
+     */
     List<Cases> listByStaff(String staff);
+
+    /**
+     *
+     * @param company 公司id
+     * @param status 状态id
+     * @return
+     */
+    List<Map> listByCompany(Long company,String staff,int status );
+
+    /**
+     *留案 撤案 结案
+     * @param id 操作的cases
+     * @param status  撤案=1 留案=2  结案=3
+     */
+    void managerCase(Long[] id,int status);
+
+    /**
+     * 动态查询
+     * @param cases
+     */
+    List<Cases> dynamicList(Cases cases);
 }

@@ -3,12 +3,16 @@ package com.cch.cz.common;
 import com.alibaba.fastjson.JSON;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by wanghuiwen on 17-2-23.
  */
 public class UtilFun {
+
+    public  static  final  String YYYYMMDD="yyyy-mm-dd hh:mm:ss";
     /**
      * 判断list不为空
      *
@@ -72,5 +76,11 @@ public class UtilFun {
     }
     public static void prinrObject(Object o){
         System.out.println(JSON.toJSONString(o));
+    }
+
+
+    public  static  String DateToString(Date date,String fromat){
+        SimpleDateFormat sdf = new SimpleDateFormat(fromat);
+        return sdf.format(date);
     }
 }

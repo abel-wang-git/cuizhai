@@ -2,8 +2,10 @@ package com.cch.cz.ctrl;
 
 import com.alibaba.fastjson.JSON;
 import com.cch.cz.authority.entity.User;
+import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.authority.service.UserService;
 import com.cch.cz.entity.Staff;
+import com.cch.cz.service.CasesService;
 import com.cch.cz.service.StaffService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/14.
@@ -33,10 +37,22 @@ public class Login {
     private UserService userService;
     @Resource
     private StaffService staffService;
-
+    @Resource
+    private CasesService casesService;
+    @Resource
+    private RoleService roleService;
     @GetMapping(value = "/")
     private String index(Model model){
-        model.addAttribute("cases",112);
+         Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
+         String staffId = staff.getLoginName();
+         if (staff.getLoginName()!=null&&roleService.findOne(Long.valueOf(staff.getPlace())).getDesign().equals("管理员")) staffId="";
+
+        List<Map> normal=casesService.listByCompany(staff.getCompanyId()!=null?staff.getCompanyId():null,staffId,0);
+
+        List<Map> end=casesService.listByCompany(staff.getCompanyId()!=null?staff.getCompanyId():null,staffId,3);
+
+        model.addAttribute("normal",normal);
+        model.addAttribute("end",end);
         return "/admin";
     }
 

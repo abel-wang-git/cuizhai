@@ -47,6 +47,7 @@ public class ExcelTool {
         cases.setStatus(0);
         //员工id设置为未分配
         cases.setStaffId(Cases.NOSTAFF);
+        cases.setCompanyId(-1L);
         for (int j = 0; j < cell_num; j++) {
            Object o =title.get(j).toString();
             if(title.get(j).toString().equals("合同号")){

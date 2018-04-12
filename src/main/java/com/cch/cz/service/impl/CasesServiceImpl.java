@@ -1,6 +1,7 @@
 package com.cch.cz.service.impl;
 
 import com.cch.cz.base.service.impl.BaseServiceImpl;
+import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.mapper.CasesMapper;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,4 +61,31 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases,Long> implements Cas
     public List<Cases> listByStaff(String staff) {
         return casesMapper.listByStaff(staff);
     }
+
+    @Override
+    public List<Map> listByCompany(Long company,String staff, int status ) {
+        List<Map> list=casesMapper.listByCompany(company,staff,status);
+        Map map = new HashMap();
+        map.put("money",0);
+        map.put("num",0);
+        if(!UtilFun.isEmptyList(list)||list.size()<=0)list.add(map);
+        return list;
+    }
+
+    @Override
+    public void managerCase(Long[] id, int status) {
+        for (int i = 0; i <id.length ; i++) {
+            Cases cases= this.findOne(id[i]);
+            cases.setStatus(status);
+            this.update(cases);
+        }
+
+    }
+
+    @Override
+    public List<Cases> dynamicList(Cases cases) {
+         return  casesMapper.dynamicList(cases);
+    }
+
+
 }

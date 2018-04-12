@@ -1,6 +1,7 @@
 package com.cch.cz.entity;
 
 import com.cch.cz.base.entity.BaseEntity;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import javax.persistence.*;
 
@@ -13,14 +14,22 @@ public class Cases extends BaseEntity {
     /**
      * 被撤回的case
      */
-    @Transient
     public  final  static  int REVOKE=1;
     /**
      * 留案的case
      */
-    @Transient
     public  final  static  int RETAIN=2;
-
+    /**
+     * 委案上传后的默认状态，上传后还未做任何处理
+     */
+    public final static int NORMAL=0;
+    /**
+     * 结案
+     */
+    public final static int END=3;
+    /**
+     * 员工的初始值 表示还未分配给员工
+     */
     public final static String NOSTAFF="0";
 
     @Id
@@ -128,7 +137,7 @@ public class Cases extends BaseEntity {
     /*代扣账号*/
     private String withholdingAccount;
     /**
-     * 分配公司
+     * 分配公司 初始值为-1
      */
     private Long CompanyId;
     /**
@@ -136,6 +145,11 @@ public class Cases extends BaseEntity {
      * 0 为未分配
      */
     private String StaffId;
+    /**
+     * 最后一次催记日期
+     * 0 为未分配
+     */
+    private String lastUrge;
 
     /**
      * case 的状态 撤案=1 留案=-2 正常=0 已完成=3
@@ -573,5 +587,13 @@ public class Cases extends BaseEntity {
 
     public void setStaffId(String staffId) {
         StaffId = staffId;
+    }
+
+    public String getLastUrge() {
+        return lastUrge;
+    }
+
+    public void setLastUrge(String lastUrge) {
+        this.lastUrge = lastUrge;
     }
 }

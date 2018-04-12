@@ -17,7 +17,7 @@ public class CompanyProvider extends BaseProvider<Company,Long> {
             FROM(BuildSql.tablename(Company.class));
             WHERE("id=#{company} or p_id = #{company}");
         }}.toString();
-        logger.error(sql);
+        logger.info(sql);
         return sql;
     }
 }

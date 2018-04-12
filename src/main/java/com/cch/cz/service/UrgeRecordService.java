@@ -14,4 +14,6 @@ public interface UrgeRecordService extends BaseService<UrgeRecord,Long>  {
      * @param id
      */
     List<UrgeRecord> findByCase(Long id);
+
+    void save(UrgeRecord urgeRecord);
 }

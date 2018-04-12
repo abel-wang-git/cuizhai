@@ -9,6 +9,7 @@ import com.cch.cz.entity.Staff;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.CompanyService;
 import com.github.pagehelper.PageHelper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
@@ -135,6 +136,20 @@ public class CaseCtrl {
         List<Cases> cases= casesService.listByStaff(staff);
 
         return new Table(cases.size(),cases);
+    }
+
+    @PostMapping(value = "/manager")
+    @ResponseBody
+    public AjaxReturn manager(@RequestParam("cases[]") Long[] ids, @Param("status") int status){
+        casesService.managerCase(ids,status);
+        return  new AjaxReturn(0,"撤案成功");
+    }
+
+    @PostMapping(value = "/dynamic")
+    @ResponseBody
+    public List<Cases> manager(@RequestBody Cases data){
+
+    return casesService.dynamicList(data);
     }
 
 

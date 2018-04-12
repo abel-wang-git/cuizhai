@@ -36,10 +36,19 @@
 
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
-                        <div>
-                            <p th:text="${cases}">当前委案数量100</p>
-                            <p>已经结案:2000</p>
-                        </div>
+                        <fieldset class="layui-elem-field layui-col-md6">
+                            <legend>统计信息</legend>
+                                <div>
+                                        当前委案数量：
+                                        <span th:text="${normal[0]['num']}"></span><br/>
+                                        当前委案总金额：
+                                        <span th:text="${#numbers.formatDecimal(normal[0]['money'],3,2)}"></span><br/>
+                                        当前结案数量：
+                                        <span th:text="${end[0]['num']}"></span><br/>
+                                        当前结案总金额：
+                                        <span th:text="${#numbers.formatDecimal(end[0]['money'],3,2)}"></span><br/>
+                                </div>
+                        </fieldset>
                     </div>
                 </div>
 
