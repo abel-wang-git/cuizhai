@@ -23,6 +23,7 @@ public class ExcelTool {
         // 创建对Excel工作簿文件的引用
         Workbook workbook = WorkbookFactory.create(new FileInputStream(excel));
         List<Cases> result = new ArrayList();
+        String caseName =excel.getName().split("-")[1];
         //遍历sheet
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
             Sheet sheet = workbook.getSheetAt(i);
@@ -31,17 +32,18 @@ public class ExcelTool {
             int row_num = sheet.getLastRowNum();
             // 遍历内容行
             for (int j = index; j <= row_num; j++) {
-                setAttr(result, sheet, title, j);
+                setAttr(result, sheet, title, j,caseName);
             }
         }
         /*UtilFun.prinrObject(result);*/
         return result;
     }
 
-    private static void setAttr(List result, Sheet sheet, List title, int i) {
+    private static void setAttr(List result, Sheet sheet, List title, int i, String caseName) {
         Cases cases = new Cases();
         Row r = sheet.getRow(i);
         int cell_num = r.getLastCellNum();
+        cases.setCaseName(caseName);
         cases.setStatus(Cases.NORMAL);
         //员工id设置为未分配
         cases.setStaffId(Cases.NOSTAFF);

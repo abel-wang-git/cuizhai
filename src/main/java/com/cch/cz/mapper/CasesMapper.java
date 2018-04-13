@@ -26,6 +26,18 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
     List<Map> groupCasesByArea();
 
     /**
+     * 按案件名称分组
+     * @return 案件名称 和该名称的案件数量
+     */
+    @SelectProvider(type = CasesProvider.class,method = "groupCasesByCaseName")
+    @Results({
+            @Result(property = "count", column = "count"),
+            @Result(property = "caseName",column = "caseName"),
+    })
+    List<Map> groupCasesByCaseName(@Param("company") String company);
+
+
+    /**
      * 按地区更新company
      * @param company
      * @param area

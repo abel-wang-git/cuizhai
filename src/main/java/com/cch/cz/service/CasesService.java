@@ -57,5 +57,15 @@ public interface CasesService extends BaseService<Cases,Long>  {
      */
     List<Cases> dynamicList(Cases cases);
 
+    /**
+     *
+      * @param company
+     */
     void randomAllot(String[] company);
+
+    /**
+     * 按案件名称分组查询
+     * @param company
+     */
+    List<Map> groupByCaseName(String company);
 }

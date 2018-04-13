@@ -83,10 +83,8 @@ public class UploadUtil {
                         if (!upload.exists()) {
                             upload.mkdirs();
                         }
-                        // 重命名上传后的文件名 111112323.jpg
-                        fileName = new Date().getTime() + suffix;
                         // 定义上传路径 .../upload/111112323.jpg
-                        uploadFile = new File(upload + File.separator + fileName);
+                        uploadFile = new File(upload + File.separator +  new Date().getTime()+"-"+myFileName);
                         file.transferTo(uploadFile);
                     }
                 }

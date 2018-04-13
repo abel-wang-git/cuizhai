@@ -175,6 +175,8 @@ public class Cases extends BaseEntity {
      */
     private int status;
 
+    private String caseName;
+
     public int getStatus() {
         return status;
     }
@@ -645,5 +647,13 @@ public class Cases extends BaseEntity {
 
     public void setRethinDay(int rethinDay) {
         this.rethinDay = rethinDay;
+    }
+
+    public String getCaseName() {
+        return caseName;
+    }
+
+    public void setCaseName(String caseName) {
+        this.caseName = caseName;
     }
 }

@@ -7,14 +7,14 @@
 <body>
 <fieldset th:if="${company.pId==null}" class="layui-elem-field">
     <legend>分配到公司</legend>
-<!--    <a class="layui-btn  layui-btn-xs" id="caloat">分配</a>-->
+    <a class="layui-btn  layui-btn-xs" id="caloat">分配</a>
     <!--公司列表-->
     <table id="allots" lay-filter="allots"></table>
 </fieldset>
 <!--当登录所属公司的员工列表-->
 <fieldset class="layui-elem-field">
     <legend>分配到员工</legend>
-<!--    <a class="layui-btn  layui-btn-xs" id="sllotrd">分配</a>-->
+    <a class="layui-btn  layui-btn-xs" id="sllotrd">分配</a>
     <table id="staffs" lay-filter="staffs"></table>
 </fieldset>
 <!--操作栏-->
@@ -32,10 +32,10 @@
 </div>
 </body>
 
-<div style="display: none" id="allotc">
-
+<div style="display: none;width: 380px" id="allotc">
+    <table id="caseName" lay-filter="caseName"></table>
     <form class="layui-form">
-        <div class="layui-form-item" >
+        <div class="layui-form-item">
             <div class="layui-input-block" style="float:left;margin-left: 0" th:each="c:${coms}">
                 <input type="checkbox" lay-filter="chkcom" name="company" th:value="${c.id}" th:title="${c.name}"/>
             </div>
@@ -49,7 +49,7 @@
     layui.use(['table', 'form'], function () {
         var table = layui.table
             , $ = layui.$
-            ,form=layui.form;
+            , form = layui.form;
         table.render({
             elem: '#allots'
             , id: 'allots'
@@ -71,6 +71,18 @@
             , cols: [[ //表头
                 {field: 'name', title: '员工姓名', width: '60%', sort: true, fixed: 'left'}
                 , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase',}
+            ]]
+        });
+
+        table.render({
+            elem: '#caseName'
+            , id: 'caseName'
+            , url: 'groupByname' //数据接口
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'caseName', title: '案件名', width: 100, sort: true, fixed: 'left'}
+                ,{field: 'count', title: '案件数', width: 100}
+                ,{fixed: 'chk', width: 100, align: 'center', type: 'checkbox',fixed: 'right'}
             ]]
         });
 
@@ -161,12 +173,12 @@
                 }
             });
         });
-        var checompany=[];
-        form.on('checkbox(chkcom)', function(data){
-            if(data.elem.checked){
+        var checompany = [];
+        form.on('checkbox(chkcom)', function (data) {
+            if (data.elem.checked) {
                 checompany.push(data.value);
-            }else{
-                checompany.splice(checompany.indexOf(data.value),1)
+            } else {
+                checompany.splice(checompany.indexOf(data.value), 1)
             }
         });
 
@@ -179,6 +191,9 @@
                 , btn: ['添加', '取消']
                 , yes: function (index) {
                     console.log(checompany)
+                    var checkStatus = table.checkStatus('caseName');
+                    console.log(checkStatus);
+
 
                 }
             })

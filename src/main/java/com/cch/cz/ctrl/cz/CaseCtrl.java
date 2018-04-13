@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/16.
@@ -173,4 +174,13 @@ public class CaseCtrl {
         return new AjaxReturn(0,"分配成功");
     }
 
+    @PostMapping(value = "/groupByname")
+    @ResponseBody
+    public Table groupByCaseName(){
+        List<Map> list=casesService.groupByCaseName(null);
+        Table table = new Table();
+        table.setData(list);
+        table.setCount(list.size());
+        return table;
+    }
 }

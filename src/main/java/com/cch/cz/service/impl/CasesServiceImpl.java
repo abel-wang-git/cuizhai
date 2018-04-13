@@ -104,5 +104,10 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
         }
     }
 
+    @Override
+    public List<Map> groupByCaseName(String company) {
+        return casesMapper.groupCasesByCaseName(company);
+    }
+
 
 }
