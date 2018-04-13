@@ -18,7 +18,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
      * 按地区分组
      * @return
      */
-    @Select("SELECT count(*) count,left(customer_residence_address,instr(customer_residence_address,'市')) as area FROM cuizhai.t_case  where company_id =-1 and status!=1  group by area")
+    @Select("SELECT count(*) count,left(customer_residence_address,instr(customer_residence_address,'市')) as area FROM cuizhai.t_case  where company_id =-1 and status=0 group by area")
     @Results({
             @Result(property = "count", column = "count"),
             @Result(property = "area",column = "area"),
@@ -30,7 +30,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
      * @param company
      * @param area
      */
-    @Update("UPDATE t_case SET company_id=#{company} WHERE customer_residence_address like #{area}")
+    @Update("UPDATE t_case SET company_id=#{company} WHERE customer_residence_address like #{area} and status=0")
     void allotCompany(@Param("company") String company,@Param("area") String area);
 
     /**
@@ -38,7 +38,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
      * @param caseId
      * @param staff
      */
-    @Update("UPDATE t_case SET staff_id=#{staff} WHERE id=#{case}")
+    @Update("UPDATE t_case SET staff_id=#{staff} WHERE id=#{case} and status=0")
     void allotStaff(@Param("case") Long caseId, @Param("staff") String staff);
 
     /**
@@ -66,4 +66,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
     List<Map> listByCompany(@Param("company") Long company,@Param("staff") String staff, @Param("status") int status);
     @SelectProvider(type = CasesProvider.class,method = "dynamicList")
     List<Cases> dynamicList(Cases cases);
+
+    @Update("UPDATE t_case SET company_id=#{company} WHERE  status=0")
+    void randomAllot(@Param("company") String company);
 }

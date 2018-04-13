@@ -10,23 +10,23 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/18.
- *
  */
 @Service
-public class CasesServiceImpl extends BaseServiceImpl<Cases,Long> implements CasesService {
+public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements CasesService {
     @Resource
     private CasesMapper casesMapper;
 
     @Override
     @Transactional
     public void expCase(List<Cases> casesList) {
-        for (Cases c:casesList) {
+        for (Cases c : casesList) {
             casesMapper.save(c);
         }
     }
@@ -39,22 +39,22 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases,Long> implements Cas
     @Override
     @Transactional
     public void allotCaseToCompany(List<String> areas, String company) {
-        for (String area:areas) {
-            casesMapper.allotCompany(company,"%"+area+"%");
+        for (String area : areas) {
+            casesMapper.allotCompany(company, "%" + area + "%");
         }
     }
 
     @Override
     @Transactional
     public void allotStaff(List<Cases> cases, Staff staff) {
-        for (Cases c:cases) {
-            casesMapper.allotStaff(c.getId(),staff.getLoginName());
+        for (Cases c : cases) {
+            casesMapper.allotStaff(c.getId(), staff.getLoginName());
         }
     }
 
     @Override
     public List<Cases> listByCompanyNoStaff(Long company) {
-        return casesMapper. listByCompanyNoStaff(company);
+        return casesMapper.listByCompanyNoStaff(company);
     }
 
     @Override
@@ -63,20 +63,30 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases,Long> implements Cas
     }
 
     @Override
-    public List<Map> listByCompany(Long company,String staff, int status ) {
-        List<Map> list=casesMapper.listByCompany(company,staff,status);
+    public List<Map> listByCompany(Long company, String staff, int status) {
+        List<Map> list = casesMapper.listByCompany(company, staff, status);
         Map map = new HashMap();
-        map.put("money",0);
-        map.put("num",0);
-        if(!UtilFun.isEmptyList(list)||list.size()<=0)list.add(map);
+        map.put("money", 0);
+        map.put("num", 0);
+        if (!UtilFun.isEmptyList(list) || list.size() <= 0) list.add(map);
         return list;
     }
 
     @Override
-    public void managerCase(Long[] id, int status) {
-        for (int i = 0; i <id.length ; i++) {
-            Cases cases= this.findOne(id[i]);
+    public void managerCase(Long[] id, int status, int day) {
+        for (int i = 0; i < id.length; i++) {
+            Cases cases = this.findOne(id[i]);
             cases.setStatus(status);
+
+            if (status == Cases.REVOKE) cases.setRevokeDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
+
+            if (status == Cases.END) cases.setEndDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
+
+            if (status == Cases.RETAIN) {
+                cases.setRethinDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
+                cases.setStopAppoint(UtilFun.DateToString(UtilFun.addDay(cases.getStopAppoint(),day,UtilFun.YYYYMMDD2),UtilFun.YYYYMMDD2));
+                cases.setRethinDay(day);
+            }
             this.update(cases);
         }
 
@@ -84,7 +94,14 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases,Long> implements Cas
 
     @Override
     public List<Cases> dynamicList(Cases cases) {
-         return  casesMapper.dynamicList(cases);
+        return casesMapper.dynamicList(cases);
+    }
+
+    @Override
+    public void randomAllot(String[] company) {
+        for (int i = 0; i < company.length; i++) {
+            casesMapper.randomAllot(company[i]);
+        }
     }
 
 

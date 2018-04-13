@@ -1,4 +1,4 @@
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <title>委案管理</title>
@@ -7,10 +7,11 @@
 <body>
 
 <button type="button" class="layui-btn layui-btn-sm" id="revoke">撤案</button>
-<button type="button" class="layui-btn layui-btn-sm" id="retain">留案</button>
+<button type="button" class="layui-btn layui-btn-sm" id="retain" lay-filter="retain">留案</button>
 <button type="button" class="layui-btn layui-btn-sm" id="upload">上传委案</button>
-<form  class="layui-form where"  method="post" id="search">
-    <div class="layui-inline" >
+
+<form class="layui-form where" method="post" id="search">
+    <div class="layui-inline">
         <label class="layui-form-label">状态：</label>
         <div class="layui-input-inline" style="width: 100px;">
             <select name="status" class="layui-input">
@@ -22,21 +23,26 @@
             </select>
         </div>
     </div>
-    <div class="layui-inline" >
+    <div class="layui-inline">
         <label class="layui-form-label">姓名：</label>
         <div class="layui-input-inline" style="width: 100px;">
             <input name="name" type="text" class="layui-input"/>
         </div>
     </div>
-    <div class="layui-inline" >
+    <div class="layui-inline">
         <label class="layui-form-label">手机：</label>
         <div class="layui-input-inline" style="width: 100px;">
             <input name="customerPhoneNumber" type="text" class="layui-input"/>
         </div>
     </div>
-    <button class="layui-btn layui-btn-sm"  lay-submit="lay-submit"  lay-filter="search" >查询</button>
+    <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
 </form>
+
 <table id="cases" lay-filter="cases"></table>
+<div class="layui-inline" style="display: none;" id="day">
+    <label class="layui-form-label">留案期</label><input type="text" required="required " placeholder="天" value=""
+                                                      class="layui-input" style="width: 60px" name="rethinDay"/>
+</div>
 <script type="text/html" id="status">
     {{#  if(d.status === 3){ }}
     结案
@@ -52,12 +58,16 @@
     撤案
     {{#  } }}
 </script>
+
+<script type="text/html" id="name">
+    <span style="border-bottom:  1px solid #0a0fff;" lay-event="detail">{{ d.name}}</span>
+</script>
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
 
-/*<![CDATA[*/
-    layui.use(['upload','table','form'], function(){
-        var upload = layui.upload,$ = layui.$, table = layui.table,form=layui.form;
+    /*<![CDATA[*/
+    layui.use(['upload', 'table', 'form'], function () {
+        var upload = layui.upload, $ = layui.$, table = layui.table, form = layui.form;
         var cases = table.render({
             elem: '#cases'
             , id: 'cases'
@@ -68,7 +78,7 @@
             , page: true //开启分页
             , cols: [[ //表头
                 {field: 'chk', width: 35, type: 'checkbox', fixed: 'left'}
-                , {field: 'name', title: '姓名', width: '8%', sort: true}
+                , {field: 'name', title: '姓名', width: '8%', sort: true, toolbar: '#name'}
                 , {field: 'customerPhoneNumber', title: '手机', width: '10%'}
                 , {field: 'idCard', title: '身份证', width: '10%'}
                 , {field: 'loanPrincipal', title: '贷款本金', width: '10%'}
@@ -112,7 +122,7 @@
                     dataType: 'json',
                     contentType: 'application/json;charset=utf-8',
                     data: JSON.stringify(res.data.data),
-                    success:function (data) {
+                    success: function (data) {
                         cases.reload();
                         layer.msg(res.message);
                         layer.closeAll('loading');
@@ -120,7 +130,7 @@
                 });
 
             }
-            ,error: function(){
+            , error: function () {
                 layer.msg('上传出错');
                 layer.closeAll('loading');
             }
@@ -150,33 +160,116 @@
             for (var i = 0; i < checkStatus.data.length; i++) {
                 ids.push(checkStatus.data[i].id);
             }
-            $.ajax({
-                url: [[${ctx}]] + "/case/manager",
-                type: "post",
-                dataType: 'json',
-                data: {cases: ids, status: 2},
-                success: function (data) {
-                    layer.msg(data.message);
-                    cases.reload();
+            if (ids.length <= 0) {
+                layer.msg("请选择要留案的委案");
+                return;
+            }
+
+            layer.open({
+                type: 1
+                , title: '留案'
+                , area: ['250px', '150px']
+                , content: $("#day")
+                , btn: ['添加', '取消']
+                , yes: function (index, layero) {
+                    var day = $('input[name="rethinDay"]').val();
+                    if (day === "") {
+                        layer.msg("请填写留案期");
+                        return;
+                    }
+                    $.ajax({
+                        url: [[${ctx}]] + "/case/manager",
+                        type: "post",
+                        dataType: 'json',
+                        data: {cases: ids, status: 2, rethinDay: day},
+                        success: function (data) {
+                            layer.close(index)
+                            layer.msg(data.message);
+                            cases.reload();
+                        }
+                    });
                 }
             });
         });
-
-        form.on('submit(search)', function(data){
+        //查询
+        form.on('submit(search)', function (data) {
             $.ajax({
-                url:"dynamic",
-                type:"post",
-                dataType:'json',
-                contentType:'application/json;charset=utf-8',
-                data:JSON.stringify(data.field),
-                success:function (data) {
-                    cases.reload({url:'',data:data});
+                url: "dynamic",
+                type: "post",
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(data.field),
+                success: function (data) {
+                    cases.reload({url: '', data: data});
                 }
             });
             return false;
         });
+
+        table.on('tool(cases)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            console.log(obj.data)
+
+            layer.open({
+                type: 1,
+                title:false,
+                area:[600,400],
+                content:'<div style="background-color: lightgreen">' +
+                '<span>姓名：'+obj.data.name+'</span> ' +
+                '<span>性别：'+obj.data.sex+'</span>' +
+                '<p>身份证：'+obj.data.idCard+'</p>' +
+                '<p>城市：'+obj.data.city+'</p>' +
+                '<p>客户手机：'+obj.data.customerPhoneNumber+'</p>' +
+                '<p>客户户籍地址：'+obj.data.customerAddress+'</p>' +
+                '<p>客户邮箱：'+obj.data.customerMail+'</p>' +
+                '<p>贷款类型：'+obj.data.loanType+'</p>' +
+                '<p>贷款本金：'+obj.data.loanPrincipal+'</p>' +
+                '<p>期款：'+obj.data.installmentMoney+'</p>' +
+                '<p>期数：'+obj.data.installmentNum+'</p>' +
+                '<p>已还款金额：'+obj.data.repaymentMoney+'</p>' +
+                '<p>最后还款日：'+obj.data.deadline+'</p>' +
+                '<p>逾期天数：'+obj.data.overrangingDay+'</p>' +
+                '<p>取消分期时间：'+obj.data.cancelInstalments+'</p>' +
+                '<p>未付期款：'+obj.data.nnpaidInstallment+'</p>' +
+                '<p>未付滞纳金：'+obj.data.lateFee+'</p>' +
+                '<p>欠款金额：'+obj.data.arrears+'</p>' +
+                '<p>委外催收费：'+obj.data.serviceCharge+'</p>' +
+                '<p>总欠款：'+obj.data.sumArrears+'</p>' +
+                '<p>还款账号：'+obj.data.repaymentAccount+'</p>' +
+                '<p>客户办公电话：'+obj.data.customerOfficePhone+'</p>' +
+                '<p>客户公司名称：'+obj.data.customerCompany+'</p>' +
+                '<p>客户公司地址：'+obj.data.customerCompanyAddress+'</p>' +
+                '<p>客户公司部门：'+obj.data.customerDepartment+'</p>' +
+                '<p>客户住宅电话：'+obj.data.customerResidencePhone+'</p>' +
+                '<p>客户配偶姓名：'+obj.data.customerSpouse+'</p>' +
+                '<p>客户配偶联系电话：'+obj.data.customerSpousePhone+'</p>' +
+                '<p>客户配偶联系电话：'+obj.data.customerSpousePhone+'</p>' +
+                '<p>客户亲戚姓名：'+obj.data.customerRelativeName+'</p>' +
+                '<p>客户与亲戚关系：'+obj.data.customerRelationship+'</p>' +
+                '<p>客户亲戚联系电话：'+obj.data.customerRelativePhone+'</p>' +
+                '<p>其他联系人姓名：'+obj.data.customerRelativeOther+'</p>' +
+                '<p>其他联系人关系：'+obj.data.customerRelaOther+'</p>' +
+                '<p>委外公司：'+obj.data.appointCompany+'</p> ' +
+                '<p>委派日期：'+obj.data.appointData+'</p>' +
+                '<p>退案日期：'+obj.data.stopAppoint+'</p>' +
+                '<p>地区：'+obj.data.region+'</p>' +
+                '<p>合同数量：'+obj.data.contractsNum+'</p>' +
+                '<p>合同申请日：'+obj.data.contractApplyDate+'</p>' +
+                '<p>户名：'+obj.data.accountMaster+'</p>' +
+                '<p>开户行：'+obj.data.bank+'</p>' +
+                '<p>商品：'+obj.data.commodity+'</p>' +
+                '<p>品牌：'+obj.data.brand+'</p>' +
+                '<p>POS点：'+obj.data.posPlace+'</p>' +
+                '<p>代扣开户行：'+obj.data.withholding+'</p>' +
+                '<p>代扣账号：'+obj.data.withholdingAccount+'</p>' +
+                ' </div>'
+            });
+        });
     });
-/*]]>*/
+    /*]]>*/
 </script>
+
 </body>
 </html>

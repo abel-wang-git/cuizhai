@@ -37,7 +37,7 @@ public class CzInterceptor implements HandlerInterceptor {
      * 回值为false，当preHandle的返回值为false的时候整个请求就结束了。
      */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        WhiteList whiteList = new WhiteList();
+/*        WhiteList whiteList = new WhiteList();
         whiteList.setIp(UtilFun.getIP(request));
         List<WhiteList> list = whiteListService.findAll();
         boolean falg=false;
@@ -49,7 +49,7 @@ public class CzInterceptor implements HandlerInterceptor {
             if(UtilFun.getIP(request).equals(w.getIp())){
                 falg=true;
             }
-        }
+        }*/
         return true;
     }
 

@@ -60,10 +60,17 @@
             ]]
             ,done: function(res, curr, count){
                 layui.$('table tbody tr ').each(function () {
-
-                    if($(this).children().eq(7).text().trim()=='结案'){
-                        $(this).css('background-color','#5FB878');
-                        $(this).css('color','#2F4056');
+                    if ($(this).children().eq(10).text().trim() == '撤案') {
+                        $(this).css('background-color', '#FF5722');
+                        $(this).css('color', '#FFB90F');
+                    }
+                    if ($(this).children().eq(10).text().trim() == '留案') {
+                        $(this).css('background-color', '#5FB878');
+                        $(this).css('color', '#FFB800');
+                    }
+                    if ($(this).children().eq(10).text().trim() == '结案') {
+                        $(this).css('background-color', '#36b811');
+                        $(this).css('color', '#ffd98c');
                     }
                 })
             }

@@ -13,7 +13,7 @@
                 </li>
 
 
-                <li class="layui-nav-item ">
+                <li  shiro:hasAnyRoles="superadmin,admin" class="layui-nav-item ">
                     <a href="javascript:;">系统配置</a>
                     <dl class="layui-nav-child">
                         <dd shiro:hasRole="superadmin"><a href="javascript:;" data-url="white/list" data-id="3">白名单</a></dd>

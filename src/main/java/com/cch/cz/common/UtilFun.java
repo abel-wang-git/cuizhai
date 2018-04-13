@@ -3,7 +3,11 @@ package com.cch.cz.common;
 import com.alibaba.fastjson.JSON;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.crypto.Data;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +16,8 @@ import java.util.List;
  */
 public class UtilFun {
 
-    public  static  final  String YYYYMMDD="yyyy-mm-dd hh:mm:ss";
+    public  static  final  String YYYYMMDD="yyyy-MM-dd hh:mm:ss";
+    public  static  final  String YYYYMMDD2="yyyy/MM/dd";
     /**
      * 判断list不为空
      *
@@ -82,5 +87,33 @@ public class UtilFun {
     public  static  String DateToString(Date date,String fromat){
         SimpleDateFormat sdf = new SimpleDateFormat(fromat);
         return sdf.format(date);
+    }
+
+    public  static Date StringToDate(String datestr,String formatstr){
+        DateFormat format= new SimpleDateFormat(formatstr);
+        try {
+            Date date =format.parse(datestr);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public static  Date addDay(String date,int day){
+        return addDay(StringToDate(date,YYYYMMDD),day);
+    }
+
+    public static  Date addDay(String date,int day,String fromat){
+        return addDay(StringToDate(date,fromat),day);
+    }
+
+
+    public static Date addDay(Date date,int day){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE,day);
+        return calendar.getTime();
     }
 }

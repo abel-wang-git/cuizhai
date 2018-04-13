@@ -46,13 +46,16 @@ public interface CasesService extends BaseService<Cases,Long>  {
     /**
      *留案 撤案 结案
      * @param id 操作的cases
+     * @param day 留案期
      * @param status  撤案=1 留案=2  结案=3
      */
-    void managerCase(Long[] id,int status);
+    void managerCase(Long[] id, int status, int day);
 
     /**
      * 动态查询
      * @param cases
      */
     List<Cases> dynamicList(Cases cases);
+
+    void randomAllot(String[] company);
 }
