@@ -57,15 +57,22 @@ public interface CasesService extends BaseService<Cases,Long>  {
      */
     List<Cases> dynamicList(Cases cases);
 
+
     /**
-     *
-      * @param company
+     * 分配ｃａｓｅ　根据案件名称
+     * @param company 公司ｉｄ
+     * @param cases　要分配的ｃａｓｅ数量和案件名称
      */
-    void randomAllot(String[] company,List<Map> list);
+    void randomAllot(String[] company,List<Map> cases);
 
     /**
      * 按案件名称分组查询
-     * @param company
      */
-    List<Map> groupByCaseName(String company);
+    List<Map> groupByCaseName();
+
+    /**
+     *
+     * @param staff，
+     */
+    void randomToStaff(String[] staff,int num,Long company);
 }

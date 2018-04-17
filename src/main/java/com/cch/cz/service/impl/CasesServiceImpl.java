@@ -98,15 +98,27 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     }
 
     @Override
-    public void randomAllot(String[] company,List<Map> list) {
-        for (int i = 0; i < company.length; i++) {
-            casesMapper.randomAllot(company[i]);
+    public void randomAllot(String[] company,List<Map> cases) {
+        for (int i = 0; i < cases.size(); i++) {
+            for (int j = 0; j <company.length ; j++) {
+                casesMapper.randomAllot(company[j],
+                        cases.get(i).get("caseName").toString(),
+                        Integer.parseInt(cases.get(i).get("count").toString())/company.length);
+            }
         }
     }
 
     @Override
-    public List<Map> groupByCaseName(String company) {
-        return casesMapper.groupCasesByCaseName(company);
+    public List<Map> groupByCaseName() {
+        return casesMapper.groupCasesByCaseName();
+    }
+
+    @Override
+    public void randomToStaff(String[] staff,int num,Long company) {
+        for (int i = 0; i < staff.length; i++) {
+
+            casesMapper.randomToStaff(staff[i], num/staff.length,company);
+        }
     }
 
 

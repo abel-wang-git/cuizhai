@@ -15,8 +15,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
     public String listByCompanyNoStaff(Map<String, Object> para) {
         String sql = new SQL() {{
             SELECT(BuildSql.select(Cases.class));
-            FROM(" t_case");
-            WHERE(" company_id=" + para.get("company") + " and staff_id ='0'");
+            FROM(" t_case ");
+            WHERE(" company_id=" + para.get("company") + " and staff_id is null");
         }}.toString();
         logger.info(sql);
         return sql;
@@ -70,18 +70,39 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
         return sql;
     }
 
-    public String groupCasesByCaseName(Map<String, Object> para) {
+    public String groupCasesByCaseName() {
         String sql = new SQL() {{
-            StringBuilder where = new StringBuilder(" status=0 ");
+            StringBuilder where = new StringBuilder(" status=0 and company_id=-1 ");
              SELECT(" count(*) count ,COALESCE(case_name,'无名称') as caseName ");
              FROM(BuildSql.tablename(Cases.class));
-             if(para.get("company")!=null){
-                where.append(" company_id=#{company}");
-             }
             GROUP_BY( "case_name");
              WHERE(where.toString());
         }}.toString();
         logger.info(sql);
         return sql;
     }
+
+    public String randomAllot(Map<String,Object> para){
+        String sql=new SQL(){{
+            UPDATE(BuildSql.tablename(Cases.class));
+            SET(" company_id = #{company} ");
+            WHERE(" id in( select id from (select @rownum:=@rownum+1 as rownum,id " +
+                    "from (SELECT @rownum:=0) r " +
+                    ",t_case where case_name=#{name} and status = 0 and company_id=-1) as a where  rownum <= #{num})");
+        }}.toString();
+        logger.info(sql);
+        return sql ;
+    }
+
+
+    public String randomToStaff(Map<String,Object> para){
+        String sql=new SQL(){{
+            UPDATE(BuildSql.tablename(Cases.class));
+            SET(" staff_id=#{staff} ");
+            WHERE(" id in(select id from (select @rownum:=@rownum+1 as rownum,id from (SELECT @rownum:=0) r ,t_case where status = 0 and company_id=#{company} and staff_id is null) as a where  rownum <= #{num} )");
+        }}.toString();
+        logger.info(sql);
+        return sql;
+    }
+
 }

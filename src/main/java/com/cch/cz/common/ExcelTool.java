@@ -46,7 +46,6 @@ public class ExcelTool {
         cases.setCaseName(caseName);
         cases.setStatus(Cases.NORMAL);
         //员工id设置为未分配
-        cases.setStaffId(Cases.NOSTAFF);
         cases.setCompanyId(-1L);
         for (int j = 0; j < cell_num; j++) {
             Cell curr = r.getCell(j);

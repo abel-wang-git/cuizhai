@@ -9,6 +9,7 @@ import com.cch.cz.entity.Company;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.CompanyService;
+import com.cch.cz.service.StaffService;
 import com.github.pagehelper.PageHelper;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,8 @@ public class CaseCtrl {
     private CasesService casesService;
     @Resource
     private CompanyService companyService;
+    @Resource
+    private StaffService staffService;
 
     @GetMapping(value = "/up")
     public String toCase() {
@@ -60,8 +63,13 @@ public class CaseCtrl {
     public String allotCase(Model model) {
         Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
         Company company = companyService.findOne(staff.getCompanyId());
+
         model.addAttribute((company == null ? new Company() : company));
         List<Company> list = companyService.listBystaff(staff);
+
+        List<Staff> staffs=staffService.listByCompany((company == null ? null : Long.toString(company.getId())));
+        model.addAttribute("staffs",staffs);
+
         model.addAttribute("coms",list);
         return "/cz/cases/allot";
     }
@@ -169,16 +177,31 @@ public class CaseCtrl {
 
     @PostMapping(value = "/random")
     @ResponseBody
-    public AjaxReturn randomAllot(@RequestParam("companies")String companies,@RequestParam("names[]") String[] names){
-        List<Map> list=JSONArray.parseArray(companies,Map.class);
-        casesService.randomAllot(names,list);
+    public AjaxReturn randomAllot(@RequestParam("companies")String casename,@RequestParam("names[]") String[] company){
+        List<Map> cases=JSONArray.parseArray(casename,Map.class);
+        casesService.randomAllot(company,cases);
+        return new AjaxReturn(0,"分配成功");
+    }
+
+    /**
+     * 随机分配到员工
+     * @param staff
+     * @return
+     */
+    @PostMapping(value = "/randomtostaff")
+    @ResponseBody
+    public AjaxReturn randomToStaff(@RequestParam("staff[]")String[] staff){
+        Staff curr = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
+        //当前公司未分配的ｃａｓｅ
+        List<Cases> cases = casesService.listByCompanyNoStaff(curr.getCompanyId());
+        casesService.randomToStaff(staff,cases.size(),curr.getCompanyId());
         return new AjaxReturn(0,"分配成功");
     }
 
     @PostMapping(value = "/groupByname")
     @ResponseBody
     public Table groupByCaseName(){
-        List<Map> list=casesService.groupByCaseName(null);
+        List<Map> list=casesService.groupByCaseName();
         Table table = new Table();
         table.setData(list);
         table.setCount(list.size());

@@ -34,7 +34,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
             @Result(property = "count", column = "count"),
             @Result(property = "caseName",column = "caseName"),
     })
-    List<Map> groupCasesByCaseName(@Param("company") String company);
+    List<Map> groupCasesByCaseName();
 
 
     /**
@@ -79,6 +79,10 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
     @SelectProvider(type = CasesProvider.class,method = "dynamicList")
     List<Cases> dynamicList(Cases cases);
 
-    @Update("UPDATE t_case SET company_id=#{company} WHERE  status=0")
-    void randomAllot(@Param("company") String company);
+
+    @UpdateProvider(type = CasesProvider.class,method = "randomAllot")
+    void randomAllot(@Param("company") String company,@Param("name")String name,@Param("num")int num);
+
+    @UpdateProvider(type = CasesProvider.class,method = "randomToStaff")
+    void randomToStaff(@Param("staff") String staff,@Param("num") int num,@Param("company") Long company);
 }
