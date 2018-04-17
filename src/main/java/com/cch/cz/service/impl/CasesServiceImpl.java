@@ -98,7 +98,7 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     }
 
     @Override
-    public void randomAllot(String[] company) {
+    public void randomAllot(String[] company,List<Map> list) {
         for (int i = 0; i < company.length; i++) {
             casesMapper.randomAllot(company[i]);
         }

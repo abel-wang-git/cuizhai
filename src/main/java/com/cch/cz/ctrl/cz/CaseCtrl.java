@@ -1,6 +1,7 @@
 package com.cch.cz.ctrl.cz;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.entity.Cases;
@@ -168,9 +169,9 @@ public class CaseCtrl {
 
     @PostMapping(value = "/random")
     @ResponseBody
-    public AjaxReturn randomAllot(@RequestParam("company[]")String[] company){
-
-        casesService.randomAllot(company);
+    public AjaxReturn randomAllot(@RequestParam("companies")String companies,@RequestParam("names[]") String[] names){
+        List<Map> list=JSONArray.parseArray(companies,Map.class);
+        casesService.randomAllot(names,list);
         return new AjaxReturn(0,"分配成功");
     }
 

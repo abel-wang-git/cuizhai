@@ -42,6 +42,7 @@
         </div>
     </form>
 </div>
+
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
 
@@ -50,6 +51,7 @@
         var table = layui.table
             , $ = layui.$
             , form = layui.form;
+        //公司
         table.render({
             elem: '#allots'
             , id: 'allots'
@@ -112,6 +114,8 @@
             ]]
         });
 
+
+
         table.on('tool(allots)', function (obj) {
             var layEvent = obj.event;
             if (layEvent === 'allotcase') {
@@ -129,7 +133,7 @@
                             datas.push(checkStatus.data[i].area);
                         }
                         $.ajax({
-                            url: "random",
+                            url: ctx + "/case/allot",
                             type: "post",
                             dataType: 'json',
                             data: {company: checompany},
@@ -173,6 +177,7 @@
                 }
             });
         });
+
         var checompany = [];
         form.on('checkbox(chkcom)', function (data) {
             if (data.elem.checked) {
@@ -192,8 +197,17 @@
                 , yes: function (index) {
                     console.log(checompany)
                     var checkStatus = table.checkStatus('caseName');
-                    console.log(checkStatus);
+                    console.log(checkStatus.data);
 
+                    $.ajax({
+                        url: "random",
+                        type: "post",
+                        dataType: 'json',
+                        data: {
+                            companies:JSON.stringify(checkStatus.data),
+                            names:checompany
+                        }
+                    });
 
                 }
             })

@@ -44,6 +44,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             if (para.get("company") != null) {
                 where.append(" and company_id =#{company}");
             }
+
+
             WHERE(where.toString());
         }}.toString();
         logger.info(sql);
@@ -76,8 +78,10 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
              if(para.get("company")!=null){
                 where.append(" company_id=#{company}");
              }
+            GROUP_BY( "case_name");
              WHERE(where.toString());
         }}.toString();
+        logger.info(sql);
         return sql;
     }
 }

@@ -48,7 +48,7 @@ public class BaseProvider<M extends BaseEntity,PK> {
             INTO_COLUMNS(clo.deleteCharAt(clo.length()-1).toString());
             INTO_VALUES(val.deleteCharAt(val.length()-1).toString());
         }}.toString();
-        logger.info(sql);
+       /* logger.info(sql);*/
         return sql;
 
     }

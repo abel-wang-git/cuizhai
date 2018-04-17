@@ -18,7 +18,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
      * 按地区分组
      * @return
      */
-    @Select("SELECT count(*) count,left(customer_residence_address,instr(customer_residence_address,'市')) as area FROM cuizhai.t_case  where company_id =-1 and status=0 group by area")
+    @Select("SELECT count(*) count,left(customer_residence_address,instr(customer_residence_address,'市')) as area FROM t_case  where company_id =-1 and status=0 group by area")
     @Results({
             @Result(property = "count", column = "count"),
             @Result(property = "area",column = "area"),

@@ -61,7 +61,7 @@ public interface CasesService extends BaseService<Cases,Long>  {
      *
       * @param company
      */
-    void randomAllot(String[] company);
+    void randomAllot(String[] company,List<Map> list);
 
     /**
      * 按案件名称分组查询
