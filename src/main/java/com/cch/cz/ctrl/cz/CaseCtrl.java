@@ -68,9 +68,12 @@ public class CaseCtrl {
         List<Company> list = companyService.listBystaff(staff);
 
         List<Staff> staffs=staffService.listByCompany((company == null ? null : Long.toString(company.getId())));
+
+        List<Cases> cases = casesService.listByCompanyNoStaff(staff.getCompanyId());
         model.addAttribute("staffs",staffs);
 
         model.addAttribute("coms",list);
+        model.addAttribute("cases",cases);
         return "/cz/cases/allot";
     }
 

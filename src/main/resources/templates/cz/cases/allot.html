@@ -7,14 +7,14 @@
 <body>
 <fieldset th:if="${company.pId==null}" class="layui-elem-field">
     <legend>分配到公司</legend>
-    <a class="layui-btn  layui-btn-xs" id="caloat">分配</a>
+    <a class="layui-btn  layui-btn-xs" id="caloat">根据案件名分配</a>
     <!--公司列表-->
     <table id="allots" lay-filter="allots"></table>
 </fieldset>
 <!--当登录所属公司的员工列表-->
 <fieldset class="layui-elem-field">
     <legend>分配到员工</legend>
-    <a class="layui-btn  layui-btn-xs" id="salotrd">分配</a>
+    <a class="layui-btn  layui-btn-xs" id="salotrd">平均分配到员工</a>
     <table id="staffs" lay-filter="staffs"></table>
 </fieldset>
 <!--操作栏-->
@@ -44,7 +44,7 @@
 </div>
 
 <div style="display: none;width: 380px" id="allotsta">
-    <table id="stafftab" lay-filter="stafftab"></table>
+    <div>当前未分配案件总数<span th:text="${#lists.size(cases)}"></span></div>
     <form class="layui-form">
         <div class="layui-form-item">
             <div class="layui-input-block" style="float:left;margin-left: 0" th:each="c:${staffs}">
