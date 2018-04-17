@@ -29,10 +29,12 @@ public class BaseProvider<M extends BaseEntity,PK> {
             Field[] fields=m.getClass().getDeclaredFields();
 
             for (Field f:fields) {
+                f.setAccessible(true);
                 if(f.getAnnotation(Transient.class)!=null|| !Modifier.isPrivate(f.getModifiers()))continue;
                 if(f.getAnnotation(Id.class)!=null&&f.getAnnotation(GeneratedValue.class)!=null) continue;
+                if(f.get(m)==null)continue;
                 clo.append(addUnderscores(f.getName())+",");
-                f.setAccessible(true);
+
                 if (f.getType()==String.class){
                     val.append("'"+f.get(m)+"',");
                 }else if(f.getType()==Date.class) {
@@ -70,8 +72,7 @@ public class BaseProvider<M extends BaseEntity,PK> {
 
     public String  findAll(M m){
        String sql=  new SQL(){{
-           String sele = getSelect(m);
-            SELECT(sele.toString());
+            SELECT(getSelect(m));
             FROM(m.Tablename());
         }}.toString();
 
@@ -88,8 +89,7 @@ public class BaseProvider<M extends BaseEntity,PK> {
             for (Field f:fields) {
                 if(f.getAnnotation(Id.class)!=null)idname=addUnderscores(f.getName());
             }
-             String sele = getSelect(m);
-            SELECT(sele);
+            SELECT(getSelect(m));
             FROM(m.Tablename());
             WHERE(idname.toString()+"='"+pk+"'");
         }}.toString();
@@ -104,7 +104,7 @@ public class BaseProvider<M extends BaseEntity,PK> {
             StringBuilder where = new StringBuilder(" ");
             for (Field f: fields) {
                 f.setAccessible(true);
-                if(!Modifier.isPrivate(f.getModifiers()))continue;
+                if(!Modifier.isPrivate(f.getModifiers())||f.get(m)!=null)continue;
                 if(f.getAnnotation(Id.class)!=null){
                     where.append(addUnderscores(f.getName())).append("='").append(f.get(m)).append("'");
                     continue;

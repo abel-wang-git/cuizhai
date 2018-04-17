@@ -103,7 +103,7 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
             for (int j = 0; j <company.length ; j++) {
                 casesMapper.randomAllot(company[j],
                         cases.get(i).get("caseName").toString(),
-                        Integer.parseInt(cases.get(i).get("count").toString())/company.length);
+                        Integer.parseInt(cases.get(i).get("count").toString())/company.length+1);
             }
         }
     }
@@ -116,7 +116,7 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     @Override
     public void randomToStaff(String[] staff,int num,Long company) {
         for (int i = 0; i < staff.length; i++) {
-
+            String s= staff[i];
             casesMapper.randomToStaff(staff[i], num/staff.length,company);
         }
     }
