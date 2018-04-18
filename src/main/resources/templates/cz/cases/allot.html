@@ -175,7 +175,7 @@
                             cases: JSON.stringify(checkStatus.data)
                         },
                         success: function (data) {
-                            staff.reload();
+                            staffcase.reload();
                             layer.close(index);
                             layer.msg(data.message);
                         }
