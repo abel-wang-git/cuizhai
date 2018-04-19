@@ -5,12 +5,88 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
-<a class="layui-btn layui-btn-sm" href="list">返回</a>
-<div class="layui-row">
-    <div class="layui-col-md6">
-        <div class="layui-col-md6">
-        <fieldset class="layui-elem-field ">
-            <legend>客户信息</legend>
+<!--<a class="layui-btn layui-btn-sm" href="javascript:history.back(-1)">返回</a>-->
+<div class="layui-row layui-collapse">
+        <div class="layui-col-md6 layui-colla-item">
+            <h2 class="layui-colla-title">添加催记</h2>
+            <div class="layui-colla-content layui-show">
+                <form class="layui-form" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">催收对象</label>
+                        <div class="layui-input-inline">
+                            <select name="target" lay-verify="required" autocomplete="off" class="layui-input">
+                                <option th:value="${'[本人]'+cases.customerPhoneNumber}"
+                                        th:text="${'[本人]'+cases.customerPhoneNumber}"></option>
+                                <option th:value="${'[配偶]'+cases.customerSpousePhone}"
+                                        th:text="${'[配偶]'+cases.customerSpousePhone}"></option>
+                                <option th:value="${'[亲戚]'+cases.customerRelativePhone}"
+                                        th:text="${'[亲戚]'+cases.customerRelativePhone}"></option>
+                                <option th:value="${'[其他]'+cases.customerOtherPhone}"
+                                        th:text="${'[其他]'+cases.customerOtherPhone}"></option>
+                                <option th:value="${'[住宅]'+cases.customerResidencePhone}"
+                                        th:text="${'[住宅]'+cases.customerResidencePhone}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">接通状态</label>
+                        <div class="layui-input-inline">
+                            <select name="status" lay-verify="required" autocomplete="off" class="layui-input">
+                                <option value="接通">接通</option>
+                                <option value="无人接听">无人接听</option>
+                                <option value="关机">关机</option>
+                                <option value="挂机">挂机</option>
+                                <option value="停机">停机</option>
+                                <option value="正在通话">正在通话</option>
+                                <option value="来电提醒">来电提醒</option>
+                                <option value="空号">空号</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">催收结果</label>
+                        <div class="layui-input-inline">
+                            <select name="result" lay-verify="required" autocomplete="off" class="layui-input">
+                                <option value="承诺还款">承诺还款</option>
+                                <option value="已还款">已还款</option>
+                                <option value="还款处理中">还款处理中</option>
+                                <option value="违诺或跳票">违诺或跳票</option>
+                                <option value="无还款意愿">无还款意愿</option>
+                                <option value="联系人承诺转告债务人">联系人承诺转告债务人</option>
+                                <option value="有还款意愿暂时无还款能力">有还款意愿暂时无还款能力</option>
+                                <option value="是本人，否认借款">是本人，否认借款</option>
+                                <option value="不是本人，但认识借款人">不是本人，但认识借款人</option>
+                                <option value="借款人入狱或死亡">借款人入狱或死亡</option>
+                                <option value="借款人因病住院或意外伤残">借款人因病住院或意外伤残</option>
+                                <option value="违诺或跳票">其他</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-inline">
+                    <textarea type="text" name="rmarks" required="required " lay-verify="required" placeholder=""
+                              autocomplete="off" class="layui-input" style="height: 100px;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="lay-submit" lay-filter="urge">添加催记</button>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="caseId" th:value="${cases.id}"/>
+                </form>
+            </div>
+        </div>
+
+        <div class="layui-col-md6 layui-colla-item">
+            <h2 class="layui-colla-title ">客户信息</h2>
+            <div class="layui-colla-content layui-show">
                 <p th:text="${' 姓名：'+cases.name}"></p>
                 <p th:text="${'配偶姓名：'+cases.customerSpouse}"></p>
                 <p th:text="${'亲戚姓名：'+cases.customerRelativeName}"></p>
@@ -34,92 +110,20 @@
                 <p th:text="${'总欠款：'+cases.sumArrears}"></p>
                 <p th:text="${'商品：'+cases.commodity}"></p>
                 <p th:text="${'品牌：'+cases.brand}"></p>
-        </fieldset>
+            </div>
         </div>
-        <div class="layui-col-md6">
-            <fieldset class="layui-elem-field ">
-                <legend>历史催收记录</legend>
+
+
+        <div class="layui-col-md12 layui-colla-item">
+            <h2 class="layui-colla-title">历史催收记录</h2>
+            <div class="layui-colla-content layui-show">
                 <table id="log" lay-filter="log"></table>
-            </fieldset>
+            </div>
         </div>
-    </div>
 
-    <div class="layui-col-md6">
-        <fieldset class="layui-elem-field ">
-            <legend>添加催记</legend>
-        <form class="layui-form" method="post">
-            <div class="layui-form-item">
-                <label class="layui-form-label">催收对象</label>
-                <div class="layui-input-inline">
-                    <select name="target" lay-verify="required" autocomplete="off" class="layui-input">
-                        <option th:value="${'[本人]'+cases.customerPhoneNumber}"
-                                th:text="${'[本人]'+cases.customerPhoneNumber}"></option>
-                        <option th:value="${'[配偶]'+cases.customerSpousePhone}"
-                                th:text="${'[配偶]'+cases.customerSpousePhone}"></option>
-                        <option th:value="${'[亲戚]'+cases.customerRelativePhone}"
-                                th:text="${'[亲戚]'+cases.customerRelativePhone}"></option>
-                        <option th:value="${'[其他]'+cases.customerOtherPhone}"
-                                th:text="${'[其他]'+cases.customerOtherPhone}"></option>
-                        <option th:value="${'[住宅]'+cases.customerResidencePhone}"
-                                th:text="${'[住宅]'+cases.customerResidencePhone}"></option>
-                    </select>
-                </div>
-            </div>
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">接通状态</label>
-                <div class="layui-input-inline">
-                    <select name="status" lay-verify="required" autocomplete="off" class="layui-input">
-                        <option value="接通">接通</option>
-                        <option value="无人接听">无人接听</option>
-                        <option value="关机">关机</option>
-                        <option value="挂机">挂机</option>
-                        <option value="停机">停机</option>
-                        <option value="正在通话">正在通话</option>
-                        <option value="来电提醒">来电提醒</option>
-                        <option value="空号">空号</option>
-                    </select>
-                </div>
-            </div>
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">催收结果</label>
-                <div class="layui-input-inline">
-                    <select name="result" lay-verify="required" autocomplete="off" class="layui-input">
-                        <option value="承诺还款">承诺还款</option>
-                        <option value="已还款">已还款</option>
-                        <option value="还款处理中">还款处理中</option>
-                        <option value="违诺或跳票">违诺或跳票</option>
-                        <option value="无还款意愿">无还款意愿</option>
-                        <option value="联系人承诺转告债务人">联系人承诺转告债务人</option>
-                        <option value="有还款意愿暂时无还款能力">有还款意愿暂时无还款能力</option>
-                        <option value="是本人，否认借款">是本人，否认借款</option>
-                        <option value="不是本人，但认识借款人">不是本人，但认识借款人</option>
-                        <option value="借款人入狱或死亡">借款人入狱或死亡</option>
-                        <option value="借款人因病住院或意外伤残">借款人因病住院或意外伤残</option>
-                        <option value="违诺或跳票">其他</option>
-                    </select>
-                </div>
-            </div>
 
-            <div class="layui-form-item">
-                <label class="layui-form-label">备注</label>
-                <div class="layui-input-inline">
-                    <textarea type="text" name="rmarks" required="required " lay-verify="required" placeholder=""
-                              autocomplete="off" class="layui-input" style="height: 100px;"></textarea>
-                </div>
-            </div>
-
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit="lay-submit" lay-filter="urge">添加催记</button>
-                </div>
-            </div>
-
-            <input type="hidden" name="caseId" th:value="${cases.id}"/>
-        </form>
-        </fieldset>
-    </div>
 </div>
 </body>
 <script th:src="@{/static/layui/layui.js}"></script>
@@ -154,10 +158,10 @@
             ,where:{cases:[[${cases.id}]]}
             , method: 'post'
             , cols: [[ //表头
-                {field: 'target', title: '催收对象', width: '30%', sort: true, fixed: 'left'}
-                , {field: 'result', title: '结果', width: '30%', sort: true}
-                , {field: 'status', title: '状态', width: '15%', sort: true}
-                , {field: 'createDate', title: '催收日期', width: '20%', sort: true}
+                {field: 'target', title: '催收对象', width: '200', sort: true, fixed: 'left'}
+                , {field: 'result', title: '结果', width: '200', sort: true}
+                , {field: 'status', title: '状态', width: '200', sort: true}
+                , {field: 'createDate', title: '催收日期', width: '200', sort: true}
             ]]
         });
     })

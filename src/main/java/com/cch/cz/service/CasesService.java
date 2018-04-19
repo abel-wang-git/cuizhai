@@ -3,6 +3,7 @@ package com.cch.cz.service;
 import com.cch.cz.base.service.BaseService;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,12 @@ public interface CasesService extends BaseService<Cases,Long>  {
      * @return
      */
     List<Cases> listByStaff(String staff);
+    /**
+     * 查找某个员工的cases总数
+     * @param staff
+     * @return
+     */
+    Long countByStaff( String staff);
 
     /**
      *

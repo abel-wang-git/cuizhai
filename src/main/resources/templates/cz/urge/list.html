@@ -78,8 +78,6 @@
 
             }
         });
-
-
         table.on('tool(cases)', function (obj) {
             console.log(obj.event);
             if(obj.data.status===1){
@@ -96,7 +94,12 @@
             住宅 customerResidencePhone
              配偶 customerSpousePhone 姓名 customerSpouse*/
             if(obj.event==='urge'){
-                window.location.href=[[${ctx}]]+'/urge/add?cases='+obj.data.id;
+                var addurge=layer.open({
+                    type: 2
+                    , title: '添加催记'
+                    , content:"add?cases="+obj.data.id
+                });
+                layer.full(addurge);
             }else if(obj.event==='end'){
                 var id=[];
                 id.push(obj.data.id);

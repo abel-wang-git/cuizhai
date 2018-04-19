@@ -70,6 +70,9 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
     @SelectProvider(type = CasesProvider.class,method = "listByStaff")
     List<Cases> listByStaff(@Param("staff") String staff);
 
+    @SelectProvider(type = CasesProvider.class,method = "countByStaff")
+    Long countByStaff(@Param("staff") String staff);
+
     @SelectProvider(type = CasesProvider.class,method = "listByCompany")
     @Results({
             @Result(property = "num", column = "num"),

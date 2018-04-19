@@ -31,6 +31,15 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
         logger.info(sql);
         return sql;
     }
+    public String countByStaff(Map<String, Object> para) {
+        String sql = new SQL() {{
+            SELECT("count(*)");
+            FROM(BuildSql.tablename(Cases.class));
+            WHERE(" staff_id =#{staff}");
+        }}.toString();
+        logger.info(sql);
+        return sql;
+    }
 
     public String listByCompany(Map<String, Object> para) {
         String sql = new SQL() {{
