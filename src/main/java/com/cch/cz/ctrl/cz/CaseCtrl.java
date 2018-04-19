@@ -146,10 +146,11 @@ public class CaseCtrl {
     @PostMapping(value = "/list/bystaff")
     @ResponseBody
     public Table listByStaff(@RequestParam int page, @RequestParam int limit,@RequestParam("staff") String staff) {
+        List<Cases> count = casesService.listByStaff(staff);
         PageHelper.startPage(page, limit);
         List<Cases> cases = casesService.listByStaff(staff);
 
-        return new Table(cases.size(), cases);
+        return new Table(count.size(), cases);
     }
 
     /**
