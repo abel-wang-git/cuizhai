@@ -145,8 +145,8 @@ public class CaseCtrl {
      */
     @PostMapping(value = "/list/bystaff")
     @ResponseBody
-    public Table listByStaff(@RequestParam("staff") String staff) {
-
+    public Table listByStaff(@RequestParam int page, @RequestParam int limit,@RequestParam("staff") String staff) {
+        PageHelper.startPage(page, limit);
         List<Cases> cases = casesService.listByStaff(staff);
 
         return new Table(cases.size(), cases);

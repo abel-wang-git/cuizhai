@@ -45,6 +45,7 @@
             elem: '#cases'
             , id: 'cases'
             , url: [[${ctx}]] + '/case/list/bystaff' //数据接口
+            , page: true //开启分页
             , where: {staff: [[${session.staff.loginName}]]}
             , method: 'post'
             , cols: [[ //表头
@@ -59,34 +60,44 @@
                 , {fixed: 'urge', title: '分配', width: 150, align: 'center', toolbar: '#urge',fixed:'right'}
             ]]
             ,done: function(res, curr, count){
+
                 layui.$('table tbody tr ').each(function () {
-                    if ($(this).children().eq(10).text().trim() == '撤案') {
+                    if ($(this).children().eq(7).text().trim() == '撤案') {
                         $(this).css('background-color', '#FF5722');
                         $(this).css('color', '#FFB90F');
                     }
-                    if ($(this).children().eq(10).text().trim() == '留案') {
+                    if ($(this).children().eq(7).text().trim() == '留案') {
                         $(this).css('background-color', '#5FB878');
                         $(this).css('color', '#FFB800');
                     }
-                    if ($(this).children().eq(10).text().trim() == '结案') {
+                    if ($(this).children().eq(7).text().trim() == '结案') {
                         $(this).css('background-color', '#36b811');
                         $(this).css('color', '#ffd98c');
                     }
                 })
+
             }
         });
 
 
         table.on('tool(cases)', function (obj) {
             console.log(obj.event);
+            if(obj.data.status===1){
+                layer.msg("委案已经撤回");
+                return;
+            }
+            if(obj.data.status===3){
+                layer.msg("委案已经结案");
+                return;
+            }
 /*            其他联系人 customerOtherPhone  姓名 customerRelativeOther 关系 customerRelaOther
             本人 customerPhoneNumber
             亲戚 customerRelativePhone 姓名 customerRelativeName 关系 customerRelationship
             住宅 customerResidencePhone
              配偶 customerSpousePhone 姓名 customerSpouse*/
-            if(obj.event=='urge'){
+            if(obj.event==='urge'){
                 window.location.href=[[${ctx}]]+'/urge/add?cases='+obj.data.id;
-            }else if(obj.event=='end'){
+            }else if(obj.event==='end'){
                 var id=[];
                 id.push(obj.data.id);
                 $.ajax({
