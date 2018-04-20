@@ -97,8 +97,12 @@
                 var addurge=layer.open({
                     type: 2
                     , title: '添加催记'
+                   , shade: 0
                     , content:"add?cases="+obj.data.id
-                });
+                    ,cancel: function(index, layero){
+                        cases.reload();
+                    }
+                    });
                 layer.full(addurge);
             }else if(obj.event==='end'){
                 var id=[];
