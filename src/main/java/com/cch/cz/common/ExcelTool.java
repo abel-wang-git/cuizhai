@@ -43,6 +43,8 @@ public class ExcelTool {
         Cases cases = new Cases();
         Row r = sheet.getRow(i);
         int cell_num = r.getLastCellNum();
+
+        if(null==r||cell_num==-1)return;
         cases.setCaseName(caseName);
         cases.setStatus(Cases.NORMAL);
         //员工id设置为未分配
