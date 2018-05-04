@@ -3,8 +3,6 @@ package com.cch.cz.entity;
 import com.cch.cz.base.entity.BaseEntity;
 
 import javax.persistence.*;
-import javax.xml.crypto.Data;
-import java.util.Date;
 
 /**
  * Created by Administrator on 2018/3/28.

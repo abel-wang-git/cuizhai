@@ -41,6 +41,11 @@
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
       <version>${spring-boot.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-freemarker</artifactId>
+      <version>${spring-boot.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -207,6 +212,16 @@
         </configuration>
       </plugin>
     </plugins>
+
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.ftl</include>
+        </includes>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
   </build>
 
 </project>
