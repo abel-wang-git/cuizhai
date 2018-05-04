@@ -8,6 +8,7 @@
 
 <button type="button" class="layui-btn layui-btn-sm" id="revoke">撤案</button>
 <button type="button" class="layui-btn layui-btn-sm" id="retain" lay-filter="retain">留案</button>
+<button type="button" class="layui-btn layui-btn-sm" id="adjust" lay-filter="adjust">调案</button>
 <button type="button" class="layui-btn layui-btn-sm" id="upload">上传委案</button>
 
 <form class="layui-form where" method="post" id="search">
@@ -40,8 +41,12 @@
 
 <table id="cases" lay-filter="cases"></table>
 <div class="layui-inline" style="display: none;" id="day">
-    <label class="layui-form-label">留案期</label><input type="text" required="required " placeholder="天" value=""
-                                                      class="layui-input" style="width: 60px" name="rethinDay"/>
+    <label class="layui-form-label">留案期</label>
+    <input type="text" required="required " placeholder="天" value=""
+           class="layui-input" style="width: 60px" name="rethinDay"/>
+</div>
+<div style="display: none" id="stafflayer">
+    <table id="staffs" lay-filter="staffs"></table>
 </div>
 <script type="text/html" id="status">
     {{#  if(d.status === 3){ }}
@@ -61,6 +66,9 @@
 
 <script type="text/html" id="name">
     <span style="border-bottom:  1px solid #0a0fff;" lay-event="detail">{{ d.name}}</span>
+</script>
+<script type="text/html" id="radioTpl">
+    <input type="radio" name="staffradio" value="{{d.loginName}}" title=" " lay-filter="radiodemo"/> {{d.name}}
 </script>
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
@@ -107,6 +115,19 @@
             }
         });
 
+        //根据公司查到的员工
+        table.render({
+            elem: '#staffs'
+            , id: 'staffs'
+            , url: [[${ctx}]] + '/staff/listbycompany' //数据接口
+            , where: {company: [[${session.staff.companyId}]]}
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'radio', title: '员工',templet:"#radioTpl",unresize:true, width:300,fixed: 'left'},
+
+            ]]
+        });
+        //上传委案
         upload.render({
             elem: '#upload'
             , url: [[${ctx}]] + '/upload'
@@ -191,6 +212,40 @@
                 }
             });
         });
+        //调案
+        $('#adjust').click(function () {
+            var checkStatus = table.checkStatus('cases');
+            var ids = [];
+            for (var i = 0; i < checkStatus.data.length; i++) {
+                ids.push(checkStatus.data[i].id);
+            }
+            if (ids.length <= 0) {
+                layer.msg("请选择要调案的委案");
+                return;
+            }
+            console.log(ids);
+            layer.open({
+                type: 1
+                , title: false
+                , area: ['311px', '310px']
+                , content: $("#stafflayer")
+                , btn: ['确定']
+                ,yes:function (index) {
+                  var staff=$('input[name="staffradio"]:checked').val();
+                    $.ajax({
+                        url: [[${ctx}]] + "/case/adjust",
+                        type: "post",
+                        dataType: 'json',
+                        data: {cases: ids, staff: staff},
+                        success: function (data) {
+                            layer.close(index);
+                            layer.msg(data.message);
+                            cases.reload();
+                        }
+                    });
+                }
+            })
+        })
         //查询
         form.on('submit(search)', function (data) {
             $.ajax({

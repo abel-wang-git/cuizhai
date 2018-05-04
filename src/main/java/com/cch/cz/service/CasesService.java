@@ -81,4 +81,11 @@ public interface CasesService extends BaseService<Cases,Long>  {
      * @param staff，
      */
     void randomToStaff(String[] staff,int num,Long company);
+
+    /**
+     * 调案
+     * @param ids case
+     * @param staffid 要分配到的员工
+     */
+    void adjust(String[] ids, String staffid);
 }

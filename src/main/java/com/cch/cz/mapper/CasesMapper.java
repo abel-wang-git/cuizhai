@@ -88,4 +88,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
 
     @UpdateProvider(type = CasesProvider.class,method = "randomToStaff")
     void randomToStaff(@Param("staff") String staff,@Param("num") int num,@Param("company") Long company);
+
+    @Update("update t_case set staff_id = #{staffid} where id in (#{ids})")
+    void adjust(@Param("ids") String ids, @Param("staffid") String staffid);
 }

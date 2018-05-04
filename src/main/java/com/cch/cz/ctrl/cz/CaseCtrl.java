@@ -211,4 +211,13 @@ public class CaseCtrl {
         table.setCount(list.size());
         return table;
     }
+    /**
+     * 调案
+     */
+    @PostMapping(value = "/adjust")
+    @ResponseBody
+    public AjaxReturn adjust(@RequestParam("cases[]") String[] ids,@RequestParam("staff") String staffid){
+        casesService.adjust(ids,staffid);
+        return new AjaxReturn(0,"调案成功");
+    }
 }

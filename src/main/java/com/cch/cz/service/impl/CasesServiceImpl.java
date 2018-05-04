@@ -2,10 +2,13 @@ package com.cch.cz.service.impl;
 
 import com.cch.cz.base.service.impl.BaseServiceImpl;
 import com.cch.cz.common.UtilFun;
+import com.cch.cz.entity.AdjustLog;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
+import com.cch.cz.mapper.AdjustLogMapper;
 import com.cch.cz.mapper.CasesMapper;
 import com.cch.cz.service.CasesService;
+import org.apache.poi.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,6 +25,8 @@ import java.util.Map;
 public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements CasesService {
     @Resource
     private CasesMapper casesMapper;
+    @Resource
+    private AdjustLogMapper adjustLogMapper;
 
     @Override
     @Transactional
@@ -124,6 +129,20 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
             String s= staff[i];
             casesMapper.randomToStaff(staff[i], num/staff.length,company);
         }
+    }
+
+    @Override
+    @Transactional
+    public void adjust(String[] ids, String staffid) {
+        AdjustLog adjustLog = new AdjustLog();
+        adjustLog.setStaffId(staffid);
+        adjustLog.setDate(new Date());
+        for (String id :ids) {
+            adjustLog.setCaseId(id);
+            adjustLogMapper.save(adjustLog);
+        }
+         String cases =StringUtil.join(ids,",");
+            casesMapper.adjust(cases,staffid);
     }
 
 
