@@ -24,6 +24,29 @@
 
 <!--弹出层地区列表-->
 <div style="display: none; width: 100%" id="caseArea">
+    <form class="layui-form where" method="post" id="search">
+        <div class="layui-inline">
+            <label class="layui-form-label">案件名称：</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input name="caseName" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">合同号：</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input name="contractNum" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">地区：</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input name="name" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <input name="status" type="hidden" value="0"/>
+        <input name="companyId" type="hidden" value="-1"/>
+        <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
+    </form>
     <table id="casetab" lay-filter="casetab"></table>
 </div>
 
@@ -98,18 +121,28 @@
             ]]
         });
         //按地区分的ｃａｓｅ
-        var areas = table.render({
+
+        var cases = table.render({
             elem: '#casetab'
             , id: 'casetab'
-            , url: [[${ctx}]] + '/case/grouparea' //数据接口
+            , url: 'dynamic'
+            , response: {
+                data:'data'
+            }
+            ,request: {
+                data:JSON.stringify('{status: "0", companyId: "-1"}')
+            }
             , method: 'post'
             , cols: [[ //表头
-                {field: 'area', title: '委案所属地区', width: 300, sort: true,}
-                , {field: 'count', title: '委案数量', width: 100, sort: true}
-                , {field: 'chk', title: '分配', width: 90, type: 'checkbox'}
+                  {field: 'chk', title: '分配', width: 30, type: 'checkbox'}
+                , {field: 'name', title: '姓名', width: 80, sort: true}
+                , {field: 'contractNum', title: '合同号', width: 110, sort: true}
+                , {field: 'idCard', title: '身份证', width: 155, sort: true}
+                , {field: 'caseName', title: '户籍地址', width: 200, sort: true}
+
             ]]
         });
-        //未分配员工的ｃａｓｅ
+        //
         var staffcase = table.render({
             elem: '#staffcase'
             , id: 'staffcase'
@@ -130,7 +163,7 @@
                 layer.open({
                     type: 1
                     , title: '分配委案'
-                    , area: ['500', '400px']
+                    , area: ['600px', '420px']
                     , content: $("#caseArea")
                     , btn: ['添加', '取消']
                     , yes: function (index) {
@@ -260,6 +293,22 @@
                 }
             })
         })
+
+        //查询
+        form.on('submit(search)', function (data) {
+            $.ajax({
+                url: "dynamic",
+                type: "post",
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(data.field),
+                success: function (data) {
+                    cases.reload({url: '', data: data,page:false});
+                }
+            });
+            return false;
+        });
+
 
     });
     /*]]>*/

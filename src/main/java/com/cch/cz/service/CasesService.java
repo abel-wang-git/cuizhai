@@ -87,5 +87,11 @@ public interface CasesService extends BaseService<Cases,Long>  {
      * @param ids case
      * @param staffid 要分配到的员工
      */
-    void adjust(String[] ids, String staffid);
+    void adjust(List<Cases> cases, String staffid);
+
+    /**
+     *
+     */
+    void listByAdjust();
+
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+
+<table id="log" lay-filter="log"></table>
+<script th:src="@{/static/layui/layui.js}"></script>
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    layui.use('table', function () {
+        var table = layui.table
+            , $ = layui.$;
+        table.render({
+            elem: '#log'
+            , id: 'log'
+            , height: 315
+            , url: [[${ctx}]] + '/cases/listByAdjust' //数据接口
+            , method: 'post'
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'name', title: '权限名称', width: 300, sort: true, fixed: 'left'}
+                , {field: 'chk', width: 200, type: 'checkbox', fixed: 'right'}
+            ]]
+        });
+    });
+    /*]]>*/
+</script>
+</body>
+</html>

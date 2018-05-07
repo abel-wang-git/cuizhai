@@ -217,13 +217,16 @@
             var checkStatus = table.checkStatus('cases');
             var ids = [];
             for (var i = 0; i < checkStatus.data.length; i++) {
-                ids.push(checkStatus.data[i].id);
+                if (checkStatus.data[i].status==1||checkStatus.data[i].status==3){
+                    layer.msg("选择案例存在结案或者撤案状态");
+                    return;
+                }
+                ids.push(checkStatus.data[i]);
             }
             if (ids.length <= 0) {
                 layer.msg("请选择要调案的委案");
                 return;
             }
-            console.log(ids);
             layer.open({
                 type: 1
                 , title: false
@@ -236,7 +239,7 @@
                         url: [[${ctx}]] + "/case/adjust",
                         type: "post",
                         dataType: 'json',
-                        data: {cases: ids, staff: staff},
+                        data: {cases: JSON.stringify(ids), staff: staff},
                         success: function (data) {
                             layer.close(index);
                             layer.msg(data.message);

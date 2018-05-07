@@ -138,7 +138,7 @@ public class Cases extends BaseEntity {
     /**
      * 分配公司 初始值为-1
      */
-    private Long CompanyId;
+    private Long companyId;
     /**
      * 分配人员
      * 0 为未分配
@@ -594,11 +594,11 @@ public class Cases extends BaseEntity {
     }
 
     public Long getCompanyId() {
-        return CompanyId;
+        return companyId;
     }
 
     public void setCompanyId(Long companyId) {
-        CompanyId = companyId;
+        this.companyId = companyId;
     }
 
     public String getStaffId() {

@@ -12,11 +12,13 @@ public class AdjustLog extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String staffId;
+    private String oldStaff;
+
+    private String newStaff;
 
     private Date date;
 
-    private String caseId;
+    private Long caseId;
 
     public Long getId() {
         return id;
@@ -26,12 +28,20 @@ public class AdjustLog extends BaseEntity {
         this.id = id;
     }
 
-    public String getStaffId() {
-        return staffId;
+    public String getOldStaff() {
+        return oldStaff;
     }
 
-    public void setStaffId(String staffId) {
-        this.staffId = staffId;
+    public void setOldStaff(String oldStaff) {
+        this.oldStaff = oldStaff;
+    }
+
+    public String getNewStaff() {
+        return newStaff;
+    }
+
+    public void setNewStaff(String newStaff) {
+        this.newStaff = newStaff;
     }
 
     public Date getDate() {
@@ -42,11 +52,11 @@ public class AdjustLog extends BaseEntity {
         this.date = date;
     }
 
-    public String getCaseId() {
+    public Long getCaseId() {
         return caseId;
     }
 
-    public void setCaseId(String caseId) {
+    public void setCaseId(Long caseId) {
         this.caseId = caseId;
     }
 }

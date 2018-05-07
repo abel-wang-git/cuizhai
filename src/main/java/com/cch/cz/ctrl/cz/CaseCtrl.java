@@ -174,7 +174,7 @@ public class CaseCtrl {
      */
     @PostMapping(value = "/dynamic")
     @ResponseBody
-    public List<Cases> manager(@RequestBody Cases data) {
+    public List<Cases> dynamic(@RequestBody Cases data) {
 
         return casesService.dynamicList(data);
     }
@@ -216,8 +216,24 @@ public class CaseCtrl {
      */
     @PostMapping(value = "/adjust")
     @ResponseBody
-    public AjaxReturn adjust(@RequestParam("cases[]") String[] ids,@RequestParam("staff") String staffid){
-        casesService.adjust(ids,staffid);
+    public AjaxReturn adjust(@RequestParam("cases") String ids,@RequestParam("staff") String staffid){
+           List<Cases> cases= JSON.parseArray(ids,Cases.class);
+        casesService.adjust(cases,staffid);
         return new AjaxReturn(0,"调案成功");
     }
+
+    /**
+     * 调案记录
+     * @return
+     */
+    @PostMapping(value = "/listByAdjust")
+    @ResponseBody
+    public Table listByAdjust(){
+        Table table = new Table();
+
+        casesService.listByAdjust();
+        return table;
+    }
+
+
 }

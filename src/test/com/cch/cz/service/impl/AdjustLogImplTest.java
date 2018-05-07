@@ -26,8 +26,7 @@ public class AdjustLogImplTest {
     public void save(){
         AdjustLog adjustLog = new AdjustLog();
         adjustLog.setDate(new Date());
-        adjustLog.setStaffId("s");
-        adjustLog.setCaseId("ss");
+        adjustLog.setNewStaff("s");
         adjustLogService.save(adjustLog);
     }
 }

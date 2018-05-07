@@ -73,6 +73,10 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and name = #{name} ");
             if (UtilFun.isEmptyString(cases.getCustomerPhoneNumber()))
                 where.append(" and customer_phone_number = #{customerPhoneNumber}");
+            if  (UtilFun.isEmptyString(cases.getContractNum()))
+                where.append(" and contract_num= #{contractNum} ");
+            if (null!=cases.getCompanyId()&&cases.getCompanyId()==-1)
+                where.append(" and company_id = -1");
             WHERE(where.toString());
         }}.toString();
         logger.info(sql);
@@ -113,5 +117,6 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
         logger.info(sql);
         return sql;
     }
+
 
 }
