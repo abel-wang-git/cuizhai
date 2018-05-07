@@ -91,18 +91,16 @@ public class CaseCtrl {
     }
 
     /**
-     * 把悬着的地区的case分配个该公司
      *
-     * @param areas   要分配的地区
-     * @param company 公司的id
-     * @return
+     *
      */
     @PostMapping(value = "/allot")
     @ResponseBody
-    public AjaxReturn allotCompany(@RequestParam("area[]") List<String> areas,
+    public AjaxReturn allotCompany(@RequestParam("checks") String checks,
                                    @RequestParam("company") String company) {
+        List<Cases> cases=   JSON.parseArray(checks,Cases.class);
         /*根据城市给委案分配公司ID*/
-        casesService.allotCaseToCompany(areas, company);
+        casesService.allotToCompany(cases, company);
         return new AjaxReturn(0, "分配成功");
     }
 
@@ -235,5 +233,16 @@ public class CaseCtrl {
         return table;
     }
 
+    @PostMapping(value = "/noallotcom")
+    @ResponseBody
+    public Table listNoAllot(){
+        Cases cases = new Cases();
+        cases.setCompanyId(-1L);
+        Table table = new Table();
+        List<Cases> noAllotCom= casesService.dynamicList(cases);
+        table.setData(noAllotCom);
+        table.setCount(noAllotCom.size());
+        return table;
+    }
 
 }

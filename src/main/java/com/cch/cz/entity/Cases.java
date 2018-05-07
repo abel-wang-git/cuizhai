@@ -174,6 +174,10 @@ public class Cases extends BaseEntity {
      * @return
      */
     private int status;
+    /**
+     * 案件类型
+     */
+    private  String type;
 
     private String caseName;
 
@@ -655,5 +659,13 @@ public class Cases extends BaseEntity {
 
     public void setCaseName(String caseName) {
         this.caseName = caseName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

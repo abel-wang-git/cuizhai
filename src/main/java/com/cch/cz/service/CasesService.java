@@ -94,4 +94,10 @@ public interface CasesService extends BaseService<Cases,Long>  {
      */
     void listByAdjust();
 
+    /**
+     *
+     * @param cases
+     * @param company
+     */
+    void allotToCompany(List<Cases> cases, String company);
 }

@@ -150,5 +150,14 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
 
     }
 
+    @Override
+    @Transactional
+    public void allotToCompany(List<Cases> cases, String company) {
+        for (Cases c :cases) {
+            c.setCompanyId(Long.parseLong(company));
+            update(c);
+        }
+    }
+
 
 }

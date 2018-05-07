@@ -7,7 +7,6 @@
 <body>
 <fieldset th:if="${company.pId==null}" class="layui-elem-field">
     <legend>分配到公司</legend>
-    <a class="layui-btn  layui-btn-xs" id="caloat">根据案件名分配</a>
     <!--公司列表-->
     <table id="allots" lay-filter="allots"></table>
 </fieldset>
@@ -125,20 +124,13 @@
         var cases = table.render({
             elem: '#casetab'
             , id: 'casetab'
-            , url: 'dynamic'
-            , response: {
-                data:'data'
-            }
-            ,request: {
-                data:JSON.stringify('{status: "0", companyId: "-1"}')
-            }
             , method: 'post'
             , cols: [[ //表头
                   {field: 'chk', title: '分配', width: 30, type: 'checkbox'}
                 , {field: 'name', title: '姓名', width: 80, sort: true}
                 , {field: 'contractNum', title: '合同号', width: 110, sort: true}
                 , {field: 'idCard', title: '身份证', width: 155, sort: true}
-                , {field: 'caseName', title: '户籍地址', width: 200, sort: true}
+                , {field: 'caseName', title: '案件名称', width: 200, sort: true}
 
             ]]
         });
@@ -163,22 +155,22 @@
                 layer.open({
                     type: 1
                     , title: '分配委案'
-                    , area: ['600px', '420px']
+                    , area: ['600px', '90%']
                     , content: $("#caseArea")
                     , btn: ['添加', '取消']
                     , yes: function (index) {
                         var datas = [];
                         var checkStatus = table.checkStatus('casetab');
                         for (var i = 0; i < checkStatus.data.length; i++) {
-                            datas.push(checkStatus.data[i].area);
+                            datas.push(checkStatus.data[i].id);
                         }
                         $.ajax({
                             url: ctx + "/case/allot",
                             type: "post",
                             dataType: 'json',
-                            data: {area: datas, company: obj.data.id},
+                            data: {checks:JSON.stringify(checkStatus.data), company: obj.data.id},
                             success: function (data) {
-                                areas.reload();
+                                cases.reload();
                                 staffcase.reload();
                                 layer.close(index);
                                 layer.msg(data.message);
@@ -226,6 +218,7 @@
                 checompany.splice(checompany.indexOf(data.value), 1)
             }
         });
+
         form.on('checkbox(chkstaff)', function (data) {
             if (data.elem.checked) {
                 chestaff.push(data.value);
@@ -303,7 +296,7 @@
                 contentType: 'application/json;charset=utf-8',
                 data: JSON.stringify(data.field),
                 success: function (data) {
-                    cases.reload({url: '', data: data,page:false});
+                    cases.reload({data: data,limit:data.length});
                 }
             });
             return false;
