@@ -59,7 +59,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
      * @return 某个公司还未分配的case
      */
     @SelectProvider(type = CasesProvider.class,method = "listByCompanyNoStaff")
-    List<Cases> listByCompanyNoStaff(@Param("company") Long company);
+    List<Cases> listByCompanyNoStaff(Cases company);
 
     /**
      *

@@ -26,7 +26,7 @@ public interface CasesService extends BaseService<Cases,Long>  {
      * 根据公司id查找未分配的case
      * @param company
      */
-    List<Cases> listByCompanyNoStaff(Long company);
+    List<Cases> listByCompanyNoStaff(Cases company);
 
     /**
      * 查找某个员工的cases

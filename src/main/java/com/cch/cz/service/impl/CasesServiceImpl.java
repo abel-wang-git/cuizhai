@@ -58,8 +58,8 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     }
 
     @Override
-    public List<Cases> listByCompanyNoStaff(Long company) {
-        return casesMapper.listByCompanyNoStaff(company);
+    public List<Cases> listByCompanyNoStaff(Cases cases) {
+        return casesMapper.listByCompanyNoStaff(cases);
     }
 
     @Override

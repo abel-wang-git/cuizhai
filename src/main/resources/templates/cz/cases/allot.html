@@ -50,6 +50,16 @@
 </div>
 
 <div style="display: none; width: 100%" id="casesStaff">
+    <form class="layui-form where" method="post" id="search1">
+        <div class="layui-inline">
+            <label class="layui-form-label">合同号：</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input name="contractNum" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <input id="currcom" name="companyId" type="hidden" th:value="${session.staff.companyId}"/>
+        <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search1">查询</button>
+    </form>
     <table id="staffcase" lay-filter="staffcase"></table>
 </div>
 </body>
@@ -139,12 +149,13 @@
             elem: '#staffcase'
             , id: 'staffcase'
             , url: [[${ctx}]] + '/case/list/nostaff' //数据接口
-            , where: {company: [[${session.staff.companyId}]]}
+            , where: {data: JSON.stringify(JSON.parse('{"companyId":"'+[[${session.staff.companyId}]]+'"}'))}
             , method: 'post'
             , cols: [[ //表头
-                {field: 'name', title: '姓名', width: 75, sort: true}
-                , {field: 'customerResidenceAddress', title: '户籍', width: 195, sort: true}
-                , {field: 'chk', title: '分配', width: 90, type: 'checkbox'}
+                {field: 'chk', title: '分配', width: 90, type: 'checkbox'}
+               , {field: 'name', title: '姓名', width: 75, sort: true}
+                , {field: 'contractNum', title: '合同号', width: 155, sort: true}
+                , {field: 'idCard', title: '身份证', width: 195, sort: true}
             ]]
         });
 
@@ -186,7 +197,7 @@
             layer.open({
                 type: 1
                 , title: '分配委案'
-                , area: ['380px', '500px']
+                , area: ['520px', '90%']
                 , content: $("#casesStaff")
                 , btn: ['添加', '取消']
                 , yes: function (index) {
@@ -297,6 +308,20 @@
                 data: JSON.stringify(data.field),
                 success: function (data) {
                     cases.reload({data: data,limit:data.length});
+                }
+            });
+            return false;
+        });
+
+        //查询
+        form.on('submit(search1)', function (data) {
+            $.ajax({
+                url: "list/nostaff",
+                type: "post",
+                dataType: 'json',
+                data:{ data:JSON.stringify(data.field)},
+                success: function (data) {
+                    staffcase.reload({data: data.data,limit:data.data.length,url:''});
                 }
             });
             return false;

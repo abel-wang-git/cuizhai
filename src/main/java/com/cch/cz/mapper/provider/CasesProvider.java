@@ -12,11 +12,19 @@ import java.util.Map;
 public class CasesProvider extends BaseProvider<Cases, Long> {
     org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public String listByCompanyNoStaff(Map<String, Object> para) {
+    public String listByCompanyNoStaff(Cases para) {
         String sql = new SQL() {{
             SELECT(BuildSql.select(Cases.class));
-            FROM(" t_case ");
-            WHERE(" company_id=" + para.get("company") + " and staff_id is null");
+            FROM(BuildSql.tablename(Cases.class));
+            StringBuilder where = new StringBuilder(" 1=1 and staff_id is null");
+            if (null!=para.getCompanyId())
+                where.append(" and company_id = #{companyId}");
+            if (para.getStatus() != -1)
+                where.append(" and status = #{status} ");
+            if  (UtilFun.isEmptyString(para.getContractNum()))
+                where.append(" and contract_num= #{contractNum} ");
+
+            WHERE(where.toString());
         }}.toString();
         logger.info(sql);
         return sql;

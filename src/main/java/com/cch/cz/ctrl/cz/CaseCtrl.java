@@ -68,8 +68,9 @@ public class CaseCtrl {
         List<Company> list = companyService.listBystaff(staff);
 
         List<Staff> staffs=staffService.listByCompany((company == null ? null : Long.toString(company.getId())));
-
-        List<Cases> cases = casesService.listByCompanyNoStaff(staff.getCompanyId());
+        Cases acases = new Cases();
+        acases.setCompanyId(staff.getCompanyId());
+        List<Cases> cases = casesService.listByCompanyNoStaff(acases);
         model.addAttribute("staffs",staffs);
 
         model.addAttribute("coms",list);
@@ -107,15 +108,15 @@ public class CaseCtrl {
     /**
      * 查找该公司未分配的case
      *
-     * @param company 公司id
+     * @param data case
      * @return
      */
     @PostMapping(value = "/list/nostaff")
     @ResponseBody
-    public Table noStaff(@RequestParam("company") Long company) {
-        List<Cases> cases = casesService.listByCompanyNoStaff(company);
-
-        return new Table(cases.size(), cases);
+    public Table noStaff(@RequestParam("data") String data) {
+        Cases cases= JSON.parseObject(data,Cases.class);
+        List<Cases> caseslist = casesService.listByCompanyNoStaff(cases);
+        return new Table(caseslist.size(), caseslist);
     }
 
     /**
@@ -195,7 +196,9 @@ public class CaseCtrl {
     public AjaxReturn randomToStaff(@RequestParam("staff[]")String[] staff){
         Staff curr = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
         //当前公司未分配的ｃａｓｅ
-        List<Cases> cases = casesService.listByCompanyNoStaff(curr.getCompanyId());
+        Cases aCases = new Cases();
+        aCases.setCompanyId(curr.getCompanyId());
+        List<Cases> cases = casesService.listByCompanyNoStaff(aCases);
         casesService.randomToStaff(staff,cases.size(),curr.getCompanyId());
         return new AjaxReturn(0,"分配成功");
     }
