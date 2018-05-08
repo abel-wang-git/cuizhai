@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>title</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+
+<table id="cases" lay-filter="cases"></table>
+
+<script type="text/html" id="status">
+    {{#  if(d.status === 3){ }}
+    结案
+    {{#  } }}
+    {{#  if(d.status === 0){ }}
+    正常
+    {{#  } }}
+    {{#  if(d.status === 2){ }}
+    {{# }}
+    留案
+    {{#  } }}
+    {{#  if(d.status === 1){ }}
+    撤案
+    {{#  } }}
+</script>
+<script th:src="@{/static/layui/layui.js}"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    layui.use(['table','form','laytpl'], function () {
+        var table = layui.table
+            , $ = layui.$
+            , form = layui.form;
+        var cases = table.render({
+            elem: '#cases'
+            , id: 'cases'
+            , url: [[${ctx}]] + '/urge/list'
+            , page: true //开启分页
+            , method: 'post'
+            , cols: [[ //表头
+                 {field: 'staffId', title: '催收员', width: 80, sort: true}
+                , {field: 'rmarks', title: '备注', width: 75, sort: true}
+                , {field: 'result', title: '催收结果', width: 195, sort: true}
+                , {field: 'status', title: '接通状态', width: 80, sort: true}
+                , {field: 'target', title: '催收对象', width: 80, sort: true}
+                , {field: 'createDate', title: '催收日期', width: 80, sort: true}
+            ]]
+            ,done: function(res, curr, count){
+
+                layui.$('table tbody tr ').each(function () {
+                    if ($(this).children().eq(7).text().trim() == '撤案') {
+                        $(this).css('background-color', '#FF5722');
+                        $(this).css('color', '#FFB90F');
+                    }
+                    if ($(this).children().eq(7).text().trim() == '留案') {
+                        $(this).css('background-color', '#5FB878');
+                        $(this).css('color', '#FFB800');
+                    }
+                    if ($(this).children().eq(7).text().trim() == '结案') {
+                        $(this).css('background-color', '#36b811');
+                        $(this).css('color', '#ffd98c');
+                    }
+                })
+
+            }
+        });
+    })
+    /*]]>*/
+</script>
+</body>
+</html>

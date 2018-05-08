@@ -36,12 +36,6 @@
                 <input name="contractNum" type="text" class="layui-input"/>
             </div>
         </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">地区：</label>
-            <div class="layui-input-inline" style="width: 100px;">
-                <input name="name" type="text" class="layui-input"/>
-            </div>
-        </div>
         <input name="status" type="hidden" value="0"/>
         <input name="companyId" type="hidden" value="-1"/>
         <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
@@ -288,7 +282,7 @@
                         },
                         success:function (data) {
                             layer.msg(data.message);
-                            areas.reload();
+                            cases.reload();
                             casename.reload();
                             staffcase.reload();
                         }

@@ -33,7 +33,7 @@
         <div class="layui-input-inline">
             <select th:field="*{place}" required ="required " lay-verify="required">
                 <option value=""></option>
-                <option th:each="a:${roles}" th:text="${a.design}" th:value="${a.id}"></option>
+                <option th:unless="${a.name=='superadmin'}" th:each="a:${roles}" th:text="${a.design}" th:value="${a.id}"></option>
             </select>
         </div>
     </div>

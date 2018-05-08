@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8"/>
     <title>委案管理</title>
@@ -9,7 +9,7 @@
 <button type="button" class="layui-btn layui-btn-sm" id="revoke">撤案</button>
 <button type="button" class="layui-btn layui-btn-sm" id="retain" lay-filter="retain">留案</button>
 <button type="button" class="layui-btn layui-btn-sm" id="adjust" lay-filter="adjust">调案</button>
-<button type="button" class="layui-btn layui-btn-sm" id="upload">上传委案</button>
+<button shiro:hasAnyRoles ="superadmin ,admin" type="button" class="layui-btn layui-btn-sm" id="upload">上传委案</button>
 
 <form class="layui-form where" method="post" id="search">
     <div class="layui-inline">

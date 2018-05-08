@@ -40,6 +40,11 @@ public class UrgeRecord extends BaseEntity {
      */
     private String createDate;
 
+    /**
+     *催收员
+     */
+    private String staffId;
+
 
     public Long getId() {
         return id;
@@ -95,5 +100,13 @@ public class UrgeRecord extends BaseEntity {
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
+    }
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
     }
 }

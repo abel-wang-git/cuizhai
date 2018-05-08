@@ -8,6 +8,7 @@ import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.UrgeRecord;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.UrgeRecordService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +57,24 @@ public class UrgeRecordCtrl {
         table.setCount(list.size());
         return table;
     }
+
+    @PostMapping(value = "/list")
+    @ResponseBody
+    public Table list(@RequestParam int page, @RequestParam int limit){
+        PageHelper.startPage(page, limit);
+        List<UrgeRecord> list = urgeRecordService.findAll();
+        Table table = new Table();
+        table.setData(list);
+        table.setCount(list.size());
+        return table;
+    }
+
+    @GetMapping(value = "/manager")
+    public String manager(){
+        return "/cz/urge/manager";
+    }
+
+
 
 
 }
