@@ -11,11 +11,11 @@
     <table id="allots" lay-filter="allots"></table>
 </fieldset>
 <!--当登录所属公司的员工列表-->
-<fieldset class="layui-elem-field">
-    <legend>分配到员工</legend>
-    <a class="layui-btn  layui-btn-xs" id="salotrd">平均分配到员工</a>
-    <table id="staffs" lay-filter="staffs"></table>
-</fieldset>
+<!--<fieldset class="layui-elem-field">-->
+    <!--<legend>分配到员工</legend>-->
+    <a class="layui-btn" id="salotrd">平均分配到员工</a>
+    <!--<table id="staffs" lay-filter="staffs"></table>-->
+<!--</fieldset>-->
 <!--操作栏-->
 <script type="text/html" id="allotcase">
     <a class="layui-btn  layui-btn-xs" lay-event="allotcase">分配委案</a>
@@ -59,7 +59,7 @@
     </form>
 </div>
 
-<div style="display: none;width: 380px" id="allotsta">
+<div style="display: none;" id="allotsta">
     <form class="layui-form where" method="post" id="search1">
         <div class="layui-inline">
             <label class="layui-form-label">合同号：</label>
@@ -73,8 +73,8 @@
     <table id="staffcase" lay-filter="staffcase"></table>
     <form class="layui-form">
         <div class="layui-form-item">
-            <div class="layui-input-block" style="float:left;margin-left: 0" th:each="c:${staffs}">
-                <input type="checkbox" lay-filter="chkstaff" name="company" th:value="${c.loginName}" th:title="${c.name}"/>
+            <div class="layui-input-inline" style="width: 95px " th:each="c:${staffs}">
+                <input type="checkbox"  lay-filter="chkstaff" name="company" th:value="${c.loginName}" th:title="${c.name}" />
             </div>
         </div>
     </form>
@@ -96,7 +96,7 @@
             , method: 'post'
             , cols: [[ //表头
                 {field: 'name', title: '公司名称', width: '60%', sort: true, fixed: 'left'}
-                , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase',}
+                , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase'}
             ]]
         });
         //根据公司查到的员工
@@ -108,7 +108,7 @@
             , method: 'post'
             , cols: [[ //表头
                 {field: 'name', title: '员工姓名', width: '60%', sort: true, fixed: 'left'}
-                , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase',}
+                , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase'}
             ]]
         });
         //根据案件名查到的ｃａｓｅ
@@ -230,12 +230,12 @@
                 chestaff.splice(chestaff.indexOf(data.value), 1)
             }
         });
-
+        //分配到员工
         $("#salotrd").click(function () {
             layer.open({
                 type: 1
                 , title: '分配委案'
-                , area: ['380px', '500px']
+                , area: ['520px', '90%']
                 , content: $("#allotsta")
                 , btn: ['添加', '取消']
                 , yes: function (index) {

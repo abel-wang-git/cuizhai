@@ -8,7 +8,6 @@ import com.cch.cz.entity.Staff;
 import com.cch.cz.mapper.AdjustLogMapper;
 import com.cch.cz.mapper.CasesMapper;
 import com.cch.cz.service.CasesService;
-import org.apache.poi.util.StringUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -126,21 +125,13 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     @Override
     @Transactional
     public void randomToStaff(String[] staff,List<Cases> cases) {
-        int yu = cases.size()%staff.length;
-        for (String id: staff) {
-            for (int i = 0; i < cases.size()/staff.length; i++) {
-                Cases c =cases.get(i);
-                c.setStaffId(id);
-            }
-        }
-
-        for (int i=0;i<yu;i++){
-            Cases cases1 = cases.get(cases.size()-i-1);
-            update(cases1);
-        }
-
-        for (Cases c: cases) {
-            casesMapper.update(c);
+        int index = 0;
+        for (int i = 0; i < cases.size(); i++) {
+            Cases c =cases.get(i);
+            if(index==staff.length) index=0;
+            c.setStaffId(staff[index]);
+            index++;
+            update(c);
         }
     }
 
