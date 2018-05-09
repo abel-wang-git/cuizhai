@@ -56,7 +56,8 @@ public class ExcelTool {
             Cell curr = r.getCell(j);
             if (curr == null) continue;
             if (title.get(j).toString().equals("催收员")) {
-                cases.setStaffId(getCellValue(curr));
+                if(UtilFun.isEmptyString(getCellValue(curr)))
+                    cases.setStaffId(getCellValue(curr));
             }
             if (title.get(j).toString().equals("合同号")) {
                 cases.setContractNum(getCellValue(curr));
