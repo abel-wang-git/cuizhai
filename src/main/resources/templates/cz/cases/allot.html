@@ -44,17 +44,7 @@
 </div>
 
 <div style="display: none; width: 100%" id="casesStaff">
-    <form class="layui-form where" method="post" id="search1">
-        <div class="layui-inline">
-            <label class="layui-form-label">合同号：</label>
-            <div class="layui-input-inline" style="width: 100px;">
-                <input name="contractNum" type="text" class="layui-input"/>
-            </div>
-        </div>
-        <input id="currcom" name="companyId" type="hidden" th:value="${session.staff.companyId}"/>
-        <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search1">查询</button>
-    </form>
-    <table id="staffcase" lay-filter="staffcase"></table>
+<!--dfgdf-->
 </div>
 </body>
 
@@ -70,7 +60,17 @@
 </div>
 
 <div style="display: none;width: 380px" id="allotsta">
-    <div>当前未分配案件总数<span th:text="${#lists.size(cases)}"></span></div>
+    <form class="layui-form where" method="post" id="search1">
+        <div class="layui-inline">
+            <label class="layui-form-label">合同号：</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input name="contractNum" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <input id="currcom" name="companyId" type="hidden" th:value="${session.staff.companyId}"/>
+        <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search1">查询</button>
+    </form>
+    <table id="staffcase" lay-filter="staffcase"></table>
     <form class="layui-form">
         <div class="layui-form-item">
             <div class="layui-input-block" style="float:left;margin-left: 0" th:each="c:${staffs}">
@@ -120,11 +120,10 @@
             , cols: [[ //表头
                 {field: 'caseName', title: '案件名', width: 100, sort: true, fixed: 'left'}
                 ,{field: 'count', title: '案件数', width: 100}
-                ,{fixed: 'chk', width: 100, align: 'center', type: 'checkbox',fixed: 'right'}
+                ,{fixed: 'chk', width: 100, align: 'center', type: 'checkbox'}
             ]]
         });
         //按地区分的ｃａｓｅ
-
         var cases = table.render({
             elem: '#casetab'
             , id: 'casetab'
@@ -232,38 +231,6 @@
             }
         });
 
-        $("#caloat").click(function () {
-            layer.open({
-                type: 1
-                , title: '分配委案'
-                , area: ['380px', '500px']
-                , content: $("#allotc")
-                , btn: ['添加', '取消']
-                , yes: function (index) {
-                    console.log(checompany)
-                    var checkStatus = table.checkStatus('caseName');
-                    console.log(checkStatus.data);
-
-                    $.ajax({
-                        url: "random",
-                        type: "post",
-                        dataType: 'json',
-                        data: {
-                            companies:JSON.stringify(checkStatus.data),
-                            names:checompany
-                        },
-                        success:function (data) {
-                            layer.msg(data.message)
-                            areas.reload();
-                            casename.reload();
-                            staff.reload();
-                        }
-                    });
-
-                }
-            })
-        })
-
         $("#salotrd").click(function () {
             layer.open({
                 type: 1
@@ -272,12 +239,22 @@
                 , content: $("#allotsta")
                 , btn: ['添加', '取消']
                 , yes: function (index) {
-                    console.log(chestaff);
+                    var checkStatus = table.checkStatus('staffcase');
+                    console.log(checkStatus.data);
+                    if(chestaff.length<1){
+                        layer.msg("最少选择一个员工");
+                        return;
+                    }
+                    if(checkStatus.data.length<1){
+                        layer.msg("最少选择一个案例");
+                        return;
+                    }
                     $.ajax({
                         url: "randomtostaff",
                         type: "post",
                         dataType: 'json',
                         data: {
+                            cases:JSON.stringify(checkStatus.data),
                             staff:chestaff
                         },
                         success:function (data) {

@@ -193,13 +193,13 @@ public class CaseCtrl {
      */
     @PostMapping(value = "/randomtostaff")
     @ResponseBody
-    public AjaxReturn randomToStaff(@RequestParam("staff[]")String[] staff){
+    public AjaxReturn randomToStaff(@RequestParam("cases")String casess,@RequestParam("staff[]")String[] staff){
         Staff curr = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
-        //当前公司未分配的ｃａｓｅ
-        Cases aCases = new Cases();
-        aCases.setCompanyId(curr.getCompanyId());
-        List<Cases> cases = casesService.listByCompanyNoStaff(aCases);
-        casesService.randomToStaff(staff,cases.size(),curr.getCompanyId());
+
+        List<Cases> cases = JSON.parseArray(casess,Cases.class);
+
+        casesService.randomToStaff(staff,cases);
+
         return new AjaxReturn(0,"分配成功");
     }
 

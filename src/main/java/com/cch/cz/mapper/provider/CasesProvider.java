@@ -116,15 +116,5 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
     }
 
 
-    public String randomToStaff(Map<String,Object> para){
-        String sql=new SQL(){{
-            UPDATE(BuildSql.tablename(Cases.class));
-            SET(" staff_id=#{staff} ");
-            WHERE(" id in(select id from (select @rownum:=@rownum+1 as rownum,id from (SELECT @rownum:=0) r ,t_case where status = 0 and company_id=#{company} and staff_id is null) as a where  rownum <= #{num} )");
-        }}.toString();
-        logger.info(sql);
-        return sql;
-    }
-
 
 }

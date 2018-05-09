@@ -80,7 +80,7 @@ public interface CasesService extends BaseService<Cases,Long>  {
      *
      * @param staff，
      */
-    void randomToStaff(String[] staff,int num,Long company);
+    void randomToStaff(String[] staff,List<Cases> cases);
 
     /**
      * 调案

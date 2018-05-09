@@ -124,13 +124,23 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     }
 
     @Override
-    public void randomToStaff(String[] staff,int num,Long company) {
-        int yu = num%staff.length;
-        for (int i = 0; i < staff.length; i++) {
-            casesMapper.randomToStaff(staff[i], num/staff.length,company);
+    @Transactional
+    public void randomToStaff(String[] staff,List<Cases> cases) {
+        int yu = cases.size()%staff.length;
+        for (String id: staff) {
+            for (int i = 0; i < cases.size()/staff.length; i++) {
+                Cases c =cases.get(i);
+                c.setStaffId(id);
+            }
         }
+
         for (int i=0;i<yu;i++){
-            casesMapper.randomToStaff(staff[i], 1,company);
+            Cases cases1 = cases.get(cases.size()-i-1);
+            update(cases1);
+        }
+
+        for (Cases c: cases) {
+            casesMapper.update(c);
         }
     }
 
