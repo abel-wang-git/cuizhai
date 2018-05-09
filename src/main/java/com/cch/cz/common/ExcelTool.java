@@ -6,6 +6,7 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,16 +52,21 @@ public class ExcelTool {
         cases.setStatus(Cases.NORMAL);
         //员工id设置为未分配
         cases.setCompanyId(-1L);
-        for (int j = 0; j < cell_num; j++) {
+        for (int j = 0; j < title.size(); j++) {
             Cell curr = r.getCell(j);
             if (curr == null) continue;
+            if (title.get(j).toString().equals("催收员")) {
+                cases.setStaffId(getCellValue(curr));
+            }
             if (title.get(j).toString().equals("合同号")) {
                 cases.setContractNum(getCellValue(curr));
             }
             if (title.get(j).toString().equals("委外公司")||title.get(j).toString().equals("公司")) {
                 cases.setAppointCompany(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("委派日期")||title.get(j).toString().equals("委案时间")) {
+            if (title.get(j).toString().equals("委派日期")||
+                    title.get(j).toString().equals("委案时间")||
+                    title.get(j).toString().equals("委案日期")) {
                 cases.setAppointData(getCellValue(curr));
             }
             if (title.get(j).toString().equals("退案日期")||title.get(j).toString().equals("退案时间")) {
