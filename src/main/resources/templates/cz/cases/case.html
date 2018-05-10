@@ -217,6 +217,10 @@
             var checkStatus = table.checkStatus('cases');
             var ids = [];
             for (var i = 0; i < checkStatus.data.length; i++) {
+                if(checkStatus.data[i].companyId==-1){
+                    layer.msg("选择案件中存在未分配的案件")
+                    return;
+                }
                 if (checkStatus.data[i].status==1||checkStatus.data[i].status==3){
                     layer.msg("选择案例存在结案或者撤案状态");
                     return;
