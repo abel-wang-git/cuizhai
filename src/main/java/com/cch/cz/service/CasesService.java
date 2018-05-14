@@ -97,4 +97,6 @@ public interface CasesService extends BaseService<Cases,Long>  {
      * @param company
      */
     void allotToCompany(List<Cases> cases, String company);
+
+    int countDynamic(Cases cases);
 }

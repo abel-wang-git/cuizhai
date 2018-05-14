@@ -162,5 +162,10 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
         }
     }
 
+    @Override
+    public int countDynamic(Cases cases) {
+        return casesMapper.countDynamic(cases);
+    }
+
 
 }

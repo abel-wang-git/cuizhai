@@ -81,7 +81,8 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
     List<Map> listByCompany(@Param("company") Long company,@Param("staff") String staff, @Param("status") int status);
     @SelectProvider(type = CasesProvider.class,method = "dynamicList")
     List<Cases> dynamicList(Cases cases);
-
+    @SelectProvider(type = CasesProvider.class,method = "countDynamic")
+    int countDynamic(Cases cases);
 
     @UpdateProvider(type = CasesProvider.class,method = "randomAllot")
     void randomAllot(@Param("company") String company,@Param("name")String name,@Param("num")int num);

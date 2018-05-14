@@ -98,6 +98,31 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and contract_num= #{contractNum} ");
             if (null!=cases.getCompanyId()&&cases.getCompanyId()==-1)
                 where.append(" and company_id = -1");
+            if(UtilFun.isEmptyString(cases.getCustomerAddress()))
+                where.append(" and customer_address like #{customerAddress}");
+            WHERE(where.toString());
+        }}.toString();
+        logger.info(sql);
+        return sql;
+    }
+
+    public String countDynamic(Cases cases){
+        String sql = new SQL() {{
+            SELECT(" count(*) ");
+            FROM(BuildSql.tablename(Cases.class));
+            StringBuilder where = new StringBuilder(" 1=1 ");
+            if (cases.getStatus() != -1)
+                where.append(" and status = #{status} ");
+            if (UtilFun.isEmptyString(cases.getName()))
+                where.append(" and name = #{name} ");
+            if (UtilFun.isEmptyString(cases.getCustomerPhoneNumber()))
+                where.append(" and customer_phone_number = #{customerPhoneNumber}");
+            if  (UtilFun.isEmptyString(cases.getContractNum()))
+                where.append(" and contract_num= #{contractNum} ");
+            if (null!=cases.getCompanyId()&&cases.getCompanyId()==-1)
+                where.append(" and company_id = -1");
+            if(UtilFun.isEmptyString(cases.getCustomerAddress()))
+                where.append(" and customer_address like #{customerAddress}");
             WHERE(where.toString());
         }}.toString();
         logger.info(sql);
@@ -127,7 +152,6 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
         logger.info(sql);
         return sql ;
     }
-
 
 
 }
