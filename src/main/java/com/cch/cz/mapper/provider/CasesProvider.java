@@ -30,20 +30,33 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
         return sql;
     }
 
-    public String listByStaff(Map<String, Object> para) {
+    public String listByStaff(Cases cases) {
         String sql = new SQL() {{
+            StringBuilder where = new StringBuilder();
             SELECT(BuildSql.select(Cases.class));
             FROM(BuildSql.tablename(Cases.class));
-            WHERE(" staff_id =#{staff}");
+            where.append(" staff_id =#{staffId}");
+            if(UtilFun.isEmptyString(cases.getName()))
+                where.append( " and name = #{name}");
+            if(UtilFun.isEmptyString(cases.getCustomerPhoneNumber()))
+                where.append( " and customer_phone_number = #{customerPhoneNumber}");
+            WHERE(where.toString());
+
         }}.toString();
         logger.info(sql);
         return sql;
     }
-    public String countByStaff(Map<String, Object> para) {
+    public String countByStaff(Cases cases) {
         String sql = new SQL() {{
+            StringBuilder where = new StringBuilder();
             SELECT("count(*)");
             FROM(BuildSql.tablename(Cases.class));
-            WHERE(" staff_id =#{staff}");
+            where.append(" staff_id =#{staffId}");
+            if(UtilFun.isEmptyString(cases.getName()))
+                where.append( " and name = #{name}");
+            if(UtilFun.isEmptyString(cases.getCustomerPhoneNumber()))
+                where.append( " and customer_phone_number = #{customerPhoneNumber}");
+            WHERE(where.toString());
         }}.toString();
         logger.info(sql);
         return sql;

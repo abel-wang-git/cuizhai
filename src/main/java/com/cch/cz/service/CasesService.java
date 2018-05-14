@@ -30,16 +30,16 @@ public interface CasesService extends BaseService<Cases,Long>  {
 
     /**
      * 查找某个员工的cases
-     * @param staff
+     * @param cases
      * @return
      */
-    List<Cases> listByStaff(String staff);
+    List<Cases> listByStaff(Cases cases);
     /**
      * 查找某个员工的cases总数
-     * @param staff
+     * @param cases
      * @return
      */
-    Long countByStaff( String staff);
+    Long countByStaff( Cases cases);
 
     /**
      *
@@ -51,9 +51,6 @@ public interface CasesService extends BaseService<Cases,Long>  {
 
     /**
      *留案 撤案 结案
-     * @param id 操作的cases
-     * @param day 留案期
-     * @param status  撤案=1 留案=2  结案=3
      */
     void managerCase(List<Cases> cases);
 

@@ -139,24 +139,24 @@ public class CaseCtrl {
     /**
      * 查找属于该公司的case
      *
-     * @param staff 员工
+     * @param cases 条件
      * @return
      */
     @PostMapping(value = "/list/bystaff")
     @ResponseBody
-    public Table listByStaff(@RequestParam int page, @RequestParam int limit,@RequestParam("staff") String staff) {
-        Long count = casesService.countByStaff(staff);
+    public Table listByStaff(@RequestParam(defaultValue ="0") int page, @RequestParam(defaultValue = "0") int limit,@RequestParam("staff") String cases) {
+        Cases where = JSON.parseObject(cases,Cases.class);
+        Long count = casesService.countByStaff(where);
         PageHelper.startPage(page, limit);
-        List<Cases> cases = casesService.listByStaff(staff);
+        List<Cases> caseslist = casesService.listByStaff(where);
 
-        return new Table(count.intValue(), cases);
+        return new Table(count.intValue(), caseslist);
     }
 
     /**
      * 撤案，留案，结案
      * @param ids
-     * @param status
-     * @param rethinDay
+
      * @return
      */
     @PostMapping(value = "/manager")

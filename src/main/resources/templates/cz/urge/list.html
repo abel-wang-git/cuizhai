@@ -6,13 +6,29 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
+<form class="layui-form where" method="post" id="search">
+    <div class="layui-inline">
+        <label class="layui-form-label">姓名：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="name" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">手机：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="customerPhoneNumber" type="text" class="layui-input"/>
+        </div>
+    </div>
 
+    <input type="hidden" th:value="${session.staff.loginName}" name="staffId"/>
+    <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
+</form>
 <table id="cases" lay-filter="cases"></table>
 
 
 <script type="text/html" id="urge">
     <a class="layui-btn  layui-btn-xs" lay-event="urge">催记</a>
-    <a class="layui-btn  layui-btn-xs" lay-event="end">结案</a>
+    <!--<a class="layui-btn  layui-btn-xs" lay-event="end">结案</a>-->
 </script>
 <script type="text/html" id="status">
     {{#  if(d.status === 3){ }}
@@ -47,33 +63,35 @@
         var cases = table.render({
             elem: '#cases'
             , id: 'cases'
+            , height:'full-60'
             , url: [[${ctx}]] + '/case/list/bystaff' //数据接口
             , page: true //开启分页
-            , where: {staff: [[${session.staff.loginName}]]}
+            , where: {staff: JSON.stringify(JSON.parse('{"staffId":"'+[[${session.staff.loginName}]]+'"}'))}
             , method: 'post'
             , cols: [[ //表头
-                {field: 'name', title: '姓名', width: 75, sort: true}
-                , {field: 'customerResidenceAddress', title: '户籍', width: 195, sort: true}
-                , {field: 'loanPrincipal', title: '贷款本金', width: 80, sort: true}
-                , {field: 'repaymentMoney', title: '已还金额', width: 80, sort: true}
-                , {field: 'overrangingDay', title: '逾期天数', width: 80, sort: true}
-                , {field: 'sumArrears', title: '总欠款', width: 80, sort: true}
-                , {field: 'lastUrge', title: '最后一次催记时间', width: 80, sort: true}
-                , {field: 'status', title: '状态', width: 80,templet:'#status'}
-                , {fixed: 'urge', title: '分配', width: 150, align: 'center', toolbar: '#urge',fixed:'right'}
+                {field: 'name', title: '姓名', width:'10%', sort: true}
+                , {field: 'customerPhoneNumber', title: '手机', width: '10%', sort: true}
+                , {field: 'customerResidenceAddress', title: '户籍', width: '14%', sort: true}
+                , {field: 'loanPrincipal', title: '贷款本金', width: '10%', sort: true}
+                , {field: 'repaymentMoney', title: '已还金额', width: '10%', sort: true}
+                , {field: 'overrangingDay', title: '逾期天数', width: '10%', sort: true}
+                , {field: 'sumArrears', title: '总欠款', width: '10%', sort: true}
+                , {field: 'lastUrge', title: '最后一次催记时间', width: '10%', sort: true}
+                , {field: 'status', title: '状态', width: '6%',templet:'#status'}
+                , {fixed: 'urge', title: '分配', width: '10%', align: 'center', toolbar: '#urge',fixed:'right'}
             ]]
             ,done: function(res, curr, count){
 
                 layui.$('table tbody tr ').each(function () {
-                    if ($(this).children().eq(7).text().trim() == '撤案') {
+                    if ($(this).children().eq(8).text().trim() == '撤案') {
                         $(this).css('background-color', '#FF5722');
                         $(this).css('color', '#FFB90F');
                     }
-                    if ($(this).children().eq(7).text().trim() == '留案') {
+                    if ($(this).children().eq(8).text().trim() == '留案') {
                         $(this).css('background-color', '#5FB878');
                         $(this).css('color', '#FFB800');
                     }
-                    if ($(this).children().eq(7).text().trim() == '结案') {
+                    if ($(this).children().eq(8).text().trim() == '结案') {
                         $(this).css('background-color', '#36b811');
                         $(this).css('color', '#ffd98c');
                     }
@@ -82,7 +100,6 @@
             }
         });
         table.on('tool(cases)', function (obj) {
-            console.log(obj.event);
             if(obj.data.status===1){
                 layer.msg("委案已经撤回");
                 return;
@@ -133,6 +150,11 @@
                     }
                 })
             }
+        });
+
+        form.on('submit(search)', function (data) {
+            cases.reload({where:{staff:JSON.stringify(data.field)}});
+            return false;
         });
 
     })

@@ -24,8 +24,10 @@ public class ExcelTool {
         // 创建对Excel工作簿文件的引用
         Workbook workbook = WorkbookFactory.create(new FileInputStream(excel));
         List<Cases> result = new ArrayList();
-        String caseName =excel.getName().split("-")[1];
-        String caseType =excel.getName().split("-")[2];
+        String filename=excel.getName().substring(0,excel.getName().lastIndexOf("."));
+
+        String caseName =filename.split("-")[1];
+        String caseType =filename.split("-")[2];
         //遍历sheet
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
             Sheet sheet = workbook.getSheetAt(i);

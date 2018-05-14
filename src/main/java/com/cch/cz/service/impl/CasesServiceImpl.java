@@ -62,13 +62,13 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     }
 
     @Override
-    public List<Cases> listByStaff(String staff) {
-        return casesMapper.listByStaff(staff);
+    public List<Cases> listByStaff(Cases cases) {
+        return casesMapper.listByStaff(cases);
     }
 
     @Override
-    public Long countByStaff(String staff) {
-        return casesMapper.countByStaff(staff);
+    public Long countByStaff(Cases cases) {
+        return casesMapper.countByStaff(cases);
     }
 
     @Override

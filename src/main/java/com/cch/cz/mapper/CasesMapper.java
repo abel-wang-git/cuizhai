@@ -63,15 +63,15 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
 
     /**
      *
-     * @param staff 员工id
+     * @param cases
      * @return 属于某个员工的case
      *
      */
     @SelectProvider(type = CasesProvider.class,method = "listByStaff")
-    List<Cases> listByStaff(@Param("staff") String staff);
+    List<Cases> listByStaff(Cases cases);
 
     @SelectProvider(type = CasesProvider.class,method = "countByStaff")
-    Long countByStaff(@Param("staff") String staff);
+    Long countByStaff(Cases cases);
 
     @SelectProvider(type = CasesProvider.class,method = "listByCompany")
     @Results({
