@@ -14,7 +14,6 @@
 <!--<fieldset class="layui-elem-field">-->
 <!--<legend>分配到员工</legend>-->
 <a class="layui-btn" id="salotrd">平均分配到员工</a>
-<!--<table id="staffs" lay-filter="staffs"></table>-->
 <!--</fieldset>-->
 <!--操作栏-->
 <script type="text/html" id="allotcase">
@@ -73,17 +72,20 @@
                 <input name="contractNum" type="text" class="layui-input"/>
             </div>
         </div>
+        <br/>
+        <div th:substituteby="fragment/city_select :: province"></div>
+        <div th:substituteby="fragment/city_select :: city"></div>
+        <div th:substituteby="fragment/city_select :: area"></div>
         <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search1">查询</button>
 
-        <form class="layui-form">
             <div class="layui-form-item">
                 <div class="layui-input-inline" style="width: 95px " th:each="c:${staffs}">
                     <input type="checkbox" lay-filter="chkstaff" name="company" th:value="${c.loginName}"
                            th:title="${c.name}"/>
                 </div>
             </div>
-        </form>
         <input id="currcom" name="companyId" type="hidden" th:value="${session.staff.companyId}"/>
+        <input name="customerAddress" type="hidden"/>
     </form>
     <table id="staffcase" lay-filter="staffcase"></table>
 
@@ -108,31 +110,9 @@
                 , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase'}
             ]]
         });
-        //根据公司查到的员工
-        table.render({
-            elem: '#staffs'
-            , id: 'staffs'
-            , url: [[${ctx}]] + '/staff/listbycompany' //数据接口
-            , where: {company: [[${session.staff.companyId}]]}
-            , method: 'post'
-            , cols: [[ //表头
-                {field: 'name', title: '员工姓名', width: '60%', sort: true, fixed: 'left'}
-                , {fixed: 'allot', title: '分配', width: '40%', align: 'center', toolbar: '#allotcase'}
-            ]]
-        });
-        //根据案件名查到的ｃａｓｅ
-        var casename = table.render({
-            elem: '#caseName'
-            , id: 'caseName'
-            , url: 'groupByname' //数据接口
-            , method: 'post'
-            , cols: [[ //表头
-                {field: 'caseName', title: '案件名', width: 100, sort: true, fixed: 'left'}
-                , {field: 'count', title: '案件数', width: 100}
-                , {fixed: 'chk', width: 100, align: 'center', type: 'checkbox'}
-            ]]
-        });
-        //按地区分的ｃａｓｅ
+
+
+        //给公司分配的表格
         var cases = table.render({
             elem: '#casetab'
             , id: 'casetab'
@@ -142,10 +122,11 @@
             , limit: 100
             , cols: [[ //表头
                 {field: 'chk', title: '分配', width: 30, type: 'checkbox'}
-                , {field: 'name', title: '姓名', width: 80, sort: true}
-                , {field: 'contractNum', title: '合同号', width: 110, sort: true}
-                , {field: 'idCard', title: '身份证', width: 155, sort: true}
-                , {field: 'caseName', title: '案件名称', width: 200, sort: true}
+                , {field: 'name', title: '姓名', width: 80}
+                , {field: 'contractNum', title: '合同号', width: 110}
+                , {field: 'idCard', title: '身份证', width: 155}
+                , {field: 'customerAddress', title: '户籍地址', width: 155}
+                , {field: 'caseName', title: '案件名称', width: 200}
 
             ]]
         });
@@ -160,6 +141,7 @@
                 {field: 'chk', title: '分配', width: 90, type: 'checkbox'}
                 , {field: 'name', title: '姓名', width: 75, sort: true}
                 , {field: 'contractNum', title: '合同号', width: 155, sort: true}
+                , {field: 'customerAddress', title: '户籍地址', width: 155}
                 , {field: 'idCard', title: '身份证', width: 195, sort: true}
             ]]
         });
@@ -170,15 +152,15 @@
                 var ctx = [[${ctx}]];
                 layer.open({
                     type: 1
-                    , title: '分配委案'
-                    , area: ['600px', '90%']
+                    , title: '分配到公司'
+                    , area: ['755px', '90%']
                     , content: $("#caseArea")
-                    , btn: ['添加', '取消']
+                    , btn: ['添加']
                     , yes: function (index) {
-                        var datas = [];
                         var checkStatus = table.checkStatus('casetab');
-                        for (var i = 0; i < checkStatus.data.length; i++) {
-                            datas.push(checkStatus.data[i].id);
+                        if(checkStatus.data.length<1){
+                            layer.msg("请选择委案！")
+                            return;
                         }
                         console.log(checkStatus.data)
                         $.ajax({
@@ -189,54 +171,18 @@
                             success: function (data) {
                                 cases.reload();
                                 staffcase.reload();
-                                layer.close(index);
-                                $('input[name="customerAddress"]').val("")
                                 layer.msg(data.message);
                             }
                         });
+                    }
+                    ,cancel: function(index, layero){
+                        $('input[name="customerAddress"]').val("");
                     }
                 })
             }
         });
 
-        table.on('tool(staffs)', function (obj) {
-            var ctx = [[${ctx}]];
-            layer.open({
-                type: 1
-                , title: '分配委案'
-                , area: ['520px', '90%']
-                , content: $("#casesStaff")
-                , btn: ['添加', '取消']
-                , yes: function (index) {
-                    var checkStatus = table.checkStatus('staffcase');
-                    $.ajax({
-                        url: "allotstaff",
-                        type: "post",
-                        dataType: 'json',
-                        data: {
-                            staff: JSON.stringify(obj.data),
-                            cases: JSON.stringify(checkStatus.data)
-                        },
-                        success: function (data) {
-                            staffcase.reload();
-                            layer.close(index);
-                            layer.msg(data.message);
-                        }
-                    });
-                }
-            });
-        });
-
-        var checompany = [];
         var chestaff = [];
-        form.on('checkbox(chkcom)', function (data) {
-            if (data.elem.checked) {
-                checompany.push(data.value);
-            } else {
-                checompany.splice(checompany.indexOf(data.value), 1)
-            }
-        });
-
         form.on('checkbox(chkstaff)', function (data) {
             if (data.elem.checked) {
                 chestaff.push(data.value);
@@ -248,10 +194,10 @@
         $("#salotrd").click(function () {
             layer.open({
                 type: 1
-                , title: '分配委案'
-                , area: ['520px', '90%']
+                , title: '分配到员工'
+                , area: ['675px', '90%']
                 , content: $("#allotsta")
-                , btn: ['添加', '取消']
+                , btn: ['添加']
                 , yes: function (index) {
                     var checkStatus = table.checkStatus('staffcase');
                     console.log(checkStatus.data);
@@ -274,11 +220,13 @@
                         success: function (data) {
                             layer.msg(data.message);
                             cases.reload();
-                            casename.reload();
                             staffcase.reload();
                         }
                     });
 
+                }
+                ,cancel: function(index, layero){
+                    $('input[name="customerAddress"]').val("");
                 }
             })
         })
@@ -297,6 +245,12 @@
 
 
     });
+    layui.config({
+        base: [[${ctx}]]+'/static/layui/js/'
+    }).use('cityselect');
     /*]]>*/
+
+
 </script>
 </html>
+

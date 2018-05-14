@@ -23,7 +23,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and status = #{status} ");
             if  (UtilFun.isEmptyString(para.getContractNum()))
                 where.append(" and contract_num= #{contractNum} ");
-
+            if(UtilFun.isEmptyString(para.getCustomerAddress()))
+                where.append(" and customer_address like #{customerAddress}");
             WHERE(where.toString());
         }}.toString();
         logger.info(sql);

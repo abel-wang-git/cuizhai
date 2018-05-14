@@ -24,4 +24,5 @@ layui.define(['element', 'layer', 'util', 'form'], function (exports) {
 
         console.log(str)
     });
+    exports('cityselect', {});
 })
