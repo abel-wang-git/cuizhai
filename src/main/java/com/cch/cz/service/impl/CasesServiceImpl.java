@@ -82,21 +82,19 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     }
 
     @Override
-    public void managerCase(Long[] id, int status, int day) {
-        for (int i = 0; i < id.length; i++) {
-            Cases cases = this.findOne(id[i]);
-            cases.setStatus(status);
+    public void managerCase(List<Cases> cases) {
+        for (int i = 0; i < cases.size(); i++) {
 
-            if (status == Cases.REVOKE) cases.setRevokeDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
+            if (cases.get(i).getStatus() == Cases.REVOKE) cases.get(i).setRevokeDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
 
-            if (status == Cases.END) cases.setEndDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
+            if (cases.get(i).getStatus() == Cases.END) cases.get(i).setEndDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
 
-            if (status == Cases.RETAIN) {
-                cases.setRethinDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
-                cases.setStopAppoint(UtilFun.DateToString(UtilFun.addDay(cases.getStopAppoint(),day,UtilFun.YYYYMMDD2),UtilFun.YYYYMMDD2));
-                cases.setRethinDay(day);
+            if (cases.get(i).getStatus() == Cases.RETAIN) {
+                cases.get(i).setRethinDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
+                cases.get(i).setStopAppoint(UtilFun.DateToString(UtilFun.addDay(cases.get(i).getStopAppoint(),
+                        cases.get(i).getRethinDay(),UtilFun.YYYYMMDD2),UtilFun.YYYYMMDD2));
             }
-            this.update(cases);
+            this.update(cases.get(i));
         }
 
     }

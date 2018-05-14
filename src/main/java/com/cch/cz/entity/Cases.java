@@ -178,8 +178,23 @@ public class Cases extends BaseEntity {
      * 案件类型
      */
     private  String type;
-
+    /**
+     * 案件名称
+     */
     private String caseName;
+
+    /**
+     * 结案原因
+     */
+    private String endReason;
+    /**
+     * 留案原因
+     */
+    private String retainReason;
+    /**
+     * 撤案原因
+     */
+    private String revokeReason;
 
     public int getStatus() {
         return status;
@@ -667,5 +682,29 @@ public class Cases extends BaseEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getEndReason() {
+        return endReason;
+    }
+
+    public void setEndReason(String endReason) {
+        this.endReason = endReason;
+    }
+
+    public String getRetainReason() {
+        return retainReason;
+    }
+
+    public void setRetainReason(String retainReason) {
+        this.retainReason = retainReason;
+    }
+
+    public String getRevokeReason() {
+        return revokeReason;
+    }
+
+    public void setRevokeReason(String revokeReason) {
+        this.revokeReason = revokeReason;
     }
 }

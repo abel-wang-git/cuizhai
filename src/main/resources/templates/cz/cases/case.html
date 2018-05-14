@@ -44,6 +44,7 @@
     <label class="layui-form-label">留案期</label>
     <input type="text" required="required " placeholder="天" value=""
            class="layui-input" style="width: 60px" name="rethinDay"/>
+    <textarea id="retainReason" lay-verify="required" placeholder="留案原因" class="layui-textarea"></textarea>
 </div>
 <div style="display: none" id="stafflayer">
     <table id="staffs" lay-filter="staffs"></table>
@@ -70,6 +71,10 @@
 <script type="text/html" id="radioTpl">
     <input type="radio" name="staffradio" value="{{d.loginName}}" title=" " lay-filter="radiodemo"/> {{d.name}}
 </script>
+
+<div style="display: none;" id="reason">
+    <textarea id="endReason" lay-verify="required" placeholder="撤案原因" class="layui-textarea"></textarea>
+</div>
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
 
@@ -159,29 +164,45 @@
         //撤案
         $('#revoke').click(function () {
             var checkStatus = table.checkStatus('cases');
-            var ids = [];
-            for (var i = 0; i < checkStatus.data.length; i++) {
-                ids.push(checkStatus.data[i].id);
+            if(checkStatus.data.length<1){
+                layer.msg("选择要撤案的委案");
+                return;
             }
-            $.ajax({
-                url: [[${ctx}]] + "/case/manager",
-                type: "post",
-                dataType: 'json',
-                data: {cases: ids, status: 1},
-                success: function (data) {
-                    layer.msg(data.message);
-                    cases.reload();
-                }
-            });
+            layer.open({
+                type: 1
+                , title: '留案'
+                , area: ['500px', '220px']
+                , content: $("#reason")
+                , btn: ['添加', '取消']
+                , yes: function (index, layero) {
+
+                    for (var i = 0; i < checkStatus.data.length; i++) {
+                        if(checkStatus.data[i].status==1){
+                            layer.msg("选择委案中存在已撤案的！");
+                            return;
+                        }
+                        checkStatus.data[i].status=1;
+                        checkStatus.data[i].revokeReason=$("#endReason").val();
+                    }
+                    $.ajax({
+                        url: [[${ctx}]] + "/case/manager",
+                        type: "post",
+                        dataType: 'json',
+                        data: {cases: JSON.stringify(checkStatus.data)},
+                        success: function (data) {
+                            layer.msg(data.message);
+                            cases.reload();
+                            layer.close(index);
+                        }
+                    });
+
+                }});
+
         });
         //留案
         $('#retain').click(function () {
             var checkStatus = table.checkStatus('cases');
-            var ids = [];
-            for (var i = 0; i < checkStatus.data.length; i++) {
-                ids.push(checkStatus.data[i].id);
-            }
-            if (ids.length <= 0) {
+            if (checkStatus.data.length <1) {
                 layer.msg("请选择要留案的委案");
                 return;
             }
@@ -189,22 +210,28 @@
             layer.open({
                 type: 1
                 , title: '留案'
-                , area: ['250px', '150px']
+                , area: ['500px', '450px']
                 , content: $("#day")
                 , btn: ['添加', '取消']
                 , yes: function (index, layero) {
                     var day = $('input[name="rethinDay"]').val();
-                    if (day === "") {
+                    if (day === ""|| day==0) {
                         layer.msg("请填写留案期");
                         return;
                     }
+                    for (var i = 0; i < checkStatus.data.length; i++) {
+                        checkStatus.data[i].status=2;
+                        checkStatus.data[i].rethinDay=day;
+                        checkStatus.data[i].retainReason=$("#retainReason").val();
+                    }
+
                     $.ajax({
                         url: [[${ctx}]] + "/case/manager",
                         type: "post",
                         dataType: 'json',
-                        data: {cases: ids, status: 2, rethinDay: day},
+                        data: {cases: JSON.stringify(checkStatus.data)},
                         success: function (data) {
-                            layer.close(index)
+                            layer.close(index);
                             layer.msg(data.message);
                             cases.reload();
                         }
@@ -279,6 +306,8 @@
                 '<span>性别：'+obj.data.sex+'</span>' +
                 '<p>身份证：'+obj.data.idCard+'</p>' +
                 '<p>案件名称：'+obj.data.caseName+'</p>' +
+                '<p>案件案件类型：'+obj.data.type+'</p>' +
+                '<p>催收员：'+obj.data.staffId+'</p>' +
                 '<p>城市：'+obj.data.city+'</p>' +
                 '<p>客户手机：'+obj.data.customerPhoneNumber+'</p>' +
                 '<p>客户户籍地址：'+obj.data.customerAddress+'</p>' +

@@ -7,7 +7,38 @@
 <body>
 <!--<a class="layui-btn layui-btn-sm" href="javascript:history.back(-1)">返回</a>-->
 <div class="layui-row layui-collapse">
-        <div class="layui-col-md6 layui-colla-item">
+
+    <div class="layui-col-md6 layui-colla-item">
+        <h2 class="layui-colla-title ">客户信息</h2>
+        <div class="layui-colla-content layui-show">
+            <p th:text="${' 姓名：'+cases.name}"></p>
+            <p th:text="${'配偶姓名：'+cases.customerSpouse}"></p>
+            <p th:text="${'亲戚姓名：'+cases.customerRelativeName}"></p>
+            <p th:text="${'其他联系人姓名：'+cases.customerRelativeOther}"></p>
+            <p th:text="${'委派日期：'+cases.appointData}"></p>
+            <p th:text="${'退案日期：'+cases.stopAppoint}"></p>
+            <p th:text="${'性别：'+cases.sex}"></p>
+            <p th:text="${'身份证：'+cases.idCard}"></p>
+            <p th:text="${'贷款类型：'+cases.loanType}"></p>
+            <p th:text="${'贷款本金：'+cases.loanPrincipal}"></p>
+            <p th:text="${'期款：'+cases.installmentMoney}"></p>
+            <p th:text="${'期数：'+cases.installmentNum}"></p>
+            <p th:text="${'已还款金额：'+cases.repaymentMoney}"></p>
+            <p th:text="${'最后还款日：'+cases.deadline}"></p>
+            <p th:text="${'逾期天数：'+cases.overrangingDay}"></p>
+            <p th:text="${'取消分期时间：'+cases.cancelInstalments}"></p>
+            <p th:text="${'未付期款：'+cases.nnpaidInstallment}"></p>
+            <p th:text="${'未付滞纳金：'+cases.lateFee}"></p>
+            <p th:text="${'欠款金额：'+cases.arrears}"></p>
+            <p th:text="${'委外催收费 ：'+cases.serviceCharge}"></p>
+            <p th:text="${'总欠款：'+cases.sumArrears}"></p>
+            <p th:text="${'商品：'+cases.commodity}"></p>
+            <p th:text="${'品牌：'+cases.brand}"></p>
+        </div>
+    </div>
+
+
+    <div class="layui-col-md6 layui-colla-item">
             <h2 class="layui-colla-title">添加催记</h2>
             <div class="layui-colla-content layui-show">
                 <form class="layui-form" method="post">
@@ -85,34 +116,6 @@
             </div>
         </div>
 
-        <div class="layui-col-md6 layui-colla-item">
-            <h2 class="layui-colla-title ">客户信息</h2>
-            <div class="layui-colla-content layui-show">
-                <p th:text="${' 姓名：'+cases.name}"></p>
-                <p th:text="${'配偶姓名：'+cases.customerSpouse}"></p>
-                <p th:text="${'亲戚姓名：'+cases.customerRelativeName}"></p>
-                <p th:text="${'其他联系人姓名：'+cases.customerRelativeOther}"></p>
-                <p th:text="${'委派日期：'+cases.appointData}"></p>
-                <p th:text="${'退案日期：'+cases.stopAppoint}"></p>
-                <p th:text="${'性别：'+cases.sex}"></p>
-                <p th:text="${'身份证：'+cases.idCard}"></p>
-                <p th:text="${'贷款类型：'+cases.loanType}"></p>
-                <p th:text="${'贷款本金：'+cases.loanPrincipal}"></p>
-                <p th:text="${'期款：'+cases.installmentMoney}"></p>
-                <p th:text="${'期数：'+cases.installmentNum}"></p>
-                <p th:text="${'已还款金额：'+cases.repaymentMoney}"></p>
-                <p th:text="${'最后还款日：'+cases.deadline}"></p>
-                <p th:text="${'逾期天数：'+cases.overrangingDay}"></p>
-                <p th:text="${'取消分期时间：'+cases.cancelInstalments}"></p>
-                <p th:text="${'未付期款：'+cases.nnpaidInstallment}"></p>
-                <p th:text="${'未付滞纳金：'+cases.lateFee}"></p>
-                <p th:text="${'欠款金额：'+cases.arrears}"></p>
-                <p th:text="${'委外催收费 ：'+cases.serviceCharge}"></p>
-                <p th:text="${'总欠款：'+cases.sumArrears}"></p>
-                <p th:text="${'商品：'+cases.commodity}"></p>
-                <p th:text="${'品牌：'+cases.brand}"></p>
-            </div>
-        </div>
 
 
         <div class="layui-col-md12 layui-colla-item">

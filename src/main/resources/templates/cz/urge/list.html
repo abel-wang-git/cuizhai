@@ -32,6 +32,9 @@
 
 <script th:src="@{/static/layui/layui.js}"></script>
 </body>
+<div style="display: none;" id="reason">
+    <textarea id="endReason" lay-verify="required" placeholder="结案原因" class="layui-textarea"></textarea>
+</div>
 
 <script th:inline="javascript">
     /*<![CDATA[*/
@@ -105,18 +108,30 @@
                     });
                 layer.full(addurge);
             }else if(obj.event==='end'){
-                var id=[];
-                id.push(obj.data.id);
-                $.ajax({
-                    url: [[${ctx}]] + "/case/manager",
-                    type: "post",
-                    dataType: 'json',
-                    data: {cases:id,status:3},
-                    success: function (data) {
-                        layer.msg(data.message);
-                        cases.reload();
+                layer.open({
+                    type: 1
+                    , title: '留案'
+                    , area: ['500px', '220px']
+                    , content: $("#reason")
+                    , btn: ['添加', '取消']
+                    , yes: function (index, layero) {
+                        obj.data.endReason=$("#endReason").val();
+                        obj.data.status=3;
+                        console.log(obj.data)
+                        var casess=new Array();
+                        casess.push(obj.data);
+                        $.ajax({
+                            url: [[${ctx}]] + "/case/manager",
+                            type: "post",
+                            dataType: 'json',
+                            data: {cases:JSON.stringify(casess)},
+                            success: function (data) {
+                                layer.msg(data.message);
+                                cases.reload();
+                            }
+                        });
                     }
-                });
+                })
             }
         });
 

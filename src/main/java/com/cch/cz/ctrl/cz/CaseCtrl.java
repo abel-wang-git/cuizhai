@@ -161,9 +161,10 @@ public class CaseCtrl {
      */
     @PostMapping(value = "/manager")
     @ResponseBody
-    public AjaxReturn manager(@RequestParam("cases[]") Long[] ids, @RequestParam("status") int status, @RequestParam(value = "rethinDay", defaultValue = "0") int rethinDay) {
-        casesService.managerCase(ids, status, rethinDay);
-        return new AjaxReturn(0, "撤案成功");
+    public AjaxReturn manager(@RequestParam("cases") String ids) {
+        List<Cases> casess= JSON.parseArray(ids,Cases.class);
+        casesService.managerCase(casess);
+        return new AjaxReturn(0, "操作成功");
     }
 
     /**

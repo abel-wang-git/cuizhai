@@ -55,7 +55,7 @@ public interface CasesService extends BaseService<Cases,Long>  {
      * @param day 留案期
      * @param status  撤案=1 留案=2  结案=3
      */
-    void managerCase(Long[] id, int status, int day);
+    void managerCase(List<Cases> cases);
 
     /**
      * 动态查询
