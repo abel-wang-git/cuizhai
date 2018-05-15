@@ -84,16 +84,16 @@
         var cases = table.render({
             elem: '#cases'
             , id: 'cases'
-            , height: 500
+            , height: "full-120"
             , url: 'noallot'//数据接口
             , method: 'post'
             , size: 'sm'
             , page: true //开启分页
             , cols: [[ //表头
-                {field: 'chk', width: 35, type: 'checkbox', fixed: 'left'}
+                {field: 'chk', width: "4%", type: 'checkbox', fixed: 'left'}
                 , {field: 'name', title: '姓名', width: '8%', sort: true, toolbar: '#name'}
                 , {field: 'customerPhoneNumber', title: '手机', width: '10%'}
-                , {field: 'idCard', title: '身份证', width: '10%'}
+                , {field: 'idCard', title: '身份证', width: '14%'}
                 , {field: 'loanPrincipal', title: '贷款本金', width: '10%'}
                 , {field: 'installmentMoney', title: '期款', width: '8%'}
                 , {field: 'installmentNum', title: '期数', width: '6%'}
