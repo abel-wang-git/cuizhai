@@ -8,6 +8,7 @@ import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Company;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.service.CasesService;
+import com.cch.cz.service.CityService;
 import com.cch.cz.service.CompanyService;
 import com.cch.cz.service.StaffService;
 import com.github.pagehelper.PageHelper;
@@ -33,6 +34,8 @@ public class CaseCtrl {
     private CompanyService companyService;
     @Resource
     private StaffService staffService;
+    @Resource
+    private  CityService cityService;
 
     @GetMapping(value = "/up")
     public String toCase() {
@@ -75,6 +78,7 @@ public class CaseCtrl {
 
         model.addAttribute("coms", list);
         model.addAttribute("cases", cases);
+        model.addAttribute("province",cityService.province());
         return "/cz/cases/allot";
     }
 
@@ -146,8 +150,8 @@ public class CaseCtrl {
      */
     @PostMapping(value = "/list/bystaff")
     @ResponseBody
-    public Table listByStaff(@RequestParam(defaultValue = "0") int page,
-                             @RequestParam(defaultValue = "0") int limit,
+    public Table listByStaff(@RequestParam() int page,
+                             @RequestParam() int limit,
                              @RequestParam("staff") String cases) {
         Cases where = JSON.parseObject(cases, Cases.class);
         Long count = casesService.countByStaff(where);

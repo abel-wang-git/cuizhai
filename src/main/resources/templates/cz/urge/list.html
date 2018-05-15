@@ -19,8 +19,11 @@
             <input name="customerPhoneNumber" type="text" class="layui-input"/>
         </div>
     </div>
-
+    <div th:substituteby="fragment/city_select :: province"></div>
+    <div th:substituteby="fragment/city_select :: city"></div>
+    <div th:substituteby="fragment/city_select :: area"></div>
     <input type="hidden" th:value="${session.staff.loginName}" name="staffId"/>
+    <input name="customerAddress" type="hidden"/>
     <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
 </form>
 <table id="cases" lay-filter="cases"></table>
@@ -71,7 +74,7 @@
             , cols: [[ //表头
                 {field: 'name', title: '姓名', width:'10%', sort: true}
                 , {field: 'customerPhoneNumber', title: '手机', width: '10%', sort: true}
-                , {field: 'customerResidenceAddress', title: '户籍', width: '14%', sort: true}
+                , {field: 'customerAddress', title: '户籍', width: '14%', sort: true}
                 , {field: 'loanPrincipal', title: '贷款本金', width: '10%', sort: true}
                 , {field: 'repaymentMoney', title: '已还金额', width: '10%', sort: true}
                 , {field: 'overrangingDay', title: '逾期天数', width: '10%', sort: true}
@@ -153,9 +156,12 @@
         });
 
         form.on('submit(search)', function (data) {
-            cases.reload({where:{staff:JSON.stringify(data.field)}});
+            cases.reload({page: {curr: 1 },where:{staff:JSON.stringify(data.field)}});
             return false;
         });
+        layui.config({
+            base: [[${ctx}]]+'/static/layui/js/'
+        }).use('cityselect');
 
     })
     /*]]>*/

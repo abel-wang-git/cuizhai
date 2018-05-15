@@ -7,6 +7,7 @@ import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.UrgeRecord;
 import com.cch.cz.service.CasesService;
+import com.cch.cz.service.CityService;
 import com.cch.cz.service.UrgeRecordService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Controller;
@@ -28,8 +29,11 @@ public class UrgeRecordCtrl {
     private UrgeRecordService urgeRecordService;
     @Resource
     private CasesService casesService;
+    @Resource
+    private CityService cityService;
     @GetMapping(value = "/list")
-    public  String list(){
+    public  String list(Model model){
+        model.addAttribute("province",cityService.province());
         return "/cz/urge/list";
     }
 

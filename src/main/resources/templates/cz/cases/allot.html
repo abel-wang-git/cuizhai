@@ -162,7 +162,6 @@
                             layer.msg("请选择委案！")
                             return;
                         }
-                        console.log(checkStatus.data)
                         $.ajax({
                             url: ctx + "/case/allot",
                             type: "post",
@@ -177,6 +176,10 @@
                     }
                     ,cancel: function(index, layero){
                         $('input[name="customerAddress"]').val("");
+                        $('select[name="province"]').val("");
+                        $('select[name="city"]').val("");
+                        $('select[name="area"]').val("");
+                        form.render();
                     }
                 })
             }
@@ -200,7 +203,6 @@
                 , btn: ['添加']
                 , yes: function (index) {
                     var checkStatus = table.checkStatus('staffcase');
-                    console.log(checkStatus.data);
                     if (chestaff.length < 1) {
                         layer.msg("最少选择一个员工");
                         return;
@@ -227,19 +229,23 @@
                 }
                 ,cancel: function(index, layero){
                     $('input[name="customerAddress"]').val("");
+                    $('select[name="province"]').val("");
+                    $('select[name="city"]').val("");
+                    $('select[name="area"]').val("");
+                    form.render('select');
                 }
             })
         })
 
         //查询
         form.on('submit(search)', function (data) {
-            cases.reload({url: 'dynamic', where: {data: JSON.stringify(data.field)}});
+            cases.reload({page: {curr: 1 },url: 'dynamic', where: {data: JSON.stringify(data.field)}});
             return false;
         });
 
         //查询
         form.on('submit(search1)', function (data) {
-            staffcase.reload({url: "list/nostaff", where: {data: JSON.stringify(data.field)}});
+            staffcase.reload({page: {curr: 1 },url: "list/nostaff", where: {data: JSON.stringify(data.field)}});
             return false;
         });
 

@@ -2,35 +2,25 @@
     <div class="layui-inline" xmlns:th="http://www.thymeleaf.org" th:fragment="province">
         <label class="layui-form-label">省：</label>
         <div class="layui-input-inline" style="width: 100px;">
-            <select id="province" lay-filter="address">
-                <option>山西省</option>
+            <select name="province" lay-filter="address">
+                <option value="">请选择</option>
+                <option th:each="p:${province}" th:text="${p.name}" th:value="${p.name}">山西省</option>
             </select>
         </div>
     </div>
     <div class="layui-inline" xmlns:th="http://www.thymeleaf.org" th:fragment="city">
         <label class="layui-form-label">市：</label>
         <div class="layui-input-inline" style="width: 100px;">
-            <select id="city" lay-filter="address">
-                <option>太原市</option>
-                <option>大同市</option>
-                <option>晋中</option>
-                <option>朔州</option>
-                <option>运城</option>
-                <option>大同</option>
-                <option>吕梁</option>
-                <option>晋城</option>
-                <option>忻州</option>
-                <option>长治</option>
-                <option>阳泉</option>
+            <select name="city" lay-filter="address">
+                <option value="">请选择</option>
             </select>
         </div>
     </div>
     <div class="layui-inline" xmlns:th="http://www.thymeleaf.org" th:fragment="area">
         <label class="layui-form-label">区：</label>
         <div class="layui-input-inline" style="width: 100px;">
-            <select id="area" lay-filter="address">
-                <option>小店区</option>
-                <option>迎泽区</option>
+            <select name="area" lay-filter="address">
+                <option value="">请选择</option>
             </select>
         </div>
     </div>
