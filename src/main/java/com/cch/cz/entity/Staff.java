@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_staff")
 public class Staff  extends BaseEntity{
+
     /**
      * 姓名
      */

@@ -15,6 +15,7 @@ public interface StaffService extends BaseService<Staff,String>  {
      * @param staff
      */
     void save(Staff staff);
+    void update(Staff staff,String oldId);
 
 
     List<Staff> listByCompany(String company);

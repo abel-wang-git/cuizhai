@@ -96,7 +96,17 @@ public class StaffCtrl {
         return table;
     }
 
-
+    @PostMapping(value = "/update")
+    @ResponseBody
+    public AjaxReturn add(@RequestParam String  data,@RequestParam String oldId){
+        try {
+            staffService.update(JSON.parseObject(data,Staff.class),oldId);
+            return new AjaxReturn(0,"修改成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new AjaxReturn(1,"修改失败");
+        }
+    }
 
 
 

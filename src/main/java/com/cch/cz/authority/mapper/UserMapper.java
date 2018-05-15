@@ -40,4 +40,7 @@ public interface UserMapper extends BaseMapper<User,String> {
     @Insert({"insert into t_user_role (user_id,role_id) values(#{userId},#{roleId})"})
     void saveRoles(@Param("userId") String userId,@Param("roleId") Long roleId);
 
+    @Delete("delete from t_user_role where user_id=#{userId}")
+    void deleteRoles(@Param("userId") String userId);
+
 }

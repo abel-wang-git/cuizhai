@@ -42,5 +42,22 @@ public class StaffServiceImpl extends BaseServiceImpl<Staff,String> implements S
         return staffMapper.listByCompany(company);
     }
 
+    @Override
+    @Transactional
+    public void update(Staff staff,String oldId) {
+           Staff staffold= staffMapper.findOne(staff,oldId);
+        if(staff.getPlace()!=staffold.getPlace()){
+            userMapper.deleteRoles(oldId);
+            userMapper.saveRoles(staff.getLoginName(),Long.parseLong(staff.getPlace()));
+        }
+        staffMapper.update(staff);
+        User user= userMapper.findOne(new User(),staff.getLoginName());
+//        if(null==user)user=new User();
+        user.setUserName(staff.getLoginName());
+        user.setPassWd("123456");
+        user.setPassWd(user.Sal());
+        userMapper.update(user);
+    }
+
 
 }
