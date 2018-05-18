@@ -46,9 +46,11 @@ public class ExcelTool {
     private static void setAttr(List result, Sheet sheet, List title, int i, String caseName,String caseType) {
         Cases cases = new Cases();
         Row r = sheet.getRow(i);
+        if(null==r)return;
         int cell_num = r.getLastCellNum();
+        if(cell_num==-1)return;
 
-        if(null==r||cell_num==-1)return;
+
         cases.setCaseName(caseName);
         cases.setType(caseType);
         cases.setStatus(Cases.NORMAL);
