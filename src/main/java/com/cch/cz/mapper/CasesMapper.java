@@ -3,6 +3,7 @@ package com.cch.cz.mapper;
 import com.cch.cz.base.dao.BaseMapper;
 import com.cch.cz.base.dao.provider.BaseProvider;
 import com.cch.cz.entity.Cases;
+import com.cch.cz.entity.UrgeRecord;
 import com.cch.cz.mapper.provider.CasesProvider;
 import org.apache.ibatis.annotations.*;
 
@@ -90,5 +91,6 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
 
     @Update("update t_case set staff_id = #{staffid} where id in (${ids})")
     void adjust(@Param("ids") String ids, @Param("staffid") String staffid);
+
 
 }

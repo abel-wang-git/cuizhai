@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.beans.Transient;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -40,5 +41,11 @@ public class UrgeRecordServiceImpl extends BaseServiceImpl<UrgeRecord,Long> impl
         cases.setLastUrge(urgeRecord.getCreateDate());
         casesMapper.update(cases);
         super.save(urgeRecord);
+    }
+
+    @Override
+    public List<Map> manager(Map c) {
+
+        return urgeRecordMapper.manager(c);
     }
 }

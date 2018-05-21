@@ -20,4 +20,15 @@ public class UrgeRecordProvider extends BaseProvider<UrgeRecord,Long> {
         logger.info(sql);
         return sql;
     }
+
+    public String manager(Map<String, Object> para){
+        String sql=new SQL(){{
+            SELECT(" u.result,u.rmarks,u.status,u.target,u.create_date as createDate, s.name as sname,c.name as cname");
+            FROM(" t_urge_record as u ,t_case as c,t_staff as s");
+            WHERE(" u.case_id=c.id and u.staff_id=s.login_name");
+        }}.toString();
+
+        logger.info(sql);
+        return sql;
+    }
 }

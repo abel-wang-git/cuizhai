@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  *崔记管理
@@ -64,9 +65,12 @@ public class UrgeRecordCtrl {
 
     @PostMapping(value = "/list")
     @ResponseBody
-    public Table list(@RequestParam int page, @RequestParam int limit){
+    public Table list(@RequestParam int page,
+                      @RequestParam int limit,
+                      @RequestParam String where){
         PageHelper.startPage(page, limit);
-        List<UrgeRecord> list = urgeRecordService.findAll();
+        Map c= JSON.parseObject(where,Map.class);
+        List<Map> list = urgeRecordService.manager(c);
         Table table = new Table();
         table.setData(list);
         table.setCount(list.size());

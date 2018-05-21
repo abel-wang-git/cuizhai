@@ -38,35 +38,19 @@
             , id: 'cases'
             , url: [[${ctx}]] + '/urge/list'
             , page: true //开启分页
+            ,where:{where:JSON.stringify(JSON.parse('{"id":"1"}'))}
             , width:812
             ,height:"full-80"
             , method: 'post'
             , cols: [[ //表头
-                 {field: 'staffId', title: '催收员', width: 120, sort: true}
-                , {field: 'rmarks', title: '备注', width: 75, sort: true}
-                , {field: 'result', title: '催收结果', width: 195, sort: true}
-                , {field: 'status', title: '接通状态', width: 80, sort: true}
-                , {field: 'target', title: '催收对象', width: 150, sort: true}
-                , {field: 'createDate', title: '催收日期', width: 185, sort: true}
+                 {field: 'sname', title: '催收员', width: 120, sort: true}
+                , {field: 'cname', title: '欠款人姓名', width: 120, sort: true}
+                , {field: 'rmarks', title: '备注', width: 120, sort: true}
+                , {field: 'result', title: '催收结果', width: 120, sort: true}
+                , {field: 'status', title: '状态', width: 120, sort: true}
+                , {field: 'target', title: '催收目标', width: 120, sort: true}
+                , {field: 'createDate', title: '催收日期', width: 120, sort: true}
             ]]
-            ,done: function(res, curr, count){
-
-                layui.$('table tbody tr ').each(function () {
-                    if ($(this).children().eq(7).text().trim() == '撤案') {
-                        $(this).css('background-color', '#FF5722');
-                        $(this).css('color', '#FFB90F');
-                    }
-                    if ($(this).children().eq(7).text().trim() == '留案') {
-                        $(this).css('background-color', '#5FB878');
-                        $(this).css('color', '#FFB800');
-                    }
-                    if ($(this).children().eq(7).text().trim() == '结案') {
-                        $(this).css('background-color', '#36b811');
-                        $(this).css('color', '#ffd98c');
-                    }
-                })
-
-            }
         });
     })
     /*]]>*/
