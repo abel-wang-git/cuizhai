@@ -70,9 +70,11 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
     public String listByCompany(Map<String, Object> para) {
         String sql = new SQL() {{
             SELECT(" count(*) as num ,COALESCE(sum(service_charge),0) as money");
-            StringBuilder where = new StringBuilder();
+            StringBuilder where = new StringBuilder(" 1=1");
             FROM(BuildSql.tablename(Cases.class));
-            where.append("status = #{status}");
+
+            if(Integer.parseInt(para.get("status").toString())!=-1)
+            where.append(" and status = #{status}");
             if (UtilFun.isEmptyString((String) para.get("staff"))) {
                 where.append(" and staff_id=#{staff} ");
             }

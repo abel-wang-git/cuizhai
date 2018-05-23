@@ -286,10 +286,9 @@
                 url: "dynamic",
                 type: "post",
                 dataType: 'json',
-                contentType: 'application/json;charset=utf-8',
-                data: JSON.stringify(data.field),
+                data: {data:JSON.stringify(data.field)},
                 success: function (data) {
-                    cases.reload({url: '', data: data});
+                    cases.reload({url: '', data: data.data});
                 }
             });
             return false;

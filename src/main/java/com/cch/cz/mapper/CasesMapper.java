@@ -80,6 +80,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
             @Result(property = "money",column = "money"),
     })
     List<Map> listByCompany(@Param("company") Long company,@Param("staff") String staff, @Param("status") int status);
+
     @SelectProvider(type = CasesProvider.class,method = "dynamicList")
     List<Cases> dynamicList(Cases cases);
     @SelectProvider(type = CasesProvider.class,method = "countDynamic")

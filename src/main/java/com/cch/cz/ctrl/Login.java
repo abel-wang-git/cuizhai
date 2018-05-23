@@ -47,7 +47,7 @@ public class Login {
          String staffId = staff.getLoginName();
          if (staff.getLoginName()!=null&&roleService.findOne(Long.valueOf(staff.getPlace())).getDesign().equals("管理员")) staffId="";
 
-        List<Map> normal=casesService.listByCompany(staff.getCompanyId()!=null?staff.getCompanyId():null,staffId,0);
+        List<Map> normal=casesService.listByCompany(staff.getCompanyId()!=null?staff.getCompanyId():null,staffId,-1);
 
         List<Map> end=casesService.listByCompany(staff.getCompanyId()!=null?staff.getCompanyId():null,staffId,3);
 
