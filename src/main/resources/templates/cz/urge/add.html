@@ -36,6 +36,7 @@
             <p th:text="${'委外催收费 ：'+cases.serviceCharge}"></p>
             <p th:text="${'总欠款：'+cases.sumArrears}"></p>
         </div>
+        <button id="next">下一位</button>
     </div>
 
 
@@ -184,6 +185,9 @@
             }
             form.render('select');
         });
+        $("#next").click(function () {
+            console.log(parent.table.cache.cases)
+        })
     })
     /*]]>*/
 </script>

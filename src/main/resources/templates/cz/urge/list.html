@@ -57,13 +57,17 @@
 
 <script th:inline="javascript">
     /*<![CDATA[*/
+    var test={
+        data:"abc",
+        a:this.itemActive
+    }
 
     layui.use(['table','form','laytpl'], function () {
-        var table = layui.table
+         table = layui.table
             , $ = layui.$
             , form = layui.form
             ,laytpl = layui.laytpl;
-        var cases = table.render({
+        cases = table.render({
             elem: '#cases'
             , id: 'cases'
             , height:'full-60'
