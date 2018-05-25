@@ -37,14 +37,6 @@ public class UrgeRecordCtrl {
         model.addAttribute("province",cityService.province());
         return "/cz/urge/list";
     }
-
-    @GetMapping(value = "/add")
-    public  String add(Model model,@RequestParam("cases")String casesId){
-        Cases cases = casesService.findOne(Long.parseLong(casesId));
-        model.addAttribute(cases);
-
-        return "/cz/urge/add";
-    }
     @PostMapping(value = "/add")
     @ResponseBody
     public AjaxReturn add(@RequestBody UrgeRecord urgeRecord){
