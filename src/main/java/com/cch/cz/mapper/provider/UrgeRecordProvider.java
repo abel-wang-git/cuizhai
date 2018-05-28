@@ -2,6 +2,7 @@ package com.cch.cz.mapper.provider;
 
 import com.cch.cz.base.dao.BuildSql;
 import com.cch.cz.base.dao.provider.BaseProvider;
+import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.UrgeRecord;
 import org.apache.ibatis.jdbc.SQL;
@@ -23,12 +24,16 @@ public class UrgeRecordProvider extends BaseProvider<UrgeRecord,Long> {
 
     public String manager(Map<String, Object> para){
         String sql=new SQL(){{
+            StringBuilder where =  new StringBuilder(" u.case_id=c.id and u.staff_id=s.login_name ");
             SELECT(" u.result,u.rmarks,u.status,u.target,u.create_date as createDate, s.name as sname,c.name as cname,c.contract_num as contractNum ,c.sex,c.id_card as idCard,c.sum_arrears as sumArrears\n" +
                     "  ,c.customer_phone_number as customerPhoneNumber ,c.customer_office_phone as customerOfficePhone ,c.customer_spouse as customerSpouse  ,c.customer_spouse_phone as customerSpousePhone,c.customer_relative_name as customerRelativeName\n" +
                     "  ,c.customer_relationship as customerRelationship ,c.customer_relative_phone as customerRelativePhone,c.customer_rela_other as customerRelativeOther ,c.customer_rela_other as customerRelaOther\n" +
                     "  ,c.customer_relative_phone as customerOtherPhone ,c.status ");
             FROM(" t_urge_record as u ,t_case as c,t_staff as s");
-            WHERE(" u.case_id=c.id and u.staff_id=s.login_name");
+            if(UtilFun.isEmptyString((String) para.get("sname"))) where.append(" and s.name=#{sname}");
+            if(UtilFun.isEmptyString((String) para.get("cname"))) where.append(" and c.name=#{cname}");
+            if(UtilFun.isEmptyString((String) para.get("customerPhoneNumber"))) where.append(" and c.customer_phone_number=#{customerPhoneNumber} ");
+            WHERE(where.toString());
         }}.toString();
 
         logger.info(sql);

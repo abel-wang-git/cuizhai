@@ -71,9 +71,10 @@ public class UrgeRecordCtrl {
     @ResponseBody
     public Table list(@RequestParam int page,
                       @RequestParam int limit,
-                      @RequestParam String where){
+                      @RequestParam(defaultValue = "") String where){
         PageHelper.startPage(page, limit);
-        Map c= JSON.parseObject(where,Map.class);
+        Map c=new HashMap();
+        if(UtilFun.isEmptyString(where))c= JSON.parseObject(where,Map.class);
         List<Map> list = urgeRecordService.manager(c);
         Table table = new Table();
         table.setData(list);
