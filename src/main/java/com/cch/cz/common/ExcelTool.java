@@ -234,7 +234,7 @@ public class ExcelTool {
 
     public static void wirte() throws IOException, InvalidFormatException {
 
-        File outputFile = new File("C:\\Users\\Administrator\\Pictures\\1.xlsx");
+        File outputFile = new File("C:\\Users\\zyyy\\AppData\\Roaming\\baidu\\BaiduNetdisk\\1.xlsx");
         FileOutputStream fOut = new FileOutputStream(outputFile);
         Workbook w = new XSSFWorkbook();
         Sheet sheet = w.createSheet("sheetone");
@@ -245,6 +245,16 @@ public class ExcelTool {
 
         w.write(fOut);
 
+    }
+
+    public static void main(String[] args) {
+        try {
+            wirte();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidFormatException e) {
+            e.printStackTrace();
+        }
     }
 
 

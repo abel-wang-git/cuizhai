@@ -30,6 +30,7 @@
     <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
 </form>
 <button id="bqexp"  class="layui-btn layui-btn-sm" >佰仟导出催记</button>
+<button id="ybexp"  class="layui-btn layui-btn-sm" >有贝导出催记</button>
 <table id="cases" lay-filter="cases"></table>
 
 <script type="text/html" id="status">
@@ -54,6 +55,8 @@
     layui.config({
         base: [[${ctx}]]+'/static/layui/js/'
     }).use('common');
+
+
 
     layui.use(['table','form','laytpl'], function () {
         var table = layui.table
@@ -80,37 +83,35 @@
         });
         
         $("#bqexp").click(function () {
+            //1为佰仟
+            down("1");
+        });
+        $("#ybexp").click(function () {
+            //1为佰仟
+            down("2");
+        });
 
-            var form=$("<form>");//定义一个form表单
-            form.attr("style","display:none");
-            form.attr("target","");
-            form.attr("method","post");
-            form.attr("action",[[${ctx}]] + "/urge/exp");
-            var fileInput=$("<input>");
-            fileInput.attr("type","hidden");
-            fileInput.attr("id","where");//设置属性的名字
-            fileInput.attr("name","where");//设置属性的名字
-            fileInput.attr("value",JSON.stringify(JSON.parse('{"id":"1"}')));//设置属性的值
-            var type=$("<input>");
-            type.attr("type","hidden");
-            type.attr("id","type");//设置属性的名字
-            type.attr("name","type");//设置属性的名字
-            type.attr("value","1");//设置属性的值
+        function down(extype) {
+            var form = $("<form>");//定义一个form表单
+            form.attr("style", "display:none");
+            form.attr("target", "");
+            form.attr("method", "post");
+            form.attr("action", [[${ctx}]] + "/urge/exp");
+            var fileInput = $("<input>");
+            fileInput.attr("type", "hidden");
+            fileInput.attr("id", "where");//设置属性的名字
+            fileInput.attr("name", "where");//设置属性的名字
+            fileInput.attr("value", JSON.stringify(JSON.parse('{"id":"1"}')));//设置属性的值
+            var type = $("<input>");
+            type.attr("type", "hidden");
+            type.attr("id", "type");//设置属性的名字
+            type.attr("name", "type");//设置属性的名字
+            type.attr("value", String(extype));//设置属性的值
             $("body").append(form);//将表单放置在web中
             form.append(fileInput);
             form.append(type);
             form.submit();//表单提交
-
-//            $.ajax({
-//                url: [[${ctx}]] + "/urge/exp",
-//                type: "post",
-//                dataType: 'json',
-//                data: {where:JSON.stringify(JSON.parse('{"id":"1"}')),type:"1"},
-//                success: function (data) {
-//                    console.log(data)
-//                }
-//            });
-        });
+        }
     })
     /*]]>*/
 </script>

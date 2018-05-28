@@ -18,6 +18,7 @@ public class UtilFun {
 
     public  static  final  String YYYYMMDD="yyyy-MM-dd hh:mm:ss";
     public  static  final  String YYYYMMDD2="yyyy/MM/dd";
+    public  static  final  String YMD="yyyy-MM-dd";
     /**
      * 判断list不为空
      *
