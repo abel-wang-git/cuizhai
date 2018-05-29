@@ -65,7 +65,7 @@
             , id: 'cases'
             , url: [[${ctx}]] + '/urge/list'
             , page: true //开启分页
-            , width:900
+            , width:750
             ,height:"full-80"
             , method: 'post'
             , cols: [[ //表头
@@ -74,7 +74,7 @@
                 , {field: 'rmarks', title: '备注', width: 140, sort: true}
                 , {field: 'result', title: '催收结果', width: 120, sort: true}
                 , {field: 'status', title: '状态', width: 80, sort: true}
-                , {field: 'target', title: '催收目标', width: 150, sort: true}
+//                , {field: 'target', title: '催收目标', width: 150, sort: true}
                 , {field: 'createDate', title: '催收日期', width: 160, sort: true,templet:'<div>{{ layui.laytpl.toDateString(d.date,"yyyy-MM-dd HH:mm:ss")}}</div>'}
             ]]
         });

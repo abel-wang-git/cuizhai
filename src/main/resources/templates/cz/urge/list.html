@@ -64,13 +64,13 @@
             <span name ="name"></span> 性别：<span name ="sex"></span> 身份证：<span name ="idCard"></span><br/>
 
             手机：<span name ="customerPhoneNumber"></span>
-            住宅电话：<span name ="customerResidencePhone"></span><br/>
-            配偶姓名：<span name ="customerSpouse"></span>
-            电话：<span name ="customerSpousePhone"></span><br/>
-            亲戚姓名：<span name ="customerRelativeName"></span>
-            电话：<span name ="customerRelativePhone"></span><br/>
-            其他联系人姓名：<span name ="customerRelativeOther"></span>
-            电话：<span name ="customerOtherPhone"></span><br/>
+            <!--住宅电话：<span name ="customerResidencePhone"></span><br/>-->
+            <!--配偶姓名：<span name ="customerSpouse"></span>-->
+            <!--电话：<span name ="customerSpousePhone"></span><br/>-->
+            <!--亲戚姓名：<span name ="customerRelativeName"></span>-->
+            <!--电话：<span name ="customerRelativePhone"></span><br/>-->
+            <!--其他联系人姓名：<span name ="customerRelativeOther"></span>-->
+            <!--电话：<span name ="customerOtherPhone"></span><br/>-->
             还款账号：<span name ="repaymentAccount"></span><br/>
             购买商品：<span name ="commodity"></span>
             品牌：<span name ="brand"></span><br/>
@@ -288,13 +288,13 @@
         function setcase(cases) {
             $("span[name='name']").text(cases.name);
             $("span[name='customerPhoneNumber']").text(cases.customerPhoneNumber);
-            $("span[name='customerResidencePhone']").text(cases.customerResidencePhone);
-            $("span[name='customerSpouse']").text(cases.customerSpouse);
-            $("span[name='customerSpousePhone']").text(cases.customerSpousePhone);
-            $("span[name='customerRelativeName']").text(cases.customerRelativeName);
-            $("span[name='customerRelativePhone']").text(cases.customerRelativePhone);
-            $("span[name='customerRelativeOther']").text(cases.customerRelativeOther);
-            $("span[name='customerOtherPhone']").text(cases.customerOtherPhone);
+//            $("span[name='customerResidencePhone']").text(cases.customerResidencePhone);
+//            $("span[name='customerSpouse']").text(cases.customerSpouse);
+//            $("span[name='customerSpousePhone']").text(cases.customerSpousePhone);
+//            $("span[name='customerRelativeName']").text(cases.customerRelativeName);
+//            $("span[name='customerRelativePhone']").text(cases.customerRelativePhone);
+//            $("span[name='customerRelativeOther']").text(cases.customerRelativeOther);
+//            $("span[name='customerOtherPhone']").text(cases.customerOtherPhone);
             $("span[name='repaymentAccount']").text(cases.repaymentAccount);
             $("span[name='commodity']").text(cases.commodity);
             $("span[name='brand']").text(cases.brand);
@@ -322,10 +322,10 @@
         function setoption(cases) {
             $("select[name='target']").empty();
             $("select[name='target']").append("<option value='[本人]"+cases.customerPhoneNumber+"'>[本人]"+cases.customerPhoneNumber+"</option>")
-            $("select[name='target']").append("<option value='[配偶]"+cases.customerSpousePhone+"'>[配偶]"+cases.customerSpousePhone+"</option>")
-            $("select[name='target']").append("<option value='[亲戚]"+cases.customerRelativePhone+"'>[亲戚]"+cases.customerRelativePhone+"</option>")
-            $("select[name='target']").append("<option value='[其他]"+cases.customerOtherPhone+"'>[其他]"+cases.customerOtherPhone+"</option>")
-            $("select[name='target']").append("<option value='[住宅]"+cases.customerResidencePhone+"'>[住宅]"+cases.customerResidencePhone+"</option>")
+//            $("select[name='target']").append("<option value='[配偶]"+cases.customerSpousePhone+"'>[配偶]"+cases.customerSpousePhone+"</option>")
+//            $("select[name='target']").append("<option value='[亲戚]"+cases.customerRelativePhone+"'>[亲戚]"+cases.customerRelativePhone+"</option>")
+//            $("select[name='target']").append("<option value='[其他]"+cases.customerOtherPhone+"'>[其他]"+cases.customerOtherPhone+"</option>")
+//            $("select[name='target']").append("<option value='[住宅]"+cases.customerResidencePhone+"'>[住宅]"+cases.customerResidencePhone+"</option>")
             form.render('select');
         }
 
