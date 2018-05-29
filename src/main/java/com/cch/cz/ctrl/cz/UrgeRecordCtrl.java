@@ -9,6 +9,7 @@ import com.cch.cz.entity.UrgeRecord;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.CityService;
 import com.cch.cz.service.UrgeRecordService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.*;
@@ -30,6 +31,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
+
+import static com.github.pagehelper.page.PageMethod.startPage;
 
 /**
  *崔记管理
@@ -72,13 +75,16 @@ public class UrgeRecordCtrl {
     public Table list(@RequestParam int page,
                       @RequestParam int limit,
                       @RequestParam(defaultValue = "") String where){
-        PageHelper.startPage(page, limit);
         Map c=new HashMap();
         if(UtilFun.isEmptyString(where))c= JSON.parseObject(where,Map.class);
+        List count=urgeRecordService.manager(c);
+        PageHelper.startPage(page, limit);
+
         List<Map> list = urgeRecordService.manager(c);
+        Page<Map> p=(Page<Map>)list;
         Table table = new Table();
         table.setData(list);
-        table.setCount(list.size());
+        table.setCount((int)p.getTotal());
         return table;
     }
 
