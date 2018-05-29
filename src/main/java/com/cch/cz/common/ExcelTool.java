@@ -59,157 +59,157 @@ public class ExcelTool {
         for (int j = 0; j < title.size(); j++) {
             Cell curr = r.getCell(j);
             if (curr == null) continue;
-            if (title.get(j).toString().equals("催收员")) {
+            if (title.get(j).toString().trim().equals("催收员")) {
                 if(UtilFun.isEmptyString(getCellValue(curr)))
                     cases.setStaffId(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("合同号")) {
+            if (title.get(j).toString().trim().equals("合同号")) {
                 cases.setContractNum(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("委外公司")||title.get(j).toString().equals("公司")) {
+            if (title.get(j).toString().trim().equals("委外公司")||title.get(j).toString().trim().equals("公司")) {
                 cases.setAppointCompany(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("委派日期")||
-                    title.get(j).toString().equals("委案时间")||
-                    title.get(j).toString().equals("委案日期")) {
+            if (title.get(j).toString().trim().equals("委派日期")||
+                    title.get(j).toString().trim().equals("委案时间")||
+                    title.get(j).toString().trim().equals("委案日期")) {
                 cases.setAppointData(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("退案日期")||title.get(j).toString().equals("退案时间")) {
+            if (title.get(j).toString().trim().equals("退案日期")||title.get(j).toString().trim().equals("退案时间")) {
                 cases.setStopAppoint(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("城市")) {
+            if (title.get(j).toString().trim().equals("城市")) {
                 cases.setCity(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("CUSTOMERID")) {
+            if (title.get(j).toString().trim().equals("CUSTOMERID")) {
                 cases.setCUSTOMERID(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户姓名")) {
+            if (title.get(j).toString().trim().equals("客户姓名")) {
                 cases.setName(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("性别")) {
+            if (title.get(j).toString().trim().equals("性别")) {
                 cases.setSex(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("合同数量")) {
+            if (title.get(j).toString().trim().equals("合同数量")) {
                 cases.setContractsNum(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("身份证")) {
+            if (title.get(j).toString().trim().equals("身份证")) {
                 cases.setIdCard(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("合同申请日")) {
+            if (title.get(j).toString().trim().equals("合同申请日")) {
                 cases.setContractApplyDate(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("贷款类型")) {
+            if (title.get(j).toString().trim().equals("贷款类型")) {
                 cases.setLoanType(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("贷款本金")) {
+            if (title.get(j).toString().trim().equals("贷款本金")) {
                 cases.setLoanPrincipal(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("期款")) {
+            if (title.get(j).toString().trim().equals("期款")) {
                 cases.setInstallmentMoney(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("期数")) {
+            if (title.get(j).toString().trim().equals("期数")) {
                 cases.setInstallmentNum(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("已还款金额")) {
+            if (title.get(j).toString().trim().equals("已还款金额")) {
                 cases.setRepaymentMoney(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("最后还款日")) {
+            if (title.get(j).toString().trim().equals("最后还款日")) {
                 cases.setDeadline(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("逾期天数")) {
+            if (title.get(j).toString().trim().equals("逾期天数")) {
                 cases.setOverrangingDay(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("取消分期时间")) {
+            if (title.get(j).toString().trim().equals("取消分期时间")) {
                 cases.setCancelInstalments(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("未付期款")) {
+            if (title.get(j).toString().trim().equals("未付期款")) {
                 cases.setNnpaidInstallment(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("未付滞纳金")) {
+            if (title.get(j).toString().trim().equals("未付滞纳金")) {
                 cases.setLateFee(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("欠款金额")) {
+            if (title.get(j).toString().trim().equals("欠款金额")) {
                 cases.setArrears(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("委外催收费")||title.get(j).toString().equals("催收费")) {
+            if (title.get(j).toString().trim().equals("委外催收费")||title.get(j).toString().equals("催收费")) {
                 cases.setServiceCharge(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("总欠款")||title.get(j).toString().equals("总欠款金额")) {
+            if (title.get(j).toString().trim().equals("总欠款")||title.get(j).toString().equals("总欠款金额")) {
                 cases.setSumArrears(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("还款账号")) {
+            if (title.get(j).toString().trim().equals("还款账号")) {
                 cases.setRepaymentAccount(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("户名")) {
+            if (title.get(j).toString().trim().equals("户名")) {
                 cases.setAccountMaster(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("开户行")) {
+            if (title.get(j).toString().trim().equals("开户行")) {
                 cases.setBank(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("商品")) {
+            if (title.get(j).toString().trim().equals("商品")) {
                 cases.setCommodity(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("品牌")) {
+            if (title.get(j).toString().trim().equals("品牌")) {
                 cases.setBrand(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("POS点")) {
+            if (title.get(j).toString().trim().equals("POS点")) {
                 cases.setPosPlace(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户手机")) {
+            if (title.get(j).toString().trim().equals("客户手机")) {
                 cases.setCustomerPhoneNumber(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户户籍地址")) {
+            if (title.get(j).toString().trim().equals("客户户籍地址")) {
                 cases.setCustomerAddress(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户办公电话")) {
+            if (title.get(j).toString().trim().equals("客户办公电话")) {
                 cases.setCustomerOfficePhone(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户公司名称")) {
+            if (title.get(j).toString().trim().equals("客户公司名称")) {
                 cases.setCustomerCompany(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户公司地址")) {
+            if (title.get(j).toString().trim().equals("客户公司地址")) {
                 cases.setCustomerCompanyAddress(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户公司部门")) {
+            if (title.get(j).toString().trim().equals("客户公司部门")) {
                 cases.setCustomerDepartment(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户住宅电话")) {
+            if (title.get(j).toString().trim().equals("客户住宅电话")) {
                 cases.setCustomerResidencePhone(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户住宅地址")) {
+            if (title.get(j).toString().trim().equals("客户住宅地址")) {
                 cases.setCustomerResidenceAddress(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户配偶姓名")) {
+            if (title.get(j).toString().trim().equals("客户配偶姓名")) {
                 cases.setCustomerSpouse(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户配偶联系电话")) {
+            if (title.get(j).toString().trim().equals("客户配偶联系电话")) {
                 cases.setCustomerSpousePhone(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户亲戚姓名")) {
+            if (title.get(j).toString().trim().equals("客户亲戚姓名")) {
                 cases.setCustomerRelativeName(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户与亲戚关系")) {
+            if (title.get(j).toString().trim().equals("客户与亲戚关系")) {
                 cases.setCustomerRelationship(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户亲戚联系电话")) {
+            if (title.get(j).toString().trim().equals("客户亲戚联系电话")) {
                 cases.setCustomerRelativePhone(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("其他联系人姓名")) {
+            if (title.get(j).toString().trim().equals("其他联系人姓名")) {
                 cases.setCustomerRelativeOther(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("其他联系人关系")) {
+            if (title.get(j).toString().trim().equals("其他联系人关系")) {
                 cases.setCustomerRelaOther(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("其他联系人电话")) {
+            if (title.get(j).toString().trim().equals("其他联系人电话")) {
                 cases.setCustomerOtherPhone(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("客户邮箱")) {
+            if (title.get(j).toString().trim().equals("客户邮箱")) {
                 cases.setCustomerMail(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("代扣开户行")) {
+            if (title.get(j).toString().trim().equals("代扣开户行")) {
                 cases.setWithholding(getCellValue(curr));
             }
-            if (title.get(j).toString().equals("代扣账号")) {
+            if (title.get(j).toString().trim().equals("代扣账号")) {
                 cases.setWithholdingAccount(getCellValue(curr));
             }
 
