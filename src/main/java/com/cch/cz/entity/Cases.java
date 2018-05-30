@@ -195,6 +195,10 @@ public class Cases extends BaseEntity {
      * 撤案原因
      */
     private String revokeReason;
+    /**
+     * 补充信息
+     */
+    private String supplement;
 
     public int getStatus() {
         return status;
@@ -706,5 +710,13 @@ public class Cases extends BaseEntity {
 
     public void setRevokeReason(String revokeReason) {
         this.revokeReason = revokeReason;
+    }
+
+    public String getSupplement() {
+        return supplement;
+    }
+
+    public void setSupplement(String supplement) {
+        this.supplement = supplement;
     }
 }
