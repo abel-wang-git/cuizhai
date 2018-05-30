@@ -61,7 +61,8 @@
     <div class="layui-col-md6 layui-colla-item">
         <h2 class="layui-colla-title ">客户信息</h2>
         <div class="layui-colla-content layui-show">
-            <span name ="name"></span> 性别：<span name ="sex"></span> 身份证：<span name ="idCard"></span><br/>
+
+            <span name ="name"></span> 性别：<span name ="sex"></span> 身份证：<span name ="idCard"></span><button name="Id" class="layui-btn layui-btn-xs" id="supplement">补充信息</button><br/>
 
             手机：<span name ="customerPhoneNumber"></span>
             <!--住宅电话：<span name ="customerResidencePhone"></span><br/>-->
@@ -89,7 +90,8 @@
             未付滞纳金：<span name ="lateFee"></span><br/>
             欠款金额：<span name ="arrears"></span>
             委外催收费：<span name ="serviceCharge"></span>
-            总欠款：<span name ="sumArrears"></span>
+            总欠款：<span name ="sumArrears"></span><br/>
+            补充信息：<span name ="supplement"></span>
         </div>
 
     </div>
@@ -178,14 +180,17 @@
     <option value="借款人因病住院或意外伤残">借款人因病住院或意外伤残</option>
     <option value="其他">其他</option>
 </div>
-
+<div id="supplementlayer" style="display: none">
+    <textarea id="demo" style="display: none;"></textarea>
+</div>
 <script th:inline="javascript">
     /*<![CDATA[*/
 
-    layui.use(['table','form','laytpl'], function () {
+    layui.use(['table','form','laytpl','layedit'], function () {
          var table = layui.table
             , $ = layui.$
-            , form = layui.form
+            , form = layui.form,
+            layedit = layui.layedit;
         var cases = table.render({
             elem: '#cases'
             , id: 'cases'
@@ -287,6 +292,7 @@
 
         function setcase(cases) {
             $("span[name='name']").text(cases.name);
+            $("button[name='Id']").attr("attr",cases.id);
             $("span[name='customerPhoneNumber']").text(cases.customerPhoneNumber);
 //            $("span[name='customerResidencePhone']").text(cases.customerResidencePhone);
 //            $("span[name='customerSpouse']").text(cases.customerSpouse);
@@ -317,6 +323,7 @@
             $("span[name='serviceCharge']").text(cases.serviceCharge);
             $("span[name='sumArrears']").text(cases.sumArrears);
             $("input[name='caseId']").val(cases.id);
+            $("span[name='supplement']").html(cases.supplement);
         }
 
         function setoption(cases) {
@@ -392,8 +399,34 @@
             return false;
         });
 
+        var ed=layedit.build('demo',{
+            tool:[]
+        });
 
-
+        $("#supplement").click(function () {
+            var id=$(this).attr("attr");
+            $("#demo").text($("span[name='supplement']").html());
+            layer.open({
+                type: 1
+                , title: "补充信息"
+                , shade: 0
+                , content:$("#supplementlayer")
+                , btn: ['确定']
+                ,yes:function () {
+                    $.ajax({
+                        url: [[${ctx}]] + "/case/update",
+                        type: "post",
+                        dataType: 'json',
+                        async:false,
+                        data: {cases:JSON.stringify(JSON.parse('{"id":"'+id+'","supplement":"'+ layedit.getContent(ed)+'"}'))},
+                        success: function (data) {
+                            layer.msg(data.message);
+                            $("span[name='supplement']").html(layedit.getContent(ed));
+                        }
+                    });
+                }
+            });
+        })
     })
     /*]]>*/
 </script>

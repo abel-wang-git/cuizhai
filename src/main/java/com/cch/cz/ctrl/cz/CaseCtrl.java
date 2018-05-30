@@ -265,4 +265,11 @@ public class CaseCtrl {
         return table;
     }
 
+    @PostMapping(value = "/update")
+    @ResponseBody
+    public AjaxReturn update(@RequestParam String cases ) {
+        casesService.update(JSON.parseObject(cases,Cases.class));
+        return new AjaxReturn(0,"操作成功");
+    }
+
 }
