@@ -161,48 +161,48 @@ public class ExcelTool {
             if (title.get(j).toString().trim().equals("客户户籍地址")) {
                 cases.setCustomerAddress(getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户办公电话")) {
-                cases.setCustomerOfficePhone(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("客户公司名称")) {
-                cases.setCustomerCompany(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("客户公司地址")) {
-                cases.setCustomerCompanyAddress(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("客户公司部门")) {
-                cases.setCustomerDepartment(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("客户住宅电话")) {
-                cases.setCustomerResidencePhone(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("客户住宅地址")) {
-                cases.setCustomerResidenceAddress(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("客户配偶姓名")) {
-                cases.setCustomerSpouse(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("客户配偶联系电话")) {
-                cases.setCustomerSpousePhone(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("客户亲戚姓名")) {
-                cases.setCustomerRelativeName(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("客户与亲戚关系")) {
-                cases.setCustomerRelationship(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("客户亲戚联系电话")) {
-                cases.setCustomerRelativePhone(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("其他联系人姓名")) {
-                cases.setCustomerRelativeOther(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("其他联系人关系")) {
-                cases.setCustomerRelaOther(getCellValue(curr));
-            }
-            if (title.get(j).toString().trim().equals("其他联系人电话")) {
-                cases.setCustomerOtherPhone(getCellValue(curr));
-            }
+//            if (title.get(j).toString().trim().equals("客户办公电话")) {
+//                cases.setCustomerOfficePhone(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("客户公司名称")) {
+//                cases.setCustomerCompany(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("客户公司地址")) {
+//                cases.setCustomerCompanyAddress(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("客户公司部门")) {
+//                cases.setCustomerDepartment(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("客户住宅电话")) {
+//                cases.setCustomerResidencePhone(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("客户住宅地址")) {
+//                cases.setCustomerResidenceAddress(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("客户配偶姓名")) {
+//                cases.setCustomerSpouse(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("客户配偶联系电话")) {
+//                cases.setCustomerSpousePhone(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("客户亲戚姓名")) {
+//                cases.setCustomerRelativeName(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("客户与亲戚关系")) {
+//                cases.setCustomerRelationship(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("客户亲戚联系电话")) {
+//                cases.setCustomerRelativePhone(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("其他联系人姓名")) {
+//                cases.setCustomerRelativeOther(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("其他联系人关系")) {
+//                cases.setCustomerRelaOther(getCellValue(curr));
+//            }
+//            if (title.get(j).toString().trim().equals("其他联系人电话")) {
+//                cases.setCustomerOtherPhone(getCellValue(curr));
+//            }
             if (title.get(j).toString().trim().equals("客户邮箱")) {
                 cases.setCustomerMail(getCellValue(curr));
             }
