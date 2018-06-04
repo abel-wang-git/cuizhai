@@ -111,6 +111,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and customer_address like #{customerAddress}");
             if(UtilFun.isEmptyString(cases.getAppointData()))
                 where.append(" and appoint_data = #{appointData}");
+            
             WHERE(where.toString());
         }}.toString();
         logger.info(sql);
