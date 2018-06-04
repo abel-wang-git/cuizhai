@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan({"com.cch.mapper","com.cch.cz.authority.mapper.*"})
 @EnableAspectJAutoProxy(proxyTargetClass=true, exposeProxy=true)
 @EnableTransactionManagement
+@EnableScheduling
 public class App 
 {
     public static void main( String[] args )
