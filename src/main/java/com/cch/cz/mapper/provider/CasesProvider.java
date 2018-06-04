@@ -25,6 +25,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and contract_num= #{contractNum} ");
             if(UtilFun.isEmptyString(para.getCustomerAddress()))
                 where.append(" and customer_address like #{customerAddress}");
+            if(UtilFun.isEmptyString(para.getAppointData()))
+                where.append(" and appoint_data = #{appointData}");
             WHERE(where.toString());
         }}.toString();
         logger.info(sql);
@@ -107,6 +109,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and company_id = -1");
             if(UtilFun.isEmptyString(cases.getCustomerAddress()))
                 where.append(" and customer_address like #{customerAddress}");
+            if(UtilFun.isEmptyString(cases.getAppointData()))
+                where.append(" and appoint_data = #{appointData}");
             WHERE(where.toString());
         }}.toString();
         logger.info(sql);
