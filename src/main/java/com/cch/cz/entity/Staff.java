@@ -35,6 +35,10 @@ public class Staff  extends BaseEntity{
      * 所属公司
      */
     private  Long CompanyId;
+    /**
+     * 分组管理
+     */
+    private Long urgeGroup;
 
 
     public String getName() {
@@ -75,5 +79,13 @@ public class Staff  extends BaseEntity{
 
     public void setCompanyId(Long companyId) {
         CompanyId = companyId;
+    }
+
+    public Long getUrgeGroup() {
+        return urgeGroup;
+    }
+
+    public void setUrgeGroup(Long urgeGroup){
+        this.urgeGroup=urgeGroup;
     }
 }
