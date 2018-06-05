@@ -167,5 +167,12 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
         return casesMapper.countDynamic(cases);
     }
 
+    @Override
+    public void autoRevoke() {
+        //查到到案的案件
+        String now = UtilFun.DateToString(new Date(),"yyyy/MM/dd");
+        casesMapper.autoRevoke(now);
+    }
+
 
 }

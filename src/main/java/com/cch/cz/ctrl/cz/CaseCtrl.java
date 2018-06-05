@@ -54,7 +54,6 @@ public class CaseCtrl {
     @PostMapping(value = "/noallot")
     @ResponseBody
     public Table noAllotCase(@RequestParam int page, @RequestParam int limit) {
-
         PageHelper.startPage(page, limit);
         Table table = new Table();
         table.setData(casesService.findAll());

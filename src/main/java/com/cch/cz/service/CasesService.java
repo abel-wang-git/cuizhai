@@ -99,4 +99,9 @@ public interface CasesService extends BaseService<Cases,Long>  {
     void allotToCompany(List<Cases> cases, String company);
 
     int countDynamic(Cases cases);
+
+    /**
+     * 到期撤案
+     */
+    void autoRevoke();
 }

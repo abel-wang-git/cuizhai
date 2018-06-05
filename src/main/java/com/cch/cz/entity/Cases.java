@@ -26,10 +26,6 @@ public class Cases extends BaseEntity {
      * 结案
      */
     public final static int END = 3;
-    /**
-     * 员工的初始值 表示还未分配给员工
-     */
-    public final static String NOSTAFF = "0";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

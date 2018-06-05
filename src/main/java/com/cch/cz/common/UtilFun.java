@@ -130,4 +130,8 @@ public class UtilFun {
         }
         return new String(ch);
     }
+
+    public static void main(String[] args) {
+       System.out.println( DateToString(new Date(),"yyyy/MM/dd"));
+    }
 }
