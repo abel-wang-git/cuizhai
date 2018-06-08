@@ -40,11 +40,19 @@
 </form>
 
 <table id="cases" lay-filter="cases"></table>
-<div class="layui-inline" style="display: none;" id="day">
-    <label class="layui-form-label">留案期</label>
-    <input type="text" required="required " placeholder="天" value=""
-           class="layui-input" style="width: 60px" name="rethinDay"/>
-    <textarea id="retainReason" lay-verify="required" placeholder="留案原因" class="layui-textarea"></textarea>
+
+<div class="layui-inline" style="display: none;padding-top: 20px" id="day">
+    <div class="layui-form-item">
+        <label class="layui-form-label">留案期</label>
+        <div class="layui-inline">
+            <input type="text" required="required " class="layui-input" name="rethinDay" id="rethinDay"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <textarea id="retainReason" lay-verify="required" placeholder="留案原因" class="layui-textarea"></textarea>
+        </div>
+    </div>
 </div>
 <div style="display: none" id="stafflayer">
     <table id="staffs" lay-filter="staffs"></table>
@@ -58,7 +66,7 @@
     {{#  } }}
     {{#  if(d.status === 2){ }}
     {{# }}
-    留案
+    留案:{{d.rethinDay}}
     {{#  } }}
     {{#  if(d.status === 1){ }}
     撤案
@@ -79,8 +87,8 @@
 <script th:inline="javascript">
 
     /*<![CDATA[*/
-    layui.use(['upload', 'table', 'form'], function () {
-        var upload = layui.upload, $ = layui.$, table = layui.table, form = layui.form;
+    layui.use(['upload', 'table', 'form', 'laydate'], function () {
+        var upload = layui.upload, $ = layui.$, table = layui.table, form = layui.form, laydate = layui.laydate;
         var cases = table.render({
             elem: '#cases'
             , id: 'cases'
@@ -105,15 +113,15 @@
             ]]
             , done: function (res, curr, count) {
                 layui.$('table tbody tr ').each(function () {
-                    if ($(this).children().eq(10).text().trim() == '撤案') {
+                    if ($(this).children().eq(10).text().trim().indexOf("撤案") >= 0) {
                         $(this).css('background-color', '#FF5722');
                         $(this).css('color', '#FFB90F');
                     }
-                    if ($(this).children().eq(10).text().trim() == '留案') {
+                    if ($(this).children().eq(10).text().trim().indexOf("留案") >= 0) {
                         $(this).css('background-color', '#5FB878');
                         $(this).css('color', '#FFB800');
                     }
-                    if ($(this).children().eq(10).text().trim() == '结案') {
+                    if ($(this).children().eq(10).text().trim().indexOf("结案") >= 0) {
                         $(this).css('background-color', '#36b811');
                         $(this).css('color', '#ffd98c');
                     }
@@ -205,6 +213,13 @@
                 }});
 
         });
+        laydate.render({
+            elem: '#rethinDay'
+            , format: 'yyyy/MM/dd'
+            , min: 0
+            , max: 30
+            , theme: 'grid'
+        });
         //留案
         $('#retain').click(function () {
             var checkStatus = table.checkStatus('cases');
@@ -216,12 +231,12 @@
             layer.open({
                 type: 1
                 , title: '留案'
-                , area: ['500px', '450px']
+                , area: ['380px', '340px']
                 , content: $("#day")
                 , btn: ['添加', '取消']
                 , yes: function (index, layero) {
                     var day = $('input[name="rethinDay"]').val();
-                    if (day === ""|| day==0) {
+                    if (day === "") {
                         layer.msg("请填写留案期");
                         return;
                     }

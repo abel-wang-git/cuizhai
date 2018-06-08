@@ -160,9 +160,9 @@ public class Cases extends BaseEntity {
     private String rethinDate;
 
     /**
-     * 留案期(单位为天)
+     * 留案日期
      */
-    private Integer rethinDay;
+    private String rethinDay;
 
     /**
      * case 的状态 撤案=1 留案=-2 正常=0 已完成=3
@@ -196,11 +196,11 @@ public class Cases extends BaseEntity {
      */
     private String supplement;
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -660,11 +660,11 @@ public class Cases extends BaseEntity {
         this.rethinDate = rethinDate;
     }
 
-    public int getRethinDay() {
+    public String getRethinDay() {
         return rethinDay;
     }
 
-    public void setRethinDay(int rethinDay) {
+    public void setRethinDay(String rethinDay) {
         this.rethinDay = rethinDay;
     }
 

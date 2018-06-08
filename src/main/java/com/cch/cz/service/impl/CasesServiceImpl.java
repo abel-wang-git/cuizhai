@@ -20,6 +20,7 @@ import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/18.
+ *
  */
 @Service
 public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements CasesService {
@@ -94,8 +95,6 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
 
             if (cases.get(i).getStatus() == Cases.RETAIN) {
                 cases.get(i).setRethinDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
-                cases.get(i).setStopAppoint(UtilFun.DateToString(UtilFun.addDay(cases.get(i).getStopAppoint(),
-                        cases.get(i).getRethinDay(),UtilFun.YYYYMMDD2),UtilFun.YYYYMMDD2));
             }
             this.update(cases.get(i));
         }

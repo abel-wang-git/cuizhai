@@ -184,14 +184,36 @@
 <div id="supplementlayer" style="display: none">
     <textarea id="demo" style="display: none;"></textarea>
 </div>
+
+<div class="layui-inline" style="display: none;padding-top: 20px" id="day">
+    <div class="layui-form-item">
+        <label class="layui-form-label">留案期</label>
+        <div class="layui-inline">
+            <input type="text" required="required " class="layui-input" name="rethinDay" id="rethinDay"/>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <textarea id="retainReason" lay-verify="required" placeholder="留案原因" class="layui-textarea"></textarea>
+        </div>
+    </div>
+</div>
 <script th:inline="javascript">
     /*<![CDATA[*/
 
-    layui.use(['table','form','laytpl','layedit'], function () {
+    layui.use(['table', 'form', 'laytpl', 'layedit', 'laydate'], function () {
          var table = layui.table
             , $ = layui.$
             , form = layui.form,
-            layedit = layui.layedit;
+             layedit = layui.layedit
+             , laydate = layui.laydate;
+        laydate.render({
+            elem: '#rethinDay'
+            , format: 'yyyy/MM/dd'
+            , min: 0
+            , max: 30
+            , theme: 'grid'
+        });
         var cases = table.render({
             elem: '#cases'
             , id: 'cases'
@@ -201,8 +223,8 @@
             , where: {staff: JSON.stringify(JSON.parse('{"staffId":"'+[[${session.staff.loginName}]]+'"}'))}
             , method: 'post'
             , cols: [[ //表头
-                {field: 'name', title: '姓名', width:'10%', sort: true}
-                , {field: 'customerPhoneNumber', title: '手机', width: '10%', sort: true}
+                {field: 'name', title: '姓名', width: '7%', sort: true}
+                , {field: 'customerPhoneNumber', title: '手机', width: '8%', sort: true}
                 , {field: 'appointData', title: '委案日期', width: '10%'}
                 , {field: 'stopAppoint', title: '退案日期', width: '10%'}
                 , {field: 'customerAddress', title: '户籍', width: '13%', sort: true}
@@ -210,7 +232,7 @@
                 , {field: 'sumArrears', title: '总欠款', width: '10%', sort: true}
                 , {field: 'lastUrge', title: '最后一次催记时间', width: '10%', sort: true}
                 , {field: 'status', title: '状态', width: '6%',templet:'#status'}
-                , {fixed: 'urge', title: '操作', width: '10%', align: 'center', toolbar: '#urge', fixed: 'right'}
+                , {fixed: 'urge', title: '操作', width: 160, align: 'center', toolbar: '#urge', fixed: 'right'}
             ]]
             ,done: function(res, curr, count){
                 layui.$('table tbody tr ').each(function () {
@@ -258,7 +280,7 @@
             }else if(obj.event==='end'){
                 layer.open({
                     type: 1
-                    , title: '留案'
+                    , title: '结案'
                     , area: ['500px', '220px']
                     , content: $("#reason")
                     , btn: ['添加', '取消']
@@ -279,6 +301,39 @@
                         });
                     }
                 })
+            } else if (obj.event == "rethin") {
+                if (obj.data.status === 2) {
+                    layer.msg("已留案")
+                    return;
+                }
+                layer.open({
+                    type: 1
+                    , title: '留案'
+                    , area: ['380px', '340px']
+                    , content: $("#day")
+                    , btn: ['添加', '取消']
+                    , yes: function (index, layero) {
+                        var day = $('input[name="rethinDay"]').val();
+                        if (day === "") {
+                            layer.msg("请填写留案期");
+                            return;
+                        }
+                        obj.data.status = 2;
+                        obj.data.rethinDay = day;
+                        obj.data.retainReason = $("#retainReason").val();
+                        $.ajax({
+                            url: [[${ctx}]] + "/case/manager",
+                            type: "post",
+                            dataType: 'json',
+                            data: {cases: '[' + JSON.stringify(obj.data) + ']'},
+                            success: function (data) {
+                                layer.close(index);
+                                layer.msg(data.message);
+                                cases.reload();
+                            }
+                        });
+                    }
+                });
             }
         });
 

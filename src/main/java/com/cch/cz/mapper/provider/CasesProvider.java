@@ -19,7 +19,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             StringBuilder where = new StringBuilder(" 1=1 and staff_id is null");
             if (null!=para.getCompanyId())
                 where.append(" and company_id = #{companyId}");
-            if (para.getStatus() != -1)
+            if (null != para.getStatus() && para.getStatus() != -1)
                 where.append(" and status = #{status} ");
             if  (UtilFun.isEmptyString(para.getContractNum()))
                 where.append(" and contract_num= #{contractNum} ");
@@ -97,7 +97,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             SELECT(BuildSql.select(Cases.class));
             FROM(BuildSql.tablename(Cases.class));
             StringBuilder where = new StringBuilder(" 1=1 ");
-            if (cases.getStatus() != -1)
+            if (null != cases.getStatus() && cases.getStatus() != -1)
                 where.append(" and status = #{status} ");
             if (UtilFun.isEmptyString(cases.getName()))
                 where.append(" and name = #{name} ");
@@ -123,7 +123,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             SELECT(" count(*) ");
             FROM(BuildSql.tablename(Cases.class));
             StringBuilder where = new StringBuilder(" 1=1 ");
-            if (cases.getStatus() != -1)
+            if (null != cases.getStatus() && cases.getStatus() != -1)
                 where.append(" and status = #{status} ");
             if (UtilFun.isEmptyString(cases.getName()))
                 where.append(" and name = #{name} ");
