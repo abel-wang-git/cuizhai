@@ -3,6 +3,7 @@ package com.cch.cz.mapper;
 import com.cch.cz.base.dao.BaseMapper;
 import com.cch.cz.base.dao.provider.BaseProvider;
 import com.cch.cz.entity.Cases;
+import com.cch.cz.entity.Staff;
 import com.cch.cz.entity.UrgeRecord;
 import com.cch.cz.mapper.provider.CasesProvider;
 import org.apache.ibatis.annotations.*;
@@ -95,4 +96,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
 
     @Update("update t_case set status = 1 where appoint_data = ${now} and status =0")
     void autoRevoke(@Param("now")String now);
+
+    @Select("SELECT staff_id from t_case WHERE id_card='${idcard}' and staff_id is not null  limit 1 ,1; ")
+    String findStaffByIdcard(@Param("idcard") String idcard);
 }

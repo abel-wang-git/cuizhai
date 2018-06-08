@@ -27,4 +27,13 @@ public interface BaseMapper<M extends BaseEntity,PK> {
     @UpdateProvider(type = BaseProvider.class,method = "update")
     void update(M m);
 
+    /**
+     * 根据实体构建where条件查询
+     *
+     * @param m
+     * @return
+     */
+    @SelectProvider(type = BaseProvider.class, method = "findByEntity")
+    List<M> findByEntity(M m);
+
 }

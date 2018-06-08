@@ -7,6 +7,7 @@ import com.cch.cz.common.UploadUtil;
 import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
+import com.cch.cz.service.CasesService;
 import com.cch.cz.service.StaffService;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -35,6 +36,8 @@ public class Upload {
 
     @Resource
     private StaffService staffService;
+    @Resource
+    private CasesService casesService;
 
     @RequestMapping(value = "/upload")
     @ResponseBody
@@ -145,6 +148,11 @@ public class Upload {
             }
             if (title.get(j).toString().trim().equals("身份证")) {
                 cases.setIdCard(ExcelTool.getCellValue(curr));
+                Staff staff = casesService.findStaffByIdcard(ExcelTool.getCellValue(curr));
+                if (UtilFun.isEmptyString(cases.getStaffId())) {
+                    cases.setCompanyId(staff.getCompanyId());
+                    cases.setStaffId(staff.getLoginName());
+                }
             }
             if (title.get(j).toString().trim().equals("合同申请日")) {
                 cases.setContractApplyDate(ExcelTool.getCellValue(curr));

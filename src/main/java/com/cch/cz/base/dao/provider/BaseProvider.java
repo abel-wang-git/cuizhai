@@ -1,5 +1,6 @@
 package com.cch.cz.base.dao.provider;
 
+import com.cch.cz.base.dao.BuildSql;
 import com.cch.cz.base.entity.BaseEntity;
 import org.apache.ibatis.jdbc.SQL;
 import org.slf4j.Logger;
@@ -135,6 +136,37 @@ public class BaseProvider<M extends BaseEntity,PK> {
         logger.info(sql);
         return sql;
     }
+
+    public String findByEntity(M m) throws IllegalAccessException {
+        String sql = new SQL() {{
+            SELECT(getSelect(m));
+            FROM(m.Tablename());
+            StringBuilder where = new StringBuilder(" 1=1");
+            Field[] fields = m.getClass().getDeclaredFields();
+
+            for (Field f : fields) {
+                f.setAccessible(true);
+                if (f.getAnnotation(Transient.class) != null || !Modifier.isPrivate(f.getModifiers())) continue;
+                if (f.get(m) == null) continue;
+
+
+                if (f.getType() == String.class) {
+                    where.append(addUnderscores(f.getName()) + "='" + f.get(m) + "'");
+                } else if (f.getType() == Date.class) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss");
+                    String ctime = formatter.format((Date) f.get(m));
+                    where.append(addUnderscores(f.getName()) + "='" + ctime + "'");
+                } else {
+                    where.append(addUnderscores(f.getName()) + "=" + f.get(m));
+                }
+                f.setAccessible(false);
+            }
+
+        }}.toString();
+        return sql;
+    }
+
+
     public static String addUnderscores(String name) {
         StringBuilder buf = new StringBuilder(name.replace('.', '_'));
 

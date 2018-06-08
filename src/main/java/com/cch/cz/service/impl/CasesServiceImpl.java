@@ -7,6 +7,7 @@ import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.mapper.AdjustLogMapper;
 import com.cch.cz.mapper.CasesMapper;
+import com.cch.cz.mapper.StaffMapper;
 import com.cch.cz.service.CasesService;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     private CasesMapper casesMapper;
     @Resource
     private AdjustLogMapper adjustLogMapper;
+    @Resource
+    private StaffMapper staffMapper;
 
     @Override
     @Transactional
@@ -172,6 +175,12 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
         //查到到案的案件
         String now = UtilFun.DateToString(new Date(),"yyyy/MM/dd");
         casesMapper.autoRevoke(now);
+    }
+
+    @Override
+    public Staff findStaffByIdcard(String idcard) {
+        String staff_id = casesMapper.findStaffByIdcard(idcard);
+        return staffMapper.findOne(new Staff(), staff_id);
     }
 
 

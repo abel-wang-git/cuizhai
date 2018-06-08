@@ -17,4 +17,6 @@ public interface BaseService<M,PK> {
     Long count(M m);
 
     void update(M m);
+
+    List<M> findByEntity(M m);
 }

@@ -19,4 +19,5 @@ public interface StaffService extends BaseService<Staff,String>  {
 
 
     List<Staff> listByCompany(String company);
+
 }

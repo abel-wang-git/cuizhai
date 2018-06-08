@@ -43,6 +43,11 @@ public class BaseServiceImpl<M extends BaseEntity,PK> implements BaseService<M,P
         baseMapper.update(m);
     }
 
+    @Override
+    public List<M> findByEntity(M m) {
+        return baseMapper.findByEntity(m);
+    }
+
     M getNewInstance(){
         M m = null;
         try {

@@ -104,4 +104,9 @@ public interface CasesService extends BaseService<Cases,Long>  {
      * 到期撤案
      */
     void autoRevoke();
+
+    /**
+     * @param cellValue
+     */
+    Staff findStaffByIdcard(String cellValue);
 }

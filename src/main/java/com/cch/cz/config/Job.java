@@ -33,7 +33,7 @@ public class Job {
     /**
      * 到期自动撤案，留案与结案的将不处理
      */
-    @Scheduled(cron="30 1 0 * * * *")
+    @Scheduled(cron = "30 1 0 * * * ")
     public void autoRevoke() {
         casesService.autoRevoke();
     }
