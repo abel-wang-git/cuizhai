@@ -31,13 +31,24 @@
     <div class="layui-form-item">
         <label class="layui-form-label">岗位</label>
         <div class="layui-input-inline">
-            <select th:field="*{place}" required ="required " lay-verify="required">
+            <select th:field="*{place}" required ="required " lay-verify="required" lay-filter="group">
                 <option value=""></option>
                 <option th:unless="${a.name=='superadmin'}" th:each="a:${roles}" th:text="${a.design}" th:value="${a.id}"></option>
             </select>
         </div>
     </div>
 
+    <div class="layui-form-item" style="display: none" id="fenzu">
+        <label class="layui-form-label">分组</label>
+        <div class="layui-input-inline">
+            <select required ="required " lay-verify="required">
+                <option value=""></option>
+                <option>一组</option>
+                <option>二组</option>
+                <option>三组</option>
+            </select>
+        </div>
+    </div>
     <div class="layui-form-item">
         <label class="layui-form-label">公司</label>
         <div class="layui-input-inline">
@@ -54,6 +65,8 @@
     </div>
 </form>
 <script th:src="@{/static/layui/layui.js}"></script>
+
+
 
 <script>
     layui.use('form', function(){
@@ -72,6 +85,17 @@
                     }
             });
             return false;
+        });
+
+        form.on('select(group)', function(data){
+            console.log(data.elem); //得到select原始DOM对象
+            console.log(data.value); //得到被选中的值
+            console.log(data.othis); //得到美化后的DOM对象
+            if(data.value==='3'){
+                    $('#fenzu').show()
+            }else {
+                $('#fenzu').hide()
+            }
         });
 
      /*   form.on('checkbox(role)', function(data){

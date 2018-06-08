@@ -36,7 +36,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">岗位</label>
             <div class="layui-input-inline">
-                <select  name="place" required ="required " lay-verify="required">
+                <select  name="place" required ="required " lay-verify="required" lay-filter="group">
                     <option value=""></option>
                     <option value="2">管理员</option>
                     <option value="3">催收员</option>
@@ -56,6 +56,9 @@
 <script type="text/html" id="updata">
     <a class="layui-btn  layui-btn-xs" lay-event="update">修改</a>
 </script>
+
+
+
 
 <div style="width: 500px;display: none;" id="rolelist">
     <table id="roles" lay-filter="roles"></table>
@@ -83,7 +86,6 @@
                 , {field: 'phone', title: '电话', width: 200, sort: true}
 //                , {field: 'companyId', title: '公司', width: '15%', sort: true}
                 , {title: '修改', width: 80, align: 'center', toolbar: '#updata',fixed: 'right'}
-
             ]]
         });
         table.on('tool(staff)', function (obj) {
@@ -100,6 +102,7 @@
                 $('#update').css("right",0);
             }
         });
+
 
         form.on('submit(updatesta)', function (data) {
             $.ajax({
