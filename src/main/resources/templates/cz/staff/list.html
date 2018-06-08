@@ -96,9 +96,6 @@
                 , {title: '修改', width: 160, align: 'center', toolbar: '#updata', fixed: 'right'}
             ]]
             , done: function (res, curr, count) {
-                console.log(res)
-                console.log(curr)
-                console.log(count)
                 layui.$('table tbody tr ').each(function () {
                     if ($(this).children().eq(10).text().trim() == '撤案') {
                         $(this).css('color', '#FFB90F');
