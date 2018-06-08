@@ -141,7 +141,7 @@ public class BaseProvider<M extends BaseEntity,PK> {
         String sql = new SQL() {{
             SELECT(getSelect(m));
             FROM(m.Tablename());
-            StringBuilder where = new StringBuilder(" 1=1");
+            StringBuilder where = new StringBuilder(" 1=1 ");
             Field[] fields = m.getClass().getDeclaredFields();
 
             for (Field f : fields) {
@@ -151,18 +151,22 @@ public class BaseProvider<M extends BaseEntity,PK> {
 
 
                 if (f.getType() == String.class) {
-                    where.append(addUnderscores(f.getName()) + "='" + f.get(m) + "'");
+                    where.append(" and " + addUnderscores(f.getName()) + "='" + f.get(m) + "'");
                 } else if (f.getType() == Date.class) {
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd KK:mm:ss");
                     String ctime = formatter.format((Date) f.get(m));
-                    where.append(addUnderscores(f.getName()) + "='" + ctime + "'");
+                    where.append(addUnderscores(" and " + f.getName()) + "='" + ctime + "' ");
                 } else {
-                    where.append(addUnderscores(f.getName()) + "=" + f.get(m));
+                    where.append(addUnderscores(" and " + f.getName()) + "=" + f.get(m));
                 }
                 f.setAccessible(false);
             }
 
+
+            WHERE(where.toString());
+
         }}.toString();
+        logger.info(sql);
         return sql;
     }
 

@@ -40,6 +40,13 @@ public class Staff  extends BaseEntity{
      */
     private Long urgeGroup;
 
+    /**
+     * 是否禁用
+     * 1 禁用
+     * 0　启用
+     */
+    private int isEnable;
+
 
     public String getName() {
         return name;
@@ -87,5 +94,13 @@ public class Staff  extends BaseEntity{
 
     public void setUrgeGroup(Long urgeGroup){
         this.urgeGroup=urgeGroup;
+    }
+
+    public int getIsEnable() {
+        return isEnable;
+    }
+
+    public void setIsEnable(int isEnable) {
+        this.isEnable = isEnable;
     }
 }

@@ -3,8 +3,12 @@ package com.cch.cz.service.impl;
 import com.cch.cz.authority.entity.User;
 import com.cch.cz.authority.mapper.UserMapper;
 import com.cch.cz.base.service.impl.BaseServiceImpl;
+import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
+import com.cch.cz.entity.UrgeRecord;
+import com.cch.cz.mapper.CasesMapper;
 import com.cch.cz.mapper.StaffMapper;
+import com.cch.cz.mapper.UrgeRecordMapper;
 import com.cch.cz.service.StaffService;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,12 @@ public class StaffServiceImpl extends BaseServiceImpl<Staff,String> implements S
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private CasesMapper casesMapper;
+
+    @Resource
+    private UrgeRecordMapper urgeRecordMapper;
+
     @Override
     @Transactional
     public void save(Staff staff) {
@@ -40,6 +50,21 @@ public class StaffServiceImpl extends BaseServiceImpl<Staff,String> implements S
     @Override
     public List<Staff> listByCompany(String company) {
         return staffMapper.listByCompany(company);
+    }
+
+    @Override
+    @Transactional
+    public void disable(List<Cases> cases, String[] staff) {
+        int index = 0;
+        for (int i = 0; i < cases.size(); i++) {
+            Cases c = cases.get(i);
+            if (index == staff.length) index = 0;
+            c.setStaffId(staff[index]);
+            urgeRecordMapper.updateByCase(staff[index], c.getId());
+            casesMapper.update(c);
+            index++;
+
+        }
     }
 
     @Override

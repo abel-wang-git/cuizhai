@@ -8,11 +8,16 @@ import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.authority.service.UserService;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
+import com.cch.cz.common.UtilFun;
+import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
+import com.cch.cz.entity.enu.IsEnable;
+import com.cch.cz.service.CasesService;
 import com.cch.cz.service.CompanyService;
 import com.cch.cz.service.StaffService;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -39,6 +44,8 @@ public class StaffCtrl {
     private CompanyService companyService;
     @Resource
     private RoleService roleService;
+    @Resource
+    private CasesService casesService;
 
     @GetMapping(value = "/list")
     public  String list(Model model){
@@ -106,6 +113,32 @@ public class StaffCtrl {
             e.printStackTrace();
             return new AjaxReturn(1,"修改失败");
         }
+    }
+
+    @PostMapping(value = "/isenable")
+    @ResponseBody
+    public AjaxReturn isenable(@RequestParam String staff) {
+        Staff staff1 = JSON.parseObject(staff, Staff.class);
+        Cases c = new Cases();
+        c.setStaffId(staff1.getLoginName());
+        List<Cases> list = casesService.findByEntity(c);
+        if (UtilFun.isEmptyList(list)) {
+            Map data = new HashMap();
+            data.put("cases", list);
+            return new AjaxReturn(1, "该催收员存在未处理的案件", data);
+        } else {
+            staff1.setIsEnable(IsEnable.DISENABLE.value());
+            staffService.update(staff1);
+            return new AjaxReturn(0, "操作成功");
+        }
+    }
+
+    @PostMapping(value = "/disenable")
+    @ResponseBody
+    public AjaxReturn disenable(@RequestParam("cases") String casess, @RequestParam("staff[]") String[] staff) {
+        List<Cases> cases = JSON.parseArray(casess, Cases.class);
+        staffService.disable(cases, staff);
+        return new AjaxReturn(0, "分配成功");
     }
 
 

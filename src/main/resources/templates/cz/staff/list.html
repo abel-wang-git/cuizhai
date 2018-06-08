@@ -11,6 +11,7 @@
         right: -350px;
         top: 0;
         width: 350px;
+        background-color: #2dff07;
     }
 </style>
 <body>
@@ -55,13 +56,20 @@
 </div>
 <script type="text/html" id="updata">
     <a class="layui-btn  layui-btn-xs" lay-event="update">修改</a>
+    {{#  if(d.isEnable === 0){ }}
+    <a class="layui-btn  layui-btn-xs" lay-event="disenable">禁用</a>
+    {{#  } }}
+    {{#  if(d.isEnable === 1){ }}
+    <a class="layui-btn  layui-btn-xs layui-btn-disabled" lay-event="disenable">禁用</a>
+    {{#  } }}
 </script>
-
-
-
 
 <div style="width: 500px;display: none;" id="rolelist">
     <table id="roles" lay-filter="roles"></table>
+</div>
+
+<div style="display: none" id="del">
+    <table id="sta" lay-filter="sta"></table>
 </div>
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
@@ -75,7 +83,7 @@
             elem: '#staff'
             , id: 'staff'
             , height: 'full'
-            , width:585
+            , width: 645
             , url: 'list' //数据接口
             , method: 'post'
             , page: true //开启分页
@@ -85,13 +93,21 @@
 //                , {field: 'place', title: '职位', width: '15%', sort: true}
                 , {field: 'phone', title: '电话', width: 200, sort: true}
 //                , {field: 'companyId', title: '公司', width: '15%', sort: true}
-                , {title: '修改', width: 80, align: 'center', toolbar: '#updata',fixed: 'right'}
+                , {title: '修改', width: 160, align: 'center', toolbar: '#updata', fixed: 'right'}
             ]]
+            , done: function (res, curr, count) {
+                console.log(res)
+                console.log(curr)
+                console.log(count)
+                layui.$('table tbody tr ').each(function () {
+                    if ($(this).children().eq(10).text().trim() == '撤案') {
+                        $(this).css('color', '#FFB90F');
+                    }
+                })
+            }
         });
         table.on('tool(staff)', function (obj) {
             var layEvent = obj.event;
-            var data = obj.data;
-            console.log(data)
             if (layEvent === 'update') {
                 $("input[name='name']").val(obj.data.name);
                 $("input[name='loginName']").val(obj.data.loginName);
@@ -100,6 +116,72 @@
                 $("select[name='place']").val(obj.data.place);
                 form.render('select')
                 $('#update').css("right",0);
+            } else if (layEvent === 'disenable') {
+                if (obj.data.isEnable === 1) {
+                    layer.msg("该用户已禁用")
+                    return;
+                }
+                table.render({
+                    elem: '#sta'
+                    , id: 'sta'
+                    , url: 'list' //数据接口
+                    , method: 'post'
+                    , size: 'sm'
+                    , cols: [[ //表头
+                        {field: 'chk', width: "4%", type: 'checkbox', fixed: 'left'},
+                        {field: 'name', title: '员工名称', width: 150, sort: true, fixed: 'left'}
+                    ]]
+                });
+                $.ajax({
+                    url: "isenable",
+                    type: "post",
+                    dataType: 'json',
+                    data: {staff: JSON.stringify(obj.data)},
+                    success: function (data) {
+                        if (data.code === 1) {
+                            layer.open({
+                                type: 1
+                                , title: obj.data.name + '的案件'
+                                , height: 'full'
+                                , content: $("#del")
+                                , btn: ['添加']
+                                , yes: function (index, layero) {
+                                    var checkStatus = table.checkStatus('sta');
+                                    var chksta = [];
+                                    for (var i = 0; i < checkStatus.data.length; i++) {
+                                        chksta.push(checkStatus.data[i].loginName)
+                                    }
+                                    $.ajax({
+                                        url: "disenable",
+                                        type: "post",
+                                        dataType: 'json',
+                                        data: {
+                                            cases: JSON.stringify(data.data.cases),
+                                            staff: chksta
+                                        },
+                                        success: function (data) {
+                                            layer.close(index);
+                                            $.ajax({
+                                                url: "isenable",
+                                                type: "post",
+                                                dataType: 'json',
+                                                data: {staff: JSON.stringify(obj.data)},
+                                                success: function (data) {
+                                                    layer.msg(data.message);
+                                                    staff.reload()
+                                                }
+                                            })
+
+                                        }
+                                    });
+                                }
+                            })
+                        } else {
+                            layer.msg(data.message);
+                            staff.reload();
+                        }
+                    }
+                });
             }
         });
 

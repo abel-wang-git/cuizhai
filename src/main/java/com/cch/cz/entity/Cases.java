@@ -162,14 +162,14 @@ public class Cases extends BaseEntity {
     /**
      * 留案期(单位为天)
      */
-    private int rethinDay;
+    private Integer rethinDay;
 
     /**
      * case 的状态 撤案=1 留案=-2 正常=0 已完成=3
      *
      * @return
      */
-    private int status;
+    private Integer status;
     /**
      * 案件类型
      */

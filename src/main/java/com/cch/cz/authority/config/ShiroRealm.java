@@ -5,6 +5,9 @@ import com.cch.cz.authority.entity.Role;
 import com.cch.cz.authority.entity.User;
 import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.authority.service.UserService;
+import com.cch.cz.entity.Staff;
+import com.cch.cz.entity.enu.IsEnable;
+import com.cch.cz.service.StaffService;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
@@ -26,6 +29,8 @@ public class ShiroRealm extends AuthorizingRealm {
     private UserService userService;
     @Resource
     private RoleService roleService;
+    @Resource
+    private StaffService staffService;
 
     /**
      * 此方法调用  hasRole,hasPermission的时候才会进行回调.
@@ -72,6 +77,10 @@ public class ShiroRealm extends AuthorizingRealm {
         //实际项目中，这里可以根据实际情况做缓存，如果不做，Shiro自己也是有时间间隔机制，2分钟内不会重复执行该方法
         User userInfo = userService.getByuserName(username);
         if (userInfo == null) {
+            return null;
+        }
+        Staff staff = staffService.findOne(username);
+        if (null != staff && staff.getIsEnable() == IsEnable.DISENABLE.value()) {
             return null;
         }
         //userInfo.setPermissions(userService.findPermissions(user));

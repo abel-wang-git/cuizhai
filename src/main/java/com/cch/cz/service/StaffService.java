@@ -1,6 +1,7 @@
 package com.cch.cz.service;
 
 import com.cch.cz.base.service.BaseService;
+import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
 
 import java.util.List;
@@ -20,4 +21,11 @@ public interface StaffService extends BaseService<Staff,String>  {
 
     List<Staff> listByCompany(String company);
 
+    /**
+     * 禁用员工
+     *
+     * @param cases
+     * @param staff
+     */
+    void disable(List<Cases> cases, String[] staff);
 }
