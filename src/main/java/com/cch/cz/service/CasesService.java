@@ -109,4 +109,12 @@ public interface CasesService extends BaseService<Cases,Long>  {
      * @param cellValue
      */
     Staff findStaffByIdcard(String cellValue);
+
+    /**
+     * 已崔记和未崔记
+     *
+     * @param isUrge
+     * @param company
+     */
+    List<Map> isUrge(String isUrge, Long company, String staff);
 }

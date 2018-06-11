@@ -182,5 +182,11 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
         return staffMapper.findOne(new Staff(), staff_id);
     }
 
+    @Override
+    public List<Map> isUrge(String isUrge, Long company, String staff) {
+
+        return casesMapper.isUrge(isUrge, company, staff);
+    }
+
 
 }

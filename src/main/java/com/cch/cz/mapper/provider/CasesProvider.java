@@ -4,6 +4,7 @@ import com.cch.cz.base.dao.BuildSql;
 import com.cch.cz.base.dao.provider.BaseProvider;
 import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
+import jdk.nashorn.internal.objects.annotations.Where;
 import org.apache.ibatis.jdbc.SQL;
 import org.slf4j.LoggerFactory;
 
@@ -165,7 +166,24 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
         return sql ;
     }
 
+    public String isUrge(Map<String, Object> para) {
+        String sql = new SQL() {{
+            SELECT(" staff_id as staff ,count(*) as count ,sum(arrears) as money ");
+            FROM(BuildSql.tablename(Cases.class));
+            StringBuilder where = new StringBuilder(" staff_id is not null");
+            if (para.get("company") != null)
+                where.append("  and company_id = #{company} ");
+            if (UtilFun.isEmptyString((String) para.get("isUrge")))
+                where.append(" and last_urge is not null  ");
+            if (UtilFun.isEmptyString((String) para.get("staff")))
+                where.append(" and staff_id=#{staff} ");
 
+            WHERE(where.toString());
+            GROUP_BY(" staff_id ");
+        }}.toString();
+        logger.info(sql);
+        return sql;
+    }
 
 
 }

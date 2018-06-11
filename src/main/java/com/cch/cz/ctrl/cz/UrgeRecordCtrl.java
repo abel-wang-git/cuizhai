@@ -77,7 +77,6 @@ public class UrgeRecordCtrl {
                       @RequestParam(defaultValue = "") String where){
         Map c=new HashMap();
         if(UtilFun.isEmptyString(where))c= JSON.parseObject(where,Map.class);
-        List count=urgeRecordService.manager(c);
         PageHelper.startPage(page, limit);
 
         List<Map> list = urgeRecordService.manager(c);

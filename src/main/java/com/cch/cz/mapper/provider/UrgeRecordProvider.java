@@ -26,7 +26,7 @@ public class UrgeRecordProvider extends BaseProvider<UrgeRecord,Long> {
         String sql=new SQL(){{
             StringBuilder where =  new StringBuilder(" u.case_id=c.id and u.staff_id=s.login_name ");
             SELECT(" u.result,u.rmarks,u.status,u.target,u.create_date as createDate, s.name as sname,c.name as cname,c.contract_num as contractNum ,c.sex,c.id_card as idCard,c.sum_arrears as sumArrears" +
-                    "  ,c.customer_phone_number as customerPhoneNumber ,c.status ");
+                    "  ,c.customer_phone_number as customerPhoneNumber ,c.status,c.customer_address as customerAddress ");
             FROM(" t_urge_record as u ,t_case as c,t_staff as s");
             if(UtilFun.isEmptyString((String) para.get("sname"))) where.append(" and s.name=#{sname}");
             if(UtilFun.isEmptyString((String) para.get("cname"))) where.append(" and c.name=#{cname}");
