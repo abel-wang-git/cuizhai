@@ -200,7 +200,9 @@
 </div>
 <script th:inline="javascript">
     /*<![CDATA[*/
-
+    layui.config({
+        base: [[${ctx}]] + '/static/layui/js/'
+    }).use('cityselect');
     layui.use(['table', 'form', 'laytpl', 'layedit', 'laydate'], function () {
          var table = layui.table
             , $ = layui.$
@@ -227,7 +229,7 @@
                 , {field: 'customerPhoneNumber', title: '手机', width: '8%', sort: true}
                 , {field: 'appointData', title: '委案日期', width: '10%'}
                 , {field: 'stopAppoint', title: '退案日期', width: '10%'}
-                , {field: 'customerAddress', title: '户籍', width: '13%', sort: true}
+                , {field: 'overrangingDay', title: '逾期天数', width: '13%', sort: true}
                 , {field: 'repaymentMoney', title: '已还金额', width: '10%', sort: true}
                 , {field: 'sumArrears', title: '总欠款', width: '10%', sort: true}
                 , {field: 'lastUrge', title: '最后一次催记时间', width: '10%', sort: true}
@@ -341,9 +343,6 @@
             cases.reload({page: {curr: 1 },where:{staff:JSON.stringify(data.field)}});
             return false;
         });
-        layui.config({
-            base: [[${ctx}]]+'/static/layui/js/'
-        }).use('cityselect');
 
 
         function setcase(cases) {

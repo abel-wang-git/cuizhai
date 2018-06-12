@@ -39,25 +39,25 @@
     <div class="layui-inline">
         <label class="layui-form-label">身份证：</label>
         <div class="layui-input-inline" style="width: 100px;">
-            <input name="customerPhoneNumber" type="text" class="layui-input"/>
+            <input name="idCard" type="text" class="layui-input"/>
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label">归属地：</label>
         <div class="layui-input-inline" style="width: 100px;">
-            <input name="customerPhoneNumber" type="text" class="layui-input"/>
+            <input name="customerAddress" type="text" class="layui-input"/>
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label">合同号：</label>
         <div class="layui-input-inline" style="width: 100px;">
-            <input name="customerPhoneNumber" type="text" class="layui-input"/>
+            <input name="contractNum" type="text" class="layui-input"/>
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label">催收员：</label>
         <div class="layui-input-inline" style="width: 100px;">
-            <input name="customerPhoneNumber" type="text" class="layui-input"/>
+            <input name="StaffId" type="text" class="layui-input"/>
         </div>
     </div>
     <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
@@ -96,6 +96,13 @@
     撤案
     {{#  } }}
 </script>
+<script type="text/html" id="staffcol">
+    {{#  if(typeof(d.staffId) ==="undefined"){ }}
+    未分配
+    {{# }else{}}
+    {{d.staffId}}
+    {{#}}}
+</script>
 
 <script type="text/html" id="name">
     <span style="border-bottom:  1px solid #0a0fff;" lay-event="detail">{{ d.name}}</span>
@@ -113,11 +120,28 @@
     /*<![CDATA[*/
     layui.use(['upload', 'table', 'form', 'laydate'], function () {
         var upload = layui.upload, $ = layui.$, table = layui.table, form = layui.form, laydate = layui.laydate;
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name]) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+
         var cases = table.render({
             elem: '#cases'
             , id: 'cases'
             , height: "full-120"
-//            , url: 'noallot'//数据接口
+            , url: "dynamic"
+            , where: {data: JSON.stringify($('#search').serializeObject())}
             , method: 'post'
             , limits: [10,50,150,200,250,300,350]
             , size: 'sm'
@@ -126,7 +150,8 @@
                 {field: 'chk', width: "4%", type: 'checkbox', fixed: 'left'}
                 , {field: 'name', title: '姓名', width: '8%', sort: true, toolbar: '#name'}
                 , {field: 'customerPhoneNumber', title: '手机', width: '10%'}
-                , {field: 'idCard', title: '身份证', width: '14%'}
+                , {field: 'idCard', title: '身份证', width: '7%'}
+                , {field: 'staffId', title: '催收员', width: '7%', templet: '#staffcol'}
                 , {field: 'appointData', title: '委案日期', width: '9%'}
                 , {field: 'stopAppoint', title: '退案日期', width: '10%'}
                 , {field: 'loanPrincipal', title: '贷款本金', width: '10%'}
@@ -136,16 +161,17 @@
                 , {field: 'status', title: '状态', width: '10%', templet: '#status'}
             ]]
             , done: function (res, curr, count) {
+
                 layui.$('table tbody tr ').each(function () {
-                    if ($(this).children().eq(10).text().trim().indexOf("撤案") >= 0) {
+                    if ($(this).children().eq(11).text().trim().indexOf("撤案") >= 0) {
                         $(this).css('background-color', '#FF5722');
                         $(this).css('color', '#FFB90F');
                     }
-                    if ($(this).children().eq(10).text().trim().indexOf("留案") >= 0) {
+                    if ($(this).children().eq(11).text().trim().indexOf("留案") >= 0) {
                         $(this).css('background-color', '#5FB878');
                         $(this).css('color', '#FFB800');
                     }
-                    if ($(this).children().eq(10).text().trim().indexOf("结案") >= 0) {
+                    if ($(this).children().eq(11).text().trim().indexOf("结案") >= 0) {
                         $(this).css('background-color', '#36b811');
                         $(this).css('color', '#ffd98c');
                     }
@@ -228,6 +254,7 @@
                         dataType: 'json',
                         data: {cases: JSON.stringify(checkStatus.data)},
                         success: function (data) {
+                            console.log();
                             layer.msg(data.message);
                             cases.reload();
                             layer.close(index);
@@ -327,20 +354,13 @@
         })
         //查询
         form.on('submit(search)', function (data) {
-            $.ajax({
-                url: "dynamic",
-                type: "post",
-                dataType: 'json',
-                data: {data:JSON.stringify(data.field)},
-                success: function (data) {
-                    cases.reload({url: '', data: data.data});
-                }
-            });
+
+            cases.reload({url: 'dynamic', where: {data: JSON.stringify(data.field)}});
+
             return false;
         });
 
         table.on('tool(cases)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-            console.log(obj.data)
 
             layer.open({
                 type: 1,

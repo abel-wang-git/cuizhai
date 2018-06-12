@@ -8,9 +8,9 @@ import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Company;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.service.CasesService;
-import com.cch.cz.service.CityService;
 import com.cch.cz.service.CompanyService;
 import com.cch.cz.service.StaffService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
@@ -34,8 +34,6 @@ public class CaseCtrl {
     private CompanyService companyService;
     @Resource
     private StaffService staffService;
-    @Resource
-    private  CityService cityService;
 
     @GetMapping(value = "/up")
     public String toCase() {
@@ -77,7 +75,6 @@ public class CaseCtrl {
 
         model.addAttribute("coms", list);
         model.addAttribute("cases", cases);
-        model.addAttribute("province",cityService.province());
         return "/cz/cases/allot";
     }
 
@@ -153,11 +150,11 @@ public class CaseCtrl {
                              @RequestParam() int limit,
                              @RequestParam("staff") String cases) {
         Cases where = JSON.parseObject(cases, Cases.class);
-        Long count = casesService.countByStaff(where);
         PageHelper.startPage(page, limit);
         List<Cases> caseslist = casesService.listByStaff(where);
+        Page<Cases> pages = (Page<Cases>) caseslist;
 
-        return new Table(count.intValue(), caseslist);
+        return new Table((int) pages.getTotal(), caseslist);
     }
 
     /**
@@ -186,9 +183,10 @@ public class CaseCtrl {
                          @RequestParam(defaultValue = "0") int limit,
                          @RequestParam String data) {
         PageHelper.startPage(page, limit);
-        List<Cases> list = casesService.dynamicList(JSON.parseObject(data, Cases.class));
+        Page<Cases> list = (Page<Cases>) casesService.dynamicList(JSON.parseObject(data, Cases.class));
 
-        return new Table(casesService.countDynamic(JSON.parseObject(data, Cases.class)), list);
+
+        return new Table((int) list.getTotal(), list);
     }
 
     @PostMapping(value = "/random")
