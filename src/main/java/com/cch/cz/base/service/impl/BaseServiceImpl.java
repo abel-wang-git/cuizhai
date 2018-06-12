@@ -31,7 +31,9 @@ public class BaseServiceImpl<M extends BaseEntity,PK> implements BaseService<M,P
 
     public M findOne(PK pk)  {
 
-        return baseMapper.findOne(getNewInstance(),pk);
+        M m =baseMapper.findOne(getNewInstance(),pk);
+
+        return m;
     }
 
     public Long count(M m) {

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>分组添加</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+<a class="layui-btn layui-btn-sm" href="list">返回</a>
+
+<div id="add" class="add">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">分组编号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="id"  required ="required " lay-verify="required" placeholder="请输入分组编号" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">分组名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" required ="required " lay-verify="required" placeholder="请输入分组名称" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button  class="layui-btn" lay-submit="lay-submit" lay-filter="group">提交</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script  th:src="@{/static/layui/layui.js}"></script>
+<script th:inline="javascript">
+    layui.use('form',function () {
+        var $ = layui.$,
+            form = layui.form;
+        //监听提交
+        form.on('submit(group)', function(data){
+            alert(data.field.id);
+            $.ajax({
+                url:[[${ctx}]] +"/group/ass",
+                type:"post",
+                dataType:'json',
+                contentType:'application/json;charset=utf-8',
+                data:JSON.stringify(data.field),
+                success:function (data) {
+                    layer.msg(data.message);
+                    history.go(-1);
+                }
+            });
+            return false;
+        });
+    })
+
+</script>
+</body>
+</html>

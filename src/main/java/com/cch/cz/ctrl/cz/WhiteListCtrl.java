@@ -2,13 +2,11 @@ package com.cch.cz.ctrl.cz;
 
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
-import com.cch.cz.entity.Staff;
 import com.cch.cz.entity.WhiteList;
 import com.cch.cz.service.WhiteListService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 
 /**
@@ -18,7 +16,6 @@ import javax.annotation.Resource;
 @Controller
 @RequestMapping(value = "/white")
 public class WhiteListCtrl {
-
     @Resource
     private WhiteListService whiteListService;
     @GetMapping(value = "/add")
