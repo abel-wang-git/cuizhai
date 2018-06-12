@@ -46,12 +46,18 @@ public class Login {
          Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
          String staffId = staff.getLoginName();
          if (staff.getLoginName()!=null&&roleService.findOne(Long.valueOf(staff.getPlace())).getDesign().equals("管理员")) staffId="";
-
+        //当前委案
         List<Map> normal=casesService.listByCompany(staff.getCompanyId()!=null?staff.getCompanyId():null,staffId,-1);
-
+        //结案数量
         List<Map> end=casesService.listByCompany(staff.getCompanyId()!=null?staff.getCompanyId():null,staffId,3);
+        //已跟进
+        List<Map> urges = casesService.isUrge("yes", staff.getCompanyId() != null ? staff.getCompanyId() : null, staffId);
+        //未跟进
+        List<Map> nourge = casesService.isUrge(null, staff.getCompanyId() != null ? staff.getCompanyId() : null, staffId);
 
         model.addAttribute("normal",normal);
+        model.addAttribute("urges", urges);
+        model.addAttribute("nourge", nourge);
         model.addAttribute("end",end);
         return "/admin";
     }

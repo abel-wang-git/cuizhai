@@ -47,8 +47,22 @@
                                         <span th:text="${end[0]['num']}"></span><br/>
                                         当前结案总金额：
                                         <span th:text="${#numbers.formatDecimal(end[0]['money'],3,2)}"></span><br/>
+                                    当前已跟进数量：
+                                    <div th:each="a:${urges}">
+                                        <span th:text="${a['staff']}"></span>:
+                                        <span th:text="${a['count']}"></span>
+                                        <span th:text="${#numbers.formatDecimal(a['money'],3,2)}"></span>
+
+                                    </div>
+                                    当前未跟进总金额：
+                                    <div th:each="a:${nourge}">
+                                        <span th:text="${a['staff']}"></span>:
+                                        <span th:text="${a['count']}"></span>
+                                        <span th:text="${#numbers.formatDecimal(a['money'],3,2)}"></span>
+                                    </div>
                                 </div>
                         </fieldset>
+
                     </div>
                 </div>
 

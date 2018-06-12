@@ -99,4 +99,8 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
 
     @Select("SELECT staff_id from t_case WHERE id_card='${idcard}' and staff_id is not null  limit 1 ,1; ")
     String findStaffByIdcard(@Param("idcard") String idcard);
+
+    //已跟进未跟进
+    @SelectProvider(type = CasesProvider.class, method = "isUrge")
+    List<Map> isUrge(@Param("isUrge") String isUrge, @Param("company") Long company, @Param("staff") String staff);
 }
