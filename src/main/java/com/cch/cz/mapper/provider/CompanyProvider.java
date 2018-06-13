@@ -20,4 +20,13 @@ public class CompanyProvider extends BaseProvider<Company,Long> {
         logger.info(sql);
         return sql;
     }
+    public String companyByCompanyId(Map<String, Object> para){
+        String sql= new SQL(){{
+            SELECT(BuildSql.select(Company.class));
+            FROM(BuildSql.tablename(Company.class));
+            WHERE("id=#{company}");
+        }}.toString();
+        logger.info(sql);
+        return sql;
+    }
 }

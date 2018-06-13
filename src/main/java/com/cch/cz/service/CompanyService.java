@@ -17,4 +17,9 @@ public interface CompanyService extends BaseService<Company,Long>  {
 
     List<Company> listBystaff(Staff staff);
 
+    /**
+     * 根据公司Id获取公司信息
+     */
+    Company companyByCompanyId(Long companyId);
+
 }

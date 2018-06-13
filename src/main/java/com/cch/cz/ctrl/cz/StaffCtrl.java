@@ -10,11 +10,13 @@ import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
+import com.cch.cz.entity.Company;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.entity.enu.IsEnable;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.CompanyService;
 import com.cch.cz.service.StaffService;
+import com.cch.cz.service.UrgeGroupService;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
@@ -25,6 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +49,8 @@ public class StaffCtrl {
     private RoleService roleService;
     @Resource
     private CasesService casesService;
+    @Resource
+    private UrgeGroupService urgeGroupService;
 
     @GetMapping(value = "/list")
     public  String list(Model model){
@@ -58,8 +63,25 @@ public class StaffCtrl {
     public Table list(@RequestParam int page , @RequestParam int limit){
         PageHelper.startPage(page,limit);
         Table table = new Table();
-        table.setData(staffService.findAll());
+        List<Staff> staffs = staffService.findAll();
+        List list = new ArrayList();
+        for(Staff staff : staffs){
+            Map map = new HashMap();
+            map.put("name",staff.getName());
+            map.put("loginName",staff.getLoginName());
+            map.put("phone",staff.getPhone());
+            map.put("group",staff.getUrgeGroup());
+
+            Company company = companyService.companyByCompanyId(staff.getCompanyId());
+            if(company!=null){
+                map.put("companyId",company.getName());
+            }
+            list.add(map);
+        }
+        table.setData(list);
+//        table.setData(staffService.findAll());
         table.setCount(staffService.count(new Staff()).intValue());
+
         return table;
     }
 
@@ -78,6 +100,7 @@ public class StaffCtrl {
         model.addAttribute(new Staff());
         model.addAttribute("companys",companyService.findAll());
         model.addAttribute("roles",roleService.findAll());
+        model.addAttribute("group",urgeGroupService.findAll());
 
         return "/cz/staff/add";
     }

@@ -83,7 +83,7 @@
             elem: '#staff'
             , id: 'staff'
             , height: 'full'
-            , width: 645
+            // , width: auto()
             , url: 'list' //数据接口
             , method: 'post'
             , page: true //开启分页
@@ -91,9 +91,9 @@
                 {field: 'name', title: '员工名称', width: 120, sort: true, fixed: 'left'}
                 , {field: 'loginName', title: '登录名', width: 120, sort: true}
 //                , {field: 'place', title: '职位', width: '15%', sort: true}
-                , {field: 'phone', title: '电话', width: 160, sort: true}
-                , {field: 'group', title: '分组', width: 100, sort: true}
-//                , {field: 'companyId', title: '公司', width: '15%', sort: true}
+                , {field: 'phone', title: '电话', width: 120, sort: true}
+                // , {field: 'group', title: '分组', width: 100, sort: true}
+               , {field: 'companyId', title: '公司', width: 150, sort: true}
                 , {title: '修改', width: 160, align: 'center', toolbar: '#updata', fixed: 'right'}
             ]]
             , done: function (res, curr, count) {

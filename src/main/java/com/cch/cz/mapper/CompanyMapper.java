@@ -16,4 +16,6 @@ import java.util.List;
 public interface CompanyMapper extends BaseMapper<Company,Long> {
     @SelectProvider(type = CompanyProvider.class,method = "listByStaff")
     List<Company> listByStaff(@Param("company") Long company);
+    @SelectProvider(type = CompanyProvider.class,method = "companyByCompanyId")
+    Company companyByCompanyId(@Param("company") Long companyId);
 }

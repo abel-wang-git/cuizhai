@@ -28,4 +28,13 @@ public class CompanyServiceImpl extends BaseServiceImpl<Company,Long> implements
             return companyMapper.listByStaff(staff.getCompanyId());
         }
     }
+
+    @Override
+    public Company companyByCompanyId(Long companyId) {
+        if(companyId ==null){
+            return null;
+        }else {
+            return companyMapper.companyByCompanyId(companyId);
+        }
+    }
 }
