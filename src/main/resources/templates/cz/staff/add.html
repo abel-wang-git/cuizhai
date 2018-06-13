@@ -43,9 +43,7 @@
         <div class="layui-input-inline">
             <select>
                 <option value=""></option>
-                <option>一组</option>
-                <option>二组</option>
-                <option>三组</option>
+                <option th:each="g:${group}" th:text="${g.name}" th:value="${g.id}"></option>
             </select>
         </div>
     </div>

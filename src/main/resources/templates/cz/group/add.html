@@ -37,7 +37,6 @@
             form = layui.form;
         //监听提交
         form.on('submit(group)', function(data){
-            alert(data.field.id);
             $.ajax({
                 url:[[${ctx}]] +"/group/ass",
                 type:"post",

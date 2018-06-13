@@ -48,6 +48,7 @@ public class UrgeGroupCtrl {
     }
 
 
+
     @PostMapping(value = "/ass")
     @ResponseBody
     public AjaxReturn ass(@RequestBody UrgeGroup data){

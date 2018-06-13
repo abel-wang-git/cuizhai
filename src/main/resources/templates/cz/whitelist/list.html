@@ -9,6 +9,10 @@
 
 <a class="layui-btn layui-btn-sm" href="add">添加白名单</a>
 
+<script type="text/html" id="del">
+    <a class="layui-btn  layui-btn-xs" lay-event="del">删除</a>
+</script>
+
 <table id="white" lay-filter="white"></table>
 
 <script th:src="@{/static/layui/layui.js}"></script>
@@ -26,9 +30,33 @@
             , method: 'post'
             , page: true //开启分页
             , cols: [[ //表头
-                {field: 'ip', title: 'IP', width: '100%', sort: true}
+                {field: 'ip', title: 'IP', width: '90%', sort: true},
+                {field: 'del', title: '删除', width: '10%', sort: true,toolbar:"#del"}
             ]]
         });
+
+        table.on('tool(white)',function (obj) {
+            var layEvent = obj.event;
+            var data = obj.data;
+            console.log(data);
+            if (layEvent==='del'){
+                layer.confirm('确定删除？', function (index) {
+                    obj.del();
+                    layer.close(index);
+                    $.ajax({
+                        url: [[${ctx}]] + "/white/del",
+                        type: "post",
+                        dataType: "json",
+                        data: {ip:data.ip},
+                        success: function (data) {
+                            layer.message(data.message);
+                            history.go(-1);
+                        }
+                    });
+                    window.location.reload();
+                })
+            }
+        })
     });
     /*]]>*/
 </script>
