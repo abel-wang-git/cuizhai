@@ -280,8 +280,8 @@
                     });
                 layer.full(addurge);
             }else if(obj.event==='end'){
-                var index = null;
-                index = layer.open({
+                $("#endReason").val(obj.data.endReason);
+                layer.open({
                     type: 1
                     , title: '结案'
                     , area: ['500px', '220px']
