@@ -35,13 +35,6 @@ public interface CasesService extends BaseService<Cases,Long>  {
      */
     List<Cases> listByStaff(Cases cases);
     /**
-     * 查找某个员工的cases总数
-     * @param cases
-     * @return
-     */
-    Long countByStaff( Cases cases);
-
-    /**
      *
      * @param company 公司id
      * @param status 状态id

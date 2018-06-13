@@ -48,25 +48,18 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append( " and customer_phone_number = #{customerPhoneNumber}");
             if(UtilFun.isEmptyString(cases.getCustomerAddress()))
                 where.append(" and customer_address like #{customerAddress}");
+            if (UtilFun.isEmptyString(cases.getIdCard()))
+                where.append(" and id_card = #{idCard}");
+            if (UtilFun.isEmptyString(cases.getContractNum()))
+                where.append(" and contract_num= #{contractNum} ");
+            if (UtilFun.isEmptyString(cases.getLastUrge())) {
+                if (cases.getLastUrge().equals("yes"))
+                    where.append(" and last_urge is not null ");
+                if (cases.getLastUrge().equals("no"))
+                    where.append("and last_urge is  null");
+            }
             WHERE(where.toString());
 
-        }}.toString();
-        logger.info(sql);
-        return sql;
-    }
-    public String countByStaff(Cases cases) {
-        String sql = new SQL() {{
-            StringBuilder where = new StringBuilder();
-            SELECT("count(*)");
-            FROM(BuildSql.tablename(Cases.class));
-            where.append(" staff_id =#{staffId}");
-            if(UtilFun.isEmptyString(cases.getName()))
-                where.append( " and name = #{name}");
-            if(UtilFun.isEmptyString(cases.getCustomerPhoneNumber()))
-                where.append( " and customer_phone_number = #{customerPhoneNumber}");
-            if(UtilFun.isEmptyString(cases.getCustomerAddress()))
-                where.append(" and customer_address like #{customerAddress}");
-            WHERE(where.toString());
         }}.toString();
         logger.info(sql);
         return sql;
