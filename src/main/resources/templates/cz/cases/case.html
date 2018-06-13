@@ -9,6 +9,7 @@
 <button type="button" class="layui-btn layui-btn-sm" id="revoke">撤案</button>
 <button type="button" class="layui-btn layui-btn-sm" id="retain" lay-filter="retain">留案</button>
 <button type="button" class="layui-btn layui-btn-sm" id="adjust" lay-filter="adjust">调案</button>
+<button type="button" class="layui-btn layui-btn-sm" id="end" lay-filter="end">结案</button>
 <button shiro:hasAnyRoles ="superadmin ,admin" type="button" class="layui-btn layui-btn-sm" id="upload">上传委案</button>
 
 <form class="layui-form where" method="post" id="search">
@@ -113,6 +114,9 @@
 
 <div style="display: none;" id="reason">
     <textarea id="endReason" lay-verify="required" placeholder="撤案原因" class="layui-textarea"></textarea>
+</div>
+<div style="display: none;" id="reason1">
+    <textarea id="endReason1" lay-verify="required" placeholder="结案原因" class="layui-textarea"></textarea>
 </div>
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
@@ -234,7 +238,7 @@
             }
             layer.open({
                 type: 1
-                , title: '留案'
+                , title: '撤案'
                 , area: ['500px', '220px']
                 , content: $("#reason")
                 , btn: ['添加', '取消']
@@ -352,6 +356,46 @@
                 }
             })
         })
+
+        //结案
+        $('#end').click(function () {
+            var checkStatus = table.checkStatus('cases');
+            if(checkStatus.data.length<1){
+                layer.msg("选择要撤案的委案");
+                return;
+            }
+            layer.open({
+                type: 1
+                , title: '结案'
+                , area: ['500px', '220px']
+                , content: $("#reason1")
+                , btn: ['添加', '取消']
+                , yes: function (index, layero) {
+
+                    for (var i = 0; i < checkStatus.data.length; i++) {
+                        if(checkStatus.data[i].status==3){
+                            layer.msg("选择委案中存在已结案的！");
+                            return;
+                        }
+                        checkStatus.data[i].status=3;
+                        checkStatus.data[i].revokeReason=$("#endReason1").val();
+                    }
+                    $.ajax({
+                        url: [[${ctx}]] + "/case/manager",
+                        type: "post",
+                        dataType: 'json',
+                        data: {cases: JSON.stringify(checkStatus.data)},
+                        success: function (data) {
+                            console.log();
+                            layer.msg(data.message);
+                            cases.reload();
+                            layer.close(index);
+                        }
+                    });
+
+                }});
+
+        });
         //查询
         form.on('submit(search)', function (data) {
 
