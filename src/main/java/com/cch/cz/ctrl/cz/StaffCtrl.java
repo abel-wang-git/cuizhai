@@ -71,6 +71,7 @@ public class StaffCtrl {
             map.put("loginName",staff.getLoginName());
             map.put("phone",staff.getPhone());
             map.put("group",staff.getUrgeGroup());
+            map.put("place",staff.getPlace());
 
             Company company = companyService.companyByCompanyId(staff.getCompanyId());
             if(company!=null){

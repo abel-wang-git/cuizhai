@@ -6,20 +6,22 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <style type="text/css">
-    .update{
-        position:fixed;
-        right: -350px;
-        top: 0;
-        width: 350px;
-        background-color: #2dff07;
-    }
+    /*.update{*/
+    /*position:fixed;*/
+    /*right: -350px;*/
+    /*top: 0;*/
+    /*width: 350px;*/
+    /*background-color: #2dff07;*/
+    /*}*/
 </style>
 <body>
 <a class="layui-btn layui-btn-sm" href="toAdd">添加员工</a>
 
 <table id="staff" lay-filter="staff"></table>
-
-<div id="update" class="update">
+    <div id="update" style="display: none" class="update">
+        <div>
+            <br/>
+        </div>
     <form class="layui-form">
         <div class="layui-form-item">
             <label class="layui-form-label">员工名称</label>
@@ -78,6 +80,8 @@
         var table = layui.table
             , $ = layui.$
             ,form = layui.form;
+
+        var aaa =null;
         //员工
         var staff=table.render({
             elem: '#staff'
@@ -92,7 +96,7 @@
                 , {field: 'loginName', title: '登录名', width: 120, sort: true}
 //                , {field: 'place', title: '职位', width: '15%', sort: true}
                 , {field: 'phone', title: '电话', width: 120, sort: true}
-                // , {field: 'group', title: '分组', width: 100, sort: true}
+                , {field: 'group', title: '分组', width: 100, sort: true}
                , {field: 'companyId', title: '公司', width: 150, sort: true}
                 , {title: '修改', width: 160, align: 'center', toolbar: '#updata', fixed: 'right'}
             ]]
@@ -113,7 +117,43 @@
                 $("input[name='phone']").val(obj.data.phone);
                 $("select[name='place']").val(obj.data.place);
                 form.render('select')
-                $('#update').css("right",0);
+                // $('#update').css("right",0);
+
+                aaa = layer.open({
+                    type: 1
+                    ,id:"dd"
+                    , title: '修改员工'
+                    , area: ['485px', '70%']
+                    , content: $("#update")
+                    // , btn: ['提交修改']
+                    , yes: function (index) {
+                        // alert(obj);
+                        // $.ajax({
+                        //     url:"update",
+                        //     type: "post",
+                        //     dataType: 'json',
+                        //     data: {data:JSON.stringify(obj.data),oldId:obj.data.loginName},
+                        //     success: function (data) {
+                        //         layer.msg(data.message);
+                        //         // $('#update').css("right","-350px");
+                        //         staff.reload()
+                        //     }
+                        // });
+
+                    }
+                    , cancel: function (index, layero) {
+                        $('input[name="customerAddress"]').val("");
+                        $('select[name="province"]').val("");
+                        $('select[name="city"]').val("");
+                        $('select[name="area"]').val("");
+                        form.render('select');
+                    }
+                })
+
+
+
+
+
             } else if (layEvent === 'disenable') {
                 if (obj.data.isEnable === 1) {
                     layer.msg("该用户已禁用")
@@ -192,7 +232,7 @@
                 data: {data:JSON.stringify(data.field),oldId:data.field.oldId},
                 success: function (data) {
                     layer.msg(data.message);
-                    $('#update').css("right","-350px");
+                    layer.close(aaa);
                     staff.reload()
                 }
             });
