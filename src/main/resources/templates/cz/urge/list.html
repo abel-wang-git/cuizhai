@@ -128,7 +128,7 @@
                     </div>
                 </div>
 
-                <div class="layui-form-item">
+                <div class="layui-form-item" id="cuishouEnd" style="display: none">
                     <label class="layui-form-label">催收结果</label>
                     <div class="layui-input-inline">
                         <select id="result" name="result" lay-verify="required" autocomplete="off" class="layui-input" lay-filter="result">
@@ -417,9 +417,11 @@
             if(data.value==="接通"){
                 $("#result").empty();
                 $("#result").append($("#reloption").html());
+                $("#cuishouEnd").show();
             }else {
                 $("#result").empty();
                 $("#result").append("<option value='"+data.value+"'>"+data.value+"</option>");
+                $("#cuishouEnd").hide();
             }
             form.render('select');
         });
