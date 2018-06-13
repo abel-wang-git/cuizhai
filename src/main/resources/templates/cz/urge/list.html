@@ -280,7 +280,8 @@
                     });
                 layer.full(addurge);
             }else if(obj.event==='end'){
-                layer.open({
+                var index = null;
+                index = layer.open({
                     type: 1
                     , title: '结案'
                     , area: ['500px', '220px']
@@ -299,6 +300,7 @@
                             success: function (data) {
                                 layer.msg(data.message);
                                 cases.reload();
+                                layer.close(index);
                             }
                         });
                     }
