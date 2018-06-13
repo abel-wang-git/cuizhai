@@ -118,6 +118,14 @@ public class Upload {
                 }
             }
             if (title.get(j).toString().trim().equals("合同号")) {
+                //相同合同号分配到同一催收员
+                Cases where = new Cases();
+                where.setContractNum(ExcelTool.getCellValue(curr));
+                List<Cases> casesList = casesService.findByEntity(where);
+                if (UtilFun.isEmptyList(casesList)) {
+                    cases.setStaffId(casesList.get(0).getStaffId());
+                    cases.setCompanyId(casesList.get(0).getCompanyId());
+                }
                 cases.setContractNum(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("委外公司")||title.get(j).toString().trim().equals("公司")) {
@@ -147,6 +155,7 @@ public class Upload {
                 cases.setContractsNum(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("身份证")) {
+                //相同身份证号码分配到同一催收员
                 cases.setIdCard(ExcelTool.getCellValue(curr));
                 Staff staff = casesService.findStaffByIdcard(ExcelTool.getCellValue(curr));
                 if (UtilFun.isEmptyString(cases.getStaffId())) {

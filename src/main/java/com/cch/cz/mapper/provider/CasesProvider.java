@@ -28,6 +28,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and customer_address like #{customerAddress}");
             if(UtilFun.isEmptyString(para.getAppointData()))
                 where.append(" and appoint_data = #{appointData}");
+            if (UtilFun.isEmptyString(para.getArrears()))
+                where.append(" and sum_arrears between #{arrears}+0 and #{sumArrears}+0");
             WHERE(where.toString());
         }}.toString();
         logger.info(sql);
@@ -116,6 +118,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and id_card = #{idCard}");
             if (UtilFun.isEmptyString(cases.getStaffId()))
                 where.append(" and staff_id = #{StaffId}");
+            if (UtilFun.isEmptyString(cases.getArrears()))
+                where.append(" and sum_arrears between #{arrears}+0 and #{sumArrears}+0");
             
             WHERE(where.toString());
         }}.toString();
