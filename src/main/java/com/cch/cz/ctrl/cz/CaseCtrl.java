@@ -117,8 +117,8 @@ public class CaseCtrl {
                          @RequestParam("data") String data) {
         PageHelper.startPage(page, limit);
         Cases cases = JSON.parseObject(data, Cases.class);
-        List<Cases> caseslist = casesService.listByCompanyNoStaff(cases);
-        return new Table(caseslist.size(), caseslist);
+        Page<Cases> caseslist = (Page<Cases>) casesService.listByCompanyNoStaff(cases);
+        return new Table((int) caseslist.getTotal(), caseslist);
     }
 
     /**
