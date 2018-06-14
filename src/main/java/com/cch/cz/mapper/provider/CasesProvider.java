@@ -28,6 +28,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and customer_address like #{customerAddress}");
             if(UtilFun.isEmptyString(para.getAppointData()))
                 where.append(" and appoint_data = #{appointData}");
+            if (UtilFun.isEmptyString(para.getArrears()))
+                where.append(" and sum_arrears between #{arrears}+0 and #{sumArrears}+0");
             WHERE(where.toString());
         }}.toString();
         logger.info(sql);
@@ -46,25 +48,18 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append( " and customer_phone_number = #{customerPhoneNumber}");
             if(UtilFun.isEmptyString(cases.getCustomerAddress()))
                 where.append(" and customer_address like #{customerAddress}");
+            if (UtilFun.isEmptyString(cases.getIdCard()))
+                where.append(" and id_card = #{idCard}");
+            if (UtilFun.isEmptyString(cases.getContractNum()))
+                where.append(" and contract_num= #{contractNum} ");
+            if (UtilFun.isEmptyString(cases.getLastUrge())) {
+                if (cases.getLastUrge().equals("yes"))
+                    where.append(" and last_urge is not null ");
+                if (cases.getLastUrge().equals("no"))
+                    where.append("and last_urge is  null");
+            }
             WHERE(where.toString());
 
-        }}.toString();
-        logger.info(sql);
-        return sql;
-    }
-    public String countByStaff(Cases cases) {
-        String sql = new SQL() {{
-            StringBuilder where = new StringBuilder();
-            SELECT("count(*)");
-            FROM(BuildSql.tablename(Cases.class));
-            where.append(" staff_id =#{staffId}");
-            if(UtilFun.isEmptyString(cases.getName()))
-                where.append( " and name = #{name}");
-            if(UtilFun.isEmptyString(cases.getCustomerPhoneNumber()))
-                where.append( " and customer_phone_number = #{customerPhoneNumber}");
-            if(UtilFun.isEmptyString(cases.getCustomerAddress()))
-                where.append(" and customer_address like #{customerAddress}");
-            WHERE(where.toString());
         }}.toString();
         logger.info(sql);
         return sql;
@@ -116,6 +111,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and id_card = #{idCard}");
             if (UtilFun.isEmptyString(cases.getStaffId()))
                 where.append(" and staff_id = #{StaffId}");
+            if (UtilFun.isEmptyString(cases.getArrears()))
+                where.append(" and sum_arrears between #{arrears}+0 and #{sumArrears}+0");
             
             WHERE(where.toString());
         }}.toString();

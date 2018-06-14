@@ -19,9 +19,32 @@
             <input name="customerPhoneNumber" type="text" class="layui-input"/>
         </div>
     </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">身份证：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="idCard" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">合同号：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="contractNum" type="text" class="layui-input"/>
+        </div>
+    </div>
+
     <div th:substituteby="fragment/city_select :: province"></div>
     <div th:substituteby="fragment/city_select :: city"></div>
     <div th:substituteby="fragment/city_select :: area"></div>
+    <div class="layui-inline">
+        <label class="layui-form-label">跟进情况：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <select name="lastUrge">
+                <option value="">全部</option>
+                <option value="yes">已跟进</option>
+                <option value="no">未跟进</option>
+            </select>
+        </div>
+    </div>
     <input type="hidden" th:value="${session.staff.loginName}" name="staffId"/>
     <input name="customerAddress" type="hidden"/>
     <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
@@ -247,7 +270,7 @@
                         $(this).css('color', '#FFB800');
                     }
                     if ($(this).children().eq(8).text().trim() == '结案') {
-                        $(this).css('background-color', '#36b811');
+                        $(this).css('background-color', '#101db8');
                         $(this).css('color', '#ffd98c');
                     }
                 });

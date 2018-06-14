@@ -41,6 +41,16 @@
                 <input name="appointData" type="text" class="layui-input"/>
             </div>
         </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">金额：</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" name="arrears" placeholder="￥" autocomplete="off" class="layui-input"/>
+            </div>
+            -
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" name="sumArrears" placeholder="￥" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
         <br/>
         <div th:substituteby="fragment/city_select :: province"></div>
         <div th:substituteby="fragment/city_select :: city"></div>
@@ -84,6 +94,17 @@
                 <input name="appointData" type="text" class="layui-input"/>
             </div>
         </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">金额：</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" name="arrears" placeholder="￥" autocomplete="off" class="layui-input"/>
+            </div>
+            -
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" name="sumArrears" placeholder="￥" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+
         <br/>
         <div th:substituteby="fragment/city_select :: province"></div>
         <div th:substituteby="fragment/city_select :: city"></div>
@@ -138,6 +159,7 @@
                 , {field: 'appointData', title: '委派日期', width: 120}
                 , {field: 'idCard', title: '身份证', width: 155}
                 , {field: 'customerAddress', title: '户籍地址', width: 155}
+                , {field: 'sumArrears', title: '金额', width: 155}
                 , {field: 'caseName', title: '案件名称', width: 200}
 
             ]]
@@ -167,7 +189,7 @@
                 layer.open({
                     type: 1
                     , title: '分配到公司'
-                    , area: ['755px', '90%']
+                    , area: ['810px', '90%']
                     , content: $("#caseArea")
                     , btn: ['添加']
                     , yes: function (index) {
