@@ -11,6 +11,7 @@
 <button type="button" class="layui-btn layui-btn-sm" id="adjust" lay-filter="adjust">调案</button>
 <button type="button" class="layui-btn layui-btn-sm" id="end" lay-filter="end">结案</button>
 <button shiro:hasAnyRoles ="superadmin ,admin" type="button" class="layui-btn layui-btn-sm" id="upload">上传委案</button>
+<button type="button" class="layui-btn layui-btn-sm" id="adjusta" lay-filter="adjusta">调案记录</button>
 
 <form class="layui-form where" method="post" id="search">
     <div class="layui-inline">
@@ -65,7 +66,10 @@
 </form>
 
 <table id="cases" lay-filter="cases"></table>
+<div style="display: none; height: 300px; width: auto" id="adjustbdiv">
+<table id="adjustb" lay-filter="adjustb"></table>
 
+</div>
 <div class="layui-inline" style="display: none;padding-top: 20px" id="day">
     <div class="layui-form-item">
         <label class="layui-form-label">留案期</label>
@@ -139,6 +143,39 @@
             });
             return o;
         };
+        table.render({
+            elem:'#adjustb',
+            id:'adjustb',
+            height:"full",
+            url:[[${ctx}]] + "/case/listByAdjust",
+            method:'post',
+            page:true,
+            cols:[[
+                {field:'id',title:'编号',width:'5%',sort:true,align:"center"},
+                {field:'caseId',title:'委案编号',width:'13%',sort:true,align:"center"},
+                {field:'date',title:'委案时间',width:'15%',sort:true,align:"center"},
+                {field:'oldstaff',title:'调案前员工',width:'13%',sort:true,align:"center"},
+                {field:'newstaff',title:'调案后员工',width:'13%',sort:true,align:"center"},
+            ]]
+        })
+        $('#adjusta').click(function () {
+            layer.open({
+                type: 1
+                , title: '调案记录'
+                , area: ['1000px', '90%']
+                , content: $("#adjustbdiv")
+                , yes: function (index) {
+                }
+                ,cancel: function(index, layero){
+                    form.render('select');
+                }
+            })
+
+        })
+
+
+
+
 
         var cases = table.render({
             elem: '#cases'
@@ -168,16 +205,16 @@
 
                 layui.$('table tbody tr ').each(function () {
                     if ($(this).children().eq(11).text().trim().indexOf("撤案") >= 0) {
-                        $(this).css('background-color', '#FF5722');
-                        $(this).css('color', '#FFB90F');
+                        $(this).css('background-color', '#BEBEBE');
+                        $(this).css('color', '');
                     }
                     if ($(this).children().eq(11).text().trim().indexOf("留案") >= 0) {
-                        $(this).css('background-color', '#5FB878');
-                        $(this).css('color', '#FFB800');
+                        $(this).css('background-color', '#FFAD86');
+                        $(this).css('color', '');
                     }
                     if ($(this).children().eq(11).text().trim().indexOf("结案") >= 0) {
-                        $(this).css('background-color', '#36b811');
-                        $(this).css('color', '#ffd98c');
+                        $(this).css('background-color', '#84C1FF');
+                        $(this).css('color', '');
                     }
                 })
             }

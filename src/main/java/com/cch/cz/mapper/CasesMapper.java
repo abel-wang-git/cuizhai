@@ -37,6 +37,12 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
             @Result(property = "caseName",column = "caseName"),
     })
     List<Map> groupCasesByCaseName();
+    /**
+     * 调案记录
+     * @return
+     */
+    @SelectProvider(type = CasesProvider.class,method = "listByAdjust")
+    List<Map> listByAdjust();
 
 
     /**

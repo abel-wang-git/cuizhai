@@ -55,7 +55,6 @@ public class WhiteListCtrl {
 
     @PostMapping(value = "/del")
     public AjaxReturn del(@RequestParam String ip) {
-        System.out.println(ip);
         try {
             whiteListService.delete(ip);
             return new AjaxReturn(0,"删除成功");

@@ -82,7 +82,7 @@ public interface CasesService extends BaseService<Cases,Long>  {
     /**
      *
      */
-    void listByAdjust();
+    List<Map> listByAdjust();
 
     /**
      *

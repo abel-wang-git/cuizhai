@@ -20,9 +20,15 @@
 <div id="update" class="update">
     <form class="layui-form">
         <div class="layui-form-item">
+            <label class="layui-form-label">分组编号</label>
+            <div class="layui-input-inline">
+                <input  name="id"   type="text" readonly="readonly"  autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">分组名称</label>
             <div class="layui-input-inline">
-                <input type="text"  name="groupName"  required ="required " lay-verify="required"  autocomplete="off" class="layui-input"/>
+                <input type="text"  name="name"  required ="required " lay-verify="required"  autocomplete="off" class="layui-input"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -69,7 +75,8 @@
             var data = obj.data;
             console.log(data)
             if (layEvent === 'update') {
-                $("input[name='groupName']").val(obj.data.name);
+                $("input[name='id']").val(obj.data.id);
+                $("input[name='name']").val(obj.data.name);
                 form.render('select');
                 $('#update').css("right", 0);
             } else if (layEvent === "del") {
@@ -97,11 +104,11 @@
                 url: [[${ctx}]] + "/group/update",
                 type: "post",
                 dataType: 'json',
-                data: {data: JSON.stringify(data.field)},
+                data:{data:JSON.stringify(data.field)},
                 success: function (data) {
                     layer.msg(data.message);
                     $('#update').css("right", "-350px");
-                    staff.reload()
+                    window.location.reload();
                 }
             });
             return false;

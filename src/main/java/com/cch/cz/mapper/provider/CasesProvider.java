@@ -3,7 +3,9 @@ package com.cch.cz.mapper.provider;
 import com.cch.cz.base.dao.BuildSql;
 import com.cch.cz.base.dao.provider.BaseProvider;
 import com.cch.cz.common.UtilFun;
+import com.cch.cz.entity.AdjustLog;
 import com.cch.cz.entity.Cases;
+import com.cch.cz.entity.Staff;
 import jdk.nashorn.internal.objects.annotations.Where;
 import org.apache.ibatis.jdbc.SQL;
 import org.slf4j.LoggerFactory;
@@ -27,7 +29,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             if(UtilFun.isEmptyString(para.getCustomerAddress()))
                 where.append(" and customer_address like #{customerAddress}");
             if(UtilFun.isEmptyString(para.getAppointData()))
-                where.append(" and appoint_data = #{appointData}");
+                where.append(" and DATE_FORMAT(appoint_data,'%Y%m%d') = #{appointData}");
             if (UtilFun.isEmptyString(para.getArrears()))
                 where.append(" and sum_arrears between #{arrears}+0 and #{sumArrears}+0");
             WHERE(where.toString());
@@ -106,7 +108,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             if(UtilFun.isEmptyString(cases.getCustomerAddress()))
                 where.append(" and customer_address like #{customerAddress}");
             if(UtilFun.isEmptyString(cases.getAppointData()))
-                where.append(" and appoint_data = #{appointData}");
+                where.append(" and DATE_FORMAT(appoint_data,'%Y%m%d') = #{appointData}");
             if (UtilFun.isEmptyString(cases.getIdCard()))
                 where.append(" and id_card = #{idCard}");
             if (UtilFun.isEmptyString(cases.getStaffId()))
@@ -127,6 +129,16 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
              SELECT(" count(*) count ,COALESCE(case_name,'无名称') as caseName ");
              FROM(BuildSql.tablename(Cases.class));
             GROUP_BY( "case_name");
+             WHERE(where.toString());
+        }}.toString();
+        logger.info(sql);
+        return sql;
+    }
+    public String listByAdjust() {
+        String sql = new SQL() {{
+            StringBuilder where = new StringBuilder("1=1");
+             SELECT("DATE_FORMAT(date,'%Y%m%d') as date,id,case_id as caseId,old_staff as oldstaff,new_staff as newstaff ");
+             FROM(BuildSql.tablename(AdjustLog.class));
              WHERE(where.toString());
         }}.toString();
         logger.info(sql);

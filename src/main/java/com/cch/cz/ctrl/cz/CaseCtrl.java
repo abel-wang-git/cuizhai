@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
-import com.cch.cz.entity.Cases;
-import com.cch.cz.entity.Company;
-import com.cch.cz.entity.Staff;
+import com.cch.cz.entity.*;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.CompanyService;
 import com.cch.cz.service.StaffService;
@@ -18,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -244,11 +243,25 @@ public class CaseCtrl {
     @PostMapping(value = "/listByAdjust")
     @ResponseBody
     public Table listByAdjust() {
+        List<Map> list = casesService.listByAdjust();
+        List<Map> staffs= new ArrayList<>();
+        for(Map map : list){
+            String oldstaff = (String)map.get("oldstaff");
+            String newstaff = (String)map.get("newstaff");
+            Staff staff =staffService.findOne(oldstaff);
+            Staff staff1 =staffService.findOne(newstaff);
+            map.put("oldstaff",staff.getName());
+            map.put("newstaff",staff1.getName());
+            staffs.add(map);
+        }
         Table table = new Table();
-
-        casesService.listByAdjust();
+        table.setData(staffs);
+        table.setCount(staffs.size());
         return table;
     }
+
+
+
 
     @PostMapping(value = "/noallotcom")
     @ResponseBody

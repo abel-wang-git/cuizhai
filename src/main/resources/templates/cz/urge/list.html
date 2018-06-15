@@ -262,16 +262,16 @@
             ,done: function(res, curr, count){
                 layui.$('table tbody tr ').each(function () {
                     if ($(this).children().eq(8).text().trim() == '撤案') {
-                        $(this).css('background-color', '#FF5722');
-                        $(this).css('color', '#FFB90F');
+                        $(this).css('background-color', '#BEBEBE');
+                        $(this).css('color', '');
                     }
                     if ($(this).children().eq(8).text().trim() == '留案') {
-                        $(this).css('background-color', '#5FB878');
-                        $(this).css('color', '#FFB800');
+                        $(this).css('background-color', '#FFAD86');
+                        $(this).css('color', '');
                     }
                     if ($(this).children().eq(8).text().trim() == '结案') {
-                        $(this).css('background-color', '#101db8');
-                        $(this).css('color', '#ffd98c');
+                        $(this).css('background-color', '#84C1FF');
+                        $(this).css('color', '');
                     }
                 });
                 currdata=res;

@@ -147,8 +147,9 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     }
 
     @Override
-    public void listByAdjust() {
+    public List<Map> listByAdjust() {
 
+        return casesMapper.listByAdjust();
     }
 
     @Override
