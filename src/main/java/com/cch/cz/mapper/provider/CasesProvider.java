@@ -29,7 +29,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             if(UtilFun.isEmptyString(para.getCustomerAddress()))
                 where.append(" and customer_address like #{customerAddress}");
             if(UtilFun.isEmptyString(para.getAppointData()))
-                where.append(" and DATE_FORMAT(appoint_data,'%Y%m%d') = #{appointData}");
+                where.append(" and DATE_FORMAT(left(appoint_data,10),'%Y-%m-%d') =  DATE_FORMAT(left(TRIM(#{appointData}),10),'%Y-%m-%d')");
             if (UtilFun.isEmptyString(para.getArrears()))
                 where.append(" and sum_arrears between #{arrears}+0 and #{sumArrears}+0");
             WHERE(where.toString());
@@ -108,7 +108,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             if(UtilFun.isEmptyString(cases.getCustomerAddress()))
                 where.append(" and customer_address like #{customerAddress}");
             if(UtilFun.isEmptyString(cases.getAppointData()))
-                where.append(" and DATE_FORMAT(appoint_data,'%Y%m%d') = #{appointData}");
+                where.append(" and DATE_FORMAT(left(appoint_data,10),'%Y-%m-%d') =  DATE_FORMAT(left(TRIM(#{appointData}),10),'%Y-%m-%d')");
             if (UtilFun.isEmptyString(cases.getIdCard()))
                 where.append(" and id_card = #{idCard}");
             if (UtilFun.isEmptyString(cases.getStaffId()))
