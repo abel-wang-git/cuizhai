@@ -211,11 +211,8 @@
                         });
                     }
                     ,cancel: function(index, layero){
-                        $('input[name="customerAddress"]').val("");
-                        $('select[name="province"]').val("");
-                        $('select[name="city"]').val("");
-                        $('select[name="area"]').val("");
-                        form.render();
+                        $('#search')[0].reset();
+                        form.render('select');
                     }
                 })
             }
@@ -264,10 +261,7 @@
 
                 }
                 ,cancel: function(index, layero){
-                    $('input[name="customerAddress"]').val("");
-                    $('select[name="province"]').val("");
-                    $('select[name="city"]').val("");
-                    $('select[name="area"]').val("");
+                    $('#search1')[0].reset();
                     form.render('select');
                 }
             })
