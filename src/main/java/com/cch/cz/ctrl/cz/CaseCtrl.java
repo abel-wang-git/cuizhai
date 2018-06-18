@@ -2,6 +2,7 @@ package com.cch.cz.ctrl.cz;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.entity.*;
@@ -33,6 +34,8 @@ public class CaseCtrl {
     private CompanyService companyService;
     @Resource
     private StaffService staffService;
+    @Resource
+    private RoleService roleService;
 
     @GetMapping(value = "/up")
     public String toCase() {
@@ -280,6 +283,41 @@ public class CaseCtrl {
     public AjaxReturn update(@RequestParam String cases ) {
         casesService.update(JSON.parseObject(cases,Cases.class));
         return new AjaxReturn(0,"操作成功");
+    }
+
+
+    /**
+     * 已跟进
+     *
+     * @return
+     */
+    @PostMapping(value = "/isurge")
+    @ResponseBody
+    public Table isUrge() {
+        Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
+        String staffId = staff.getLoginName();
+        if (staff.getLoginName() != null && roleService.findOne(Long.valueOf(staff.getPlace())).getDesign().equals("管理员"))
+            staffId = "";
+        List<Map> urges = casesService.isUrge("yes", staff.getCompanyId() != null ? staff.getCompanyId() : null, staffId);
+
+        return new Table(urges.size(), urges);
+    }
+
+    /**
+     * 未跟进
+     *
+     * @return
+     */
+    @PostMapping(value = "/nourge")
+    @ResponseBody
+    public Table noUrge() {
+        Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
+        String staffId = staff.getLoginName();
+        if (staff.getLoginName() != null && roleService.findOne(Long.valueOf(staff.getPlace())).getDesign().equals("管理员"))
+            staffId = "";
+        List<Map> urges = casesService.isUrge(null, staff.getCompanyId() != null ? staff.getCompanyId() : null, staffId);
+
+        return new Table(urges.size(), urges);
     }
 
 }

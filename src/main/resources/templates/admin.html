@@ -36,33 +36,34 @@
 
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
-                        <fieldset class="layui-elem-field layui-col-md6">
-                            <legend>统计信息</legend>
-                                <div>
-                                        当前委案数量：
-                                        <span th:text="${normal[0]['num']}"></span><br/>
-                                        当前委案总金额：
-                                        <span th:text="${#numbers.formatDecimal(normal[0]['money'],3,2)}"></span><br/>
-                                        当前结案数量：
-                                        <span th:text="${end[0]['num']}"></span><br/>
-                                        当前结案总金额：
-                                        <span th:text="${#numbers.formatDecimal(end[0]['money'],3,2)}"></span><br/>
-                                    当前已跟进数量：
-                                    <div th:each="a:${urges}">
-                                        <span th:text="${a['staff']}"></span>:
-                                        <span th:text="${a['count']}"></span>
-                                        <span th:text="${#numbers.formatDecimal(a['money'],3,2)}"></span>
-
-                                    </div>
-                                    当前未跟进总金额：
-                                    <div th:each="a:${nourge}">
-                                        <span th:text="${a['staff']}"></span>:
-                                        <span th:text="${a['count']}"></span>
-                                        <span th:text="${#numbers.formatDecimal(a['money'],3,2)}"></span>
-                                    </div>
+                        <div class=" layui-col-md12 layui-card">
+                            <div class="layui-card-header">统计信息</div>
+                            <div class="layui-card-body">
+                                <div style="font-size: 22px; color: #01AAED">
+                                    当前委案数量：
+                                    <span th:text="${normal[0]['num']}"></span><br/>
+                                    当前委案总金额：
+                                    <span th:text="${#numbers.formatDecimal(normal[0]['money'],3,2)}"></span><br/>
+                                    当前结案数量：
+                                    <span th:text="${end[0]['num']}"></span><br/>
+                                    当前结案总金额：
+                                    <span th:text="${#numbers.formatDecimal(end[0]['money'],3,2)}"></span><br/>
                                 </div>
-                        </fieldset>
+                            </div>
+                        </div>
+                        <div class=" layui-col-md6 layui-card">
+                            <div class="layui-card-header">已跟进</div>
+                            <div class="layui-card-body">
+                                <table id="tj" lay-filter="tj"></table>
+                            </div>
+                        </div>
 
+                        <div class=" layui-col-md6 layui-card">
+                            <div class="layui-card-header">未跟进</div>
+                            <div class="layui-card-body">
+                                <table id="wtj" lay-filter="wtj"></table>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -102,6 +103,44 @@
     layui.config({
         base: 'static/layui/js/'
     }).use('home');
+
+    layui.use(['table', 'form', 'jquery'], function () {
+        var table = layui.table
+            , $ = layui.jquery;
+        table.render({
+            elem: '#tj'
+            , id: 'tj'
+            , url: [[${ctx}]] + '/case/isurge' //数据接口
+            , method: 'post'
+            , size: 'sm'
+            , cols: [[ //表头
+                {field: 'staff', title: '催收员', width: '34%', sort: true, fixed: 'left'}
+                , {field: 'count', title: '数量', width: '33%'}
+                , {field: 'money', title: '金额', width: '33%'}
+            ]]
+        });
+        function toFixed(d) {
+            var vv = Math.pow(10, 2);
+            return Math.round(d * vv) / vv;
+        };
+        table.render({
+            elem: '#wtj'
+            , id: 'wtj'
+            , url: [[${ctx}]] + '/case/nourge' //数据接口
+            , method: 'post'
+            , size: 'sm'
+            , cols: [[ //表头
+                {field: 'staff', title: '催收员', width: '34%', sort: true, fixed: 'left'}
+                , {field: 'count', title: '数量', width: '33%'}
+                , {
+                    field: 'money', title: '金额', width: '33%', templet: function (d) {
+                        return toFixed(d.money)
+                    }
+                }
+            ]]
+        });
+
+    });
     /*]]>*/
 
 </script>

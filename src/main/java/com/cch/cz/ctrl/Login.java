@@ -14,6 +14,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,8 @@ import java.util.Map;
 @Controller
 public class Login {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
+    @Value("${server.context-path}")
+    private String con;
     @Resource
     private UserService userService;
     @Resource
@@ -41,6 +43,7 @@ public class Login {
     private CasesService casesService;
     @Resource
     private RoleService roleService;
+
     @GetMapping(value = "/")
     private String index(Model model){
          Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
@@ -51,14 +54,13 @@ public class Login {
         //结案数量
         List<Map> end=casesService.listByCompany(staff.getCompanyId()!=null?staff.getCompanyId():null,staffId,3);
         //已跟进
-        List<Map> urges = casesService.isUrge("yes", staff.getCompanyId() != null ? staff.getCompanyId() : null, staffId);
         //未跟进
         List<Map> nourge = casesService.isUrge(null, staff.getCompanyId() != null ? staff.getCompanyId() : null, staffId);
 
         model.addAttribute("normal",normal);
-        model.addAttribute("urges", urges);
         model.addAttribute("nourge", nourge);
         model.addAttribute("end",end);
+        model.addAttribute("ctx", con);
         return "/admin";
     }
 
