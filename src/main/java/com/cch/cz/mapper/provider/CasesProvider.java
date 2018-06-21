@@ -60,6 +60,30 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 if (cases.getLastUrge().equals("no"))
                     where.append("and last_urge is  null");
             }
+            if (UtilFun.isEmptyString(cases.getOverrangingDay())) {
+                String d = cases.getOverrangingDay();
+                switch (d) {
+                    case "M1":
+                        where.append(" and overranging_day > 0 and overranging_day <31 ");
+                        break;
+                    case "M2":
+                        where.append(" and overranging_day > 30 and overranging_day <61 ");
+                        break;
+                    case "M3":
+                        where.append(" and overranging_day > 60 and overranging_day <91 ");
+                        break;
+                    case "M4-M6":
+                        where.append(" and overranging_day > 90 and overranging_day <181 ");
+                        break;
+                    case "M6-M12":
+                        where.append(" and overranging_day > 180 and overranging_day <360 ");
+                        break;
+                    case "M12":
+                        where.append(" and overranging_day > 360 ");
+                        break;
+
+                }
+            }
             WHERE(where.toString());
 
         }}.toString();

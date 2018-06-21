@@ -31,6 +31,20 @@
             <input name="contractNum" type="text" class="layui-input"/>
         </div>
     </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">时间段：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <select name="overrangingDay">
+                <option value="">全部</option>
+                <option value="M1">M1</option>
+                <option value="M2">M2</option>
+                <option value="M3">M3</option>
+                <option value="M4-M6">M4-M6</option>
+                <option value="M6-M12">M6-M12</option>
+                <option value="M12">M12以上</option>
+            </select>
+        </div>
+    </div>
 
     <div th:substituteby="fragment/city_select :: province"></div>
     <div th:substituteby="fragment/city_select :: city"></div>
@@ -70,6 +84,28 @@
     {{#  } }}
     {{#  if(d.status === 1){ }}
     撤案
+    {{#  } }}
+</script>
+
+<script type="text/html" id="overday">
+
+    {{#  if(d.overrangingDay < 31){ }}
+    M1
+    {{#  } }}
+    {{#  if(d.overrangingDay > 30 && d.overrangingDay < 61){ }}
+    M2
+    {{#  } }}
+    {{#  if(d.overrangingDay > 60 && d.overrangingDay < 91){ }}
+    M3
+    {{#  } }}
+    {{#  if(d.overrangingDay > 91 && d.overrangingDay < 180){ }}
+    M4-M6
+    {{#  } }}
+    {{#  if(d.overrangingDay > 181 && d.overrangingDay < 360){ }}
+    M6-M12
+    {{#  } }}
+    {{#  if(d.overrangingDay > 361){ }}
+    大于M12
     {{#  } }}
 </script>
 
@@ -245,6 +281,7 @@
             , height:'full-60'
             , url: [[${ctx}]] + '/case/list/bystaff' //数据接口
             , page: true //开启分页
+            , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
             , where: {staff: JSON.stringify(JSON.parse('{"staffId":"'+[[${session.staff.loginName}]]+'"}'))}
             , method: 'post'
             , cols: [[ //表头
@@ -252,7 +289,8 @@
                 , {field: 'customerPhoneNumber', title: '手机', width: '8%', sort: true}
                 , {field: 'appointData', title: '委案日期', width: '10%'}
                 , {field: 'stopAppoint', title: '退案日期', width: '10%'}
-                , {field: 'overrangingDay', title: '逾期天数', width: '13%', sort: true}
+                , {field: 'overday', title: '时间段', width: '8%', templet: '#overday'}
+                , {field: 'overrangingDay', title: '逾期天数', width: '5%', sort: true}
                 , {field: 'repaymentMoney', title: '已还金额', width: '10%', sort: true}
                 , {field: 'sumArrears', title: '总欠款', width: '10%', sort: true}
                 , {field: 'lastUrge', title: '最后一次催记时间', width: '10%', sort: true}
