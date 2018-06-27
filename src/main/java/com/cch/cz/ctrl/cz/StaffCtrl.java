@@ -98,15 +98,6 @@ public class StaffCtrl {
         return "/cz/staff/addcompany";
     }
 
-//    @PostMapping(value = "/companyList")
-//    @ResponseBody
-//    public Table companylistaa(){
-//        List<Map> staff = staffService.listBycompanyccaa();
-//        Table table = new Table();
-//        table.setData(staff);
-//        table.setCount(staffService.count(new Staff()).intValue());
-//        return table;
-//    }
 
 
     //查询公司下的员工
