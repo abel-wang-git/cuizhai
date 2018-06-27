@@ -146,8 +146,8 @@ public class UrgeRecordCtrl {
 //                if(title.get(j).equals("其他联系人姓名"))cell.setCellValue((String) list.get(i).get("customerRelativeOther"));
 //                if(title.get(j).equals("其他联系人关系"))cell.setCellValue((String) list.get(i).get("customerRelaOther"));
 //                if(title.get(j).equals("其他联系人电话"))cell.setCellValue((String) list.get(i).get("customerOtherPhone"));
-                if(title.get(j).equals("催收时间"))cell.setCellValue( UtilFun.DateToString((Date)list.get(i).get("createDate"),UtilFun.YMD));
-                if(title.get(j).equals("催收日期"))cell.setCellValue( UtilFun.DateToString((Date)list.get(i).get("createDate"),UtilFun.YYYYMMDD));
+                if(title.get(j).equals("催收时间"))cell.setCellValue( UtilFun.DateToString(UtilFun.StringToDate(list.get(i).get("createDate").toString(),UtilFun.YMD),UtilFun.YMD));
+                if(title.get(j).equals("催收日期"))cell.setCellValue( UtilFun.DateToString(UtilFun.StringToDate(list.get(i).get("createDate").toString(),UtilFun.YYYYMMDD),UtilFun.YYYYMMDD));
                 if(title.get(j).equals("催收记录"))cell.setCellValue((String) list.get(i).get("result"));
                 if(title.get(j).equals("催收拨打号码"))cell.setCellValue((String) list.get(i).get("target"));
                 if(title.get(j).equals("催收方式"))cell.setCellValue("电联");

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>公司筛选</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+
+<a class="layui-btn layui-btn-sm" href="list">返回</a>
+
+<table id="companytab" lay-filter="companytab"></table>
+<div>
+<form class="layui-form"    method="post" style="padding-top: 10px;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">公司名称</label>
+            <div class="layui-input-inline">
+                <input type="text"  id="company"  required ="required " lay-verify="required" placeholder="请输入公司名称" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="lay-submit" lay-filter="staff" id="staffa">查询</button>
+        </div>
+    </div>
+
+</form>
+</div>
+<script th:src="@{/static/layui/layui.js}"></script>
+
+<script th:inline="javascript">
+    layui.use(['table','form'], function(){
+        var table = layui.table
+        var $ = layui.$,
+            form = layui.form;
+        // //监听提交
+        // form.on('submit(staff)', function(data){
+        //     var company = $("#company").val();
+        //     company = "%"+ company + "%";
+        //     $.ajax({
+        //         url:"companycom",
+        //         type:"post",
+        //         dataType:'json',
+        //         contentType:'application/json;charset=utf-8',
+        //         data:JSON.stringify(company)
+        //     });
+        //     return false;
+        // });
+
+        var aaa = table.render({
+            elem: '#companytab'
+            , id: 'casetab'
+            ,height:'full'
+            // ,url:[[${ctx}]] +'/staff/companycom'//数据接口
+            , method: 'post'
+            , page: true
+            , limits: [10, 50, 150, 200, 250, 300, 350, 400, 600, 800, 1000]
+            , cols: [[ //表头
+                {field: 'sloginName', title: '登录名称', width: 30, type: 'checkbox'}
+                , {field: 'scomId', title: '公司编号', width: 80}
+                , {field: 'sIs', title: '是否禁用', width: 110}
+                , {field: 'sName', title: '员工姓名', width: 120}
+                , {field: 'sPhone', title: '电话', width: 155}
+                , {field: 'sPlace', title: '职位', width: 155}
+                , {field: 'sGroup', title: '分组', width: 155}
+                , {field: 'cName', title: '公司名称', width: 155}
+            ]]
+        });
+
+        //查询
+        form.on('submit(staff)', function (data) {
+            var company = $("#company").val();
+            company = "%"+ company + "%";
+            aaa.reload({page: {curr: 1 },url: 'companycom', where: {data: company}});
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

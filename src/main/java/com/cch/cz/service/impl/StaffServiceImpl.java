@@ -5,16 +5,17 @@ import com.cch.cz.authority.mapper.UserMapper;
 import com.cch.cz.base.service.impl.BaseServiceImpl;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
-import com.cch.cz.entity.UrgeRecord;
 import com.cch.cz.mapper.CasesMapper;
 import com.cch.cz.mapper.StaffMapper;
 import com.cch.cz.mapper.UrgeRecordMapper;
 import com.cch.cz.service.StaffService;
+import com.github.pagehelper.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/3/18.
@@ -66,6 +67,21 @@ public class StaffServiceImpl extends BaseServiceImpl<Staff,String> implements S
 
         }
     }
+
+    @Override
+    public List<Map> listStaff() {
+        return staffMapper.listStaff();
+    }
+
+    @Override
+    public List<Map> listByStaff(){
+        return staffMapper.listByStaff();
+    }
+
+    @Override
+    public List<Map> listBycompanyccaa(String company){
+        System.out.println(company);
+        return staffMapper.listByCompanyccaa(company);}
 
     @Override
     @Transactional
