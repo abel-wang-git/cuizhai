@@ -152,7 +152,7 @@
             page:true,
             cols:[[
                 {field:'id',title:'编号',width:'5%',sort:true,align:"center"},
-                {field:'caseId',title:'委案编号',width:'13%',sort:true,align:"center"},
+                {field:'caseId',title:'委案编号',width:'13%',sort:true,align:"center" ,toolbar:'#name'},
                 {field:'date',title:'委案时间',width:'15%',sort:true,align:"center"},
                 {field:'oldstaff',title:'调案前员工',width:'13%',sort:true,align:"center"},
                 {field:'newstaff',title:'调案后员工',width:'13%',sort:true,align:"center"},
@@ -171,10 +171,7 @@
                 }
             })
 
-        })
-
-
-
+        });
 
 
         var cases = table.render({

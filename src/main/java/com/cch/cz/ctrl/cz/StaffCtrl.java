@@ -1,8 +1,6 @@
 package com.cch.cz.ctrl.cz;
 
 import com.alibaba.fastjson.JSON;
-import com.cch.cz.authority.entity.User;
-import com.cch.cz.authority.entity.key.RolePowerKey;
 import com.cch.cz.authority.entity.key.UserRoleKey;
 import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.authority.service.UserService;
@@ -10,16 +8,14 @@ import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
-import com.cch.cz.entity.Company;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.entity.enu.IsEnable;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.CompanyService;
 import com.cch.cz.service.StaffService;
 import com.cch.cz.service.UrgeGroupService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -27,7 +23,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,29 +55,21 @@ public class StaffCtrl {
 
     @PostMapping(value = "/list")
     @ResponseBody
-    public Table list(@RequestParam int page , @RequestParam int limit){
+    public Table hKlist(@RequestParam int page , @RequestParam int limit){
+        List<Map> staffs =  staffService.listStaff();
         PageHelper.startPage(page,limit);
         Table table = new Table();
-        List<Staff> staffs = staffService.findAll();
-        List list = new ArrayList();
-        for(Staff staff : staffs){
-            Map map = new HashMap();
-            map.put("name",staff.getName());
-            map.put("loginName",staff.getLoginName());
-            map.put("phone",staff.getPhone());
-            map.put("group",staff.getUrgeGroup());
-            map.put("place",staff.getPlace());
-
-            Company company = companyService.companyByCompanyId(staff.getCompanyId());
-            if(company!=null){
-                map.put("companyId",company.getName());
+        Page<Map> staffa = (Page<Map>) staffService.listByStaff();
+        for (Map map : staffs) {
+            String id = (String) map.get("loginName");
+            for (Map map1 : staffa) {
+                if (id.equals(map1.get("staffId"))){
+                    map.put("huikuan",Math.round(((double)map.get("arrears")/(double)map1.get("arrears"))*10000)/100d+"%");
+                }
             }
-            list.add(map);
         }
-        table.setData(list);
-//        table.setData(staffService.findAll());
-        table.setCount(staffService.count(new Staff()).intValue());
-
+        table.setData(staffs);
+        table.setCount((int) staffa.getTotal());
         return table;
     }
 
@@ -105,6 +92,35 @@ public class StaffCtrl {
 
         return "/cz/staff/add";
     }
+
+    @GetMapping(value = "/toAddcompany")
+    public String toAddcompany(){
+        return "/cz/staff/addcompany";
+    }
+
+//    @PostMapping(value = "/companyList")
+//    @ResponseBody
+//    public Table companylistaa(){
+//        List<Map> staff = staffService.listBycompanyccaa();
+//        Table table = new Table();
+//        table.setData(staff);
+//        table.setCount(staffService.count(new Staff()).intValue());
+//        return table;
+//    }
+
+
+    //查询公司下的员工
+    @PostMapping(value = "/companycom")
+    @ResponseBody
+    public  Table comp(@RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "0") int limit,
+                       @RequestParam String data){
+        PageHelper.startPage(page, limit);
+        Page<Map> staffq = (Page<Map>) staffService.listBycompanyccaa(data);
+        return new Table((int) staffq.getTotal(), staffq);
+    }
+
+
 
     @PostMapping(value = "/add",produces="application/json;charset=UTF-8")
     @ResponseBody

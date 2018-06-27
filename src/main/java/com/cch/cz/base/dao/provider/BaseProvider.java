@@ -1,6 +1,5 @@
 package com.cch.cz.base.dao.provider;
 
-import com.cch.cz.base.dao.BuildSql;
 import com.cch.cz.base.entity.BaseEntity;
 import org.apache.ibatis.jdbc.SQL;
 import org.slf4j.Logger;

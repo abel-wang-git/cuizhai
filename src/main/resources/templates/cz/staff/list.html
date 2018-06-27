@@ -17,11 +17,19 @@
 <body>
 <a class="layui-btn layui-btn-sm" href="toAdd">添加员工</a>
 
+<a class="layui-btn layui-btn-sm" href="toAddcompany">公司筛选</a>
+
+
+
+
 <table id="staff" lay-filter="staff"></table>
+<div id="casetes" style="display: none" class="casttes">
+</div>
     <div id="update" style="display: none" class="update">
         <div>
             <br/>
         </div>
+
     <form class="layui-form">
         <div class="layui-form-item">
             <label class="layui-form-label">员工名称</label>
@@ -56,7 +64,9 @@
         <input name="loginName" type="hidden"/>
     </form>
 </div>
+
 <script type="text/html" id="updata">
+
     <a class="layui-btn  layui-btn-xs" lay-event="update">修改</a>
     {{#  if(d.isEnable === 0){ }}
     <a class="layui-btn  layui-btn-xs" lay-event="disenable">禁用</a>
@@ -87,17 +97,19 @@
             elem: '#staff'
             , id: 'staff'
             , height: 'full'
-            // , width: auto()
             , url: 'list' //数据接口
             , method: 'post'
             , page: true //开启分页
             , cols: [[ //表头
-                {field: 'name', title: '员工名称', width: 120, sort: true, fixed: 'left'}
+                {field: 'sName', title: '员工名称', width: 120, sort: true, fixed: 'left'}
                 , {field: 'loginName', title: '登录名', width: 120, sort: true}
 //                , {field: 'place', title: '职位', width: '15%', sort: true}
                 , {field: 'phone', title: '电话', width: 120, sort: true}
-                , {field: 'group', title: '分组', width: 100, sort: true}
-               , {field: 'companyId', title: '公司', width: 150, sort: true}
+                , {field: 'ugroup', title: '分组', width: 100, sort: true}
+               , {field: 'cName', title: '公司', width: 150, sort: true}
+                , {field: 'size', title: '案件数量', width: 150, sort: true}
+               , {field: 'arrears', title: '回款金额', width: 150, sort: true}
+                , {field: 'huikuan', title: '回款率', width: 150, sort: true}
                 , {title: '修改', width: 160, align: 'center', toolbar: '#updata', fixed: 'right'}
             ]]
             , done: function (res, curr, count) {
@@ -108,6 +120,7 @@
                 })
             }
         });
+
         table.on('tool(staff)', function (obj) {
             var layEvent = obj.event;
             if (layEvent === 'update') {
@@ -117,8 +130,6 @@
                 $("input[name='phone']").val(obj.data.phone);
                 $("select[name='place']").val(obj.data.place);
                 form.render('select')
-                // $('#update').css("right",0);
-
                 aaa = layer.open({
                     type: 1
                     ,id:"dd"
@@ -149,11 +160,6 @@
                         form.render('select');
                     }
                 })
-
-
-
-
-
             } else if (layEvent === 'disenable') {
                 if (obj.data.isEnable === 1) {
                     layer.msg("该用户已禁用")
@@ -209,7 +215,6 @@
                                                     staff.reload()
                                                 }
                                             })
-
                                         }
                                     });
                                 }
