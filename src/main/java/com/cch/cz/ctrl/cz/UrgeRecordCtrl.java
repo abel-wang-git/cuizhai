@@ -102,7 +102,7 @@ public class UrgeRecordCtrl {
         List<String> title = new ArrayList<>();
         //表头
 //        "客户办公电话","客户配偶姓名","客户配偶联系电话","客户亲戚姓名","客户与亲戚关系","客户亲戚联系电话","其他联系人姓名","其他联系人关系","其他联系人电话"
-        String[] title1 = {"合同号","客户姓名","性别","身份证","总欠款","客户手机","催收时间","催收记录","催收员"};
+        String[] title1 = {"合同号", "客户姓名", "性别", "身份证", "总欠款", "客户手机", "催收时间", "催收记录", "催收员", "备注"};
         String[] title2 = {"提线流水号","债务人姓名","催收拨打号码","催收日期","催收时间","催收方式","催收员","案件状态","催收详细情况"};
         if (type.equals("1")){
             title= Arrays.asList(title1);
@@ -154,6 +154,7 @@ public class UrgeRecordCtrl {
                 if(title.get(j).equals("案件状态"))cell.setCellValue((String) list.get(i).get("status"));
                 if(title.get(j).equals("催收详细情况"))cell.setCellValue((String) list.get(i).get("rmarks"));
                 if(title.get(j).equals("催收员"))cell.setCellValue((String) list.get(i).get("sname"));
+                if (title.get(j).equals("备注")) cell.setCellValue((String) list.get(i).get("rmarks"));
 //                if(title.get(j).equals("提线流水号"))cell.setCellValue((String) list.get(i).get("result"));
             }
         }
