@@ -92,7 +92,7 @@ public class MyStartupRunner implements CommandLineRunner {
         if (admin==null){
             Role role = new Role ();
             role.setName ("admin");
-            role.setDesign("运营部");
+            role.setDesign("管理员");
             roleService.save (role);
         }
         Role urge = roleService.getByname ("urge");
@@ -101,6 +101,13 @@ public class MyStartupRunner implements CommandLineRunner {
             role.setName ("urge");
             role.setDesign("催收员");
             roleService.save (role);
+        }
+        Role branchManager = roleService.getByname("branchManager");
+        if (branchManager == null) {
+            Role role = new Role();
+            role.setName("branchManager");
+            role.setDesign("分公司管理员");
+            roleService.save(role);
         }
 
         Role business = roleService.getByname ("business");

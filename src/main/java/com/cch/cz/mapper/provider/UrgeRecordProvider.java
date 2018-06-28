@@ -29,6 +29,9 @@ public class UrgeRecordProvider extends BaseProvider<UrgeRecord,Long> {
                     "  ,c.customer_phone_number as customerPhoneNumber ,c.status,c.customer_address as customerAddress ");
             FROM(" t_urge_record as u ,t_case as c,t_staff as s");
             if(UtilFun.isEmptyString((String) para.get("sname"))) where.append(" and s.name=#{sname}");
+            if (UtilFun.isEmptyString((String) para.get("company"))) where.append(" and c.company_id=#{company}");
+            if (UtilFun.isEmptyString((String) para.get("appointData")))
+                where.append(" and c.appoint_data=#{appointData}");
             if(UtilFun.isEmptyString((String) para.get("cname"))) where.append(" and c.name=#{cname}");
             if(UtilFun.isEmptyString((String) para.get("customerPhoneNumber"))) where.append(" and c.customer_phone_number=#{customerPhoneNumber} ");
             WHERE(where.toString());

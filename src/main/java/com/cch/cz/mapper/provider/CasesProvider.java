@@ -188,8 +188,11 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             StringBuilder where = new StringBuilder(" staff_id is not null");
             if (para.get("company") != null)
                 where.append("  and company_id = #{company} ");
-            if (UtilFun.isEmptyString((String) para.get("isUrge")))
-                where.append(" and last_urge is not null  ");
+            if (UtilFun.isEmptyString((String) para.get("isUrge"))) {
+                where.append(" and last_urge is not null ");
+            } else {
+                where.append(" and last_urge is null ");
+            }
             if (UtilFun.isEmptyString((String) para.get("staff")))
                 where.append(" and staff_id=#{staff} ");
 

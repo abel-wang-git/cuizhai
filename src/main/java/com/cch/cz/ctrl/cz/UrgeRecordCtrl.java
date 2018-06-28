@@ -7,6 +7,7 @@ import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.UrgeRecord;
 import com.cch.cz.service.CasesService;
+import com.cch.cz.service.CompanyService;
 import com.cch.cz.service.UrgeRecordService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -44,6 +45,8 @@ public class UrgeRecordCtrl {
     private UrgeRecordService urgeRecordService;
     @Resource
     private CasesService casesService;
+    @Resource
+    private CompanyService companyService;
 
     @GetMapping(value = "/list")
     public  String list(Model model){
@@ -85,7 +88,8 @@ public class UrgeRecordCtrl {
     }
 
     @GetMapping(value = "/manager")
-    public String manager(){
+    public String manager(Model model) {
+        model.addAttribute("companys", companyService.findAll());
         return "/cz/urge/manager";
     }
 

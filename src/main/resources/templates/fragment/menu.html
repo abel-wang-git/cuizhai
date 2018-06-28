@@ -6,8 +6,12 @@
                 <li class="layui-nav-item ">
                     <a href="javascript:;">委案管理</a>
                     <dl class="layui-nav-child">
-                        <dd shiro:hasAnyRoles ="superadmin ,admin"><a href="javascript:;" data-url="case/up" data-id="1">委案管理</a></dd>
-                        <dd  shiro:hasAnyRoles ="superadmin,admin"><a href="javascript:;" data-url="case/allot" data-id="6">分配委案</a></dd>
+                        <dd shiro:hasAnyRoles="superadmin ,admin,branchManager"><a href="javascript:;"
+                                                                                   data-url="case/up"
+                                                                                   data-id="1">委案管理</a></dd>
+                        <dd shiro:hasAnyRoles="superadmin,admin,branchManager"><a href="javascript:;"
+                                                                                  data-url="case/allot"
+                                                                                  data-id="6">分配委案</a></dd>
                         <dd><a href="javascript:;" data-url="urge/list" data-id="8">催记</a></dd>
                         <dd shiro:hasAnyRoles ="superadmin,admin,business"><a href="javascript:;" data-url="urge/manager" data-id="9">催记管理</a></dd>
                         <!--<dd shiro:hasAnyRoles ="superadmin,admin" ><a href="javascript:;" data-url="adjust/list" data-id="10">调案记录</a></dd>-->
@@ -20,7 +24,9 @@
                     <dl class="layui-nav-child">
                         <dd shiro:hasRole="superadmin"><a href="javascript:;" data-url="white/list" data-id="3">白名单</a></dd>
                         <dd shiro:hasAnyRoles="superadmin"><a href="javascript:;" data-url="company/list" data-id="7">公司管理</a></dd>
-                        <dd shiro:hasAnyRoles="superadmin,admin"><a href="javascript:;" data-url="staff/list" data-id="4">人员管理</a></dd>
+                        <dd shiro:hasAnyRoles="superadmin,admin,branchManager"><a href="javascript:;"
+                                                                                  data-url="staff/list"
+                                                                                  data-id="4">人员管理</a></dd>
                         <dd shiro:hasRole="superadmin"><a href="javascript:;" data-url="role/list" data-id="5">权限管理</a></dd>
                         <dd shiro:hasRole="superadmin"><a href="javascript:;" data-url="group/list" data-id="2">分组管理</a></dd>
                     </dl>
