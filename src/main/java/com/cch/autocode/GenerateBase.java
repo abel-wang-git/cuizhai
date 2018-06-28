@@ -2,6 +2,7 @@ package com.cch.autocode;
 
 
 import com.cch.cz.common.UtilFun;
+import com.cch.cz.entity.Message;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -22,11 +23,17 @@ public class GenerateBase {
     static  String templatePath="/com/cch/autocode/template";
     
     static String basePath=System.getProperty("user.dir")+"/src/main/java/";
+
+    public static void main(String[] args) {
+        generateBase(new Message());
+    }
+
     public static void generateBase(Object entity){
         generateMapper(entity);
         generateProvider(entity);
         generateService(entity);
         generateServiceImpl(entity);
+        generateController(entity);
     }
 
 
