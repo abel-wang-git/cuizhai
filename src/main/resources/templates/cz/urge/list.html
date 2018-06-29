@@ -73,6 +73,9 @@
 </script>
 <script type="text/html" id="status">
     {{#  if(d.status === 3){ }}
+    结案申请中
+    {{#  } }}
+    {{#  if(d.status === 4){ }}
     结案
     {{#  } }}
     {{#  if(d.status === 0){ }}
@@ -309,6 +312,10 @@
                     }
                     if ($(this).children().eq(9).text().trim() == '结案') {
                         $(this).css('background-color', '#84C1FF');
+                        $(this).css('color', '');
+                    }
+                    if ($(this).children().eq(9).text().trim() == '结案申请中') {
+                        $(this).css('background-color', '#7dffb8');
                         $(this).css('color', '');
                     }
                 });

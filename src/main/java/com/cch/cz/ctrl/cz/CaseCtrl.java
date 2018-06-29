@@ -169,7 +169,9 @@ public class CaseCtrl {
     @ResponseBody
     public AjaxReturn manager(@RequestParam("cases") String ids) {
         List<Cases> casess = JSON.parseArray(ids, Cases.class);
+
         casesService.managerCase(casess);
+
         return new AjaxReturn(0, "操作成功");
     }
 

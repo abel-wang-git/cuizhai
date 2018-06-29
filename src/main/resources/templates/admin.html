@@ -64,6 +64,9 @@
                                 <table id="wtj" lay-filter="wtj"></table>
                             </div>
                         </div>
+                        <div style="float: left;" class="layui-card">
+                            <table id="message" lay-filter="message"></table>
+                        </div>
                     </div>
                 </div>
 
@@ -96,6 +99,11 @@
         </div>
     </form>
 </div>
+<script type="text/html" id="onmessage">
+
+    <a class="layui-btn  layui-btn-xs" lay-event="yes">同意</a>
+    <a class="layui-btn  layui-btn-xs" lay-event="no">不同意</a>
+</script>
 <script th:src="@{/static/layui/layui.js}"></script>
 <!-- layui规范化用法 -->
 <script type="text/javascript" th:inline="javascript">
@@ -139,6 +147,37 @@
                 }
             ]]
         });
+
+        table.render({
+            elem: '#message'
+            , id: 'message'
+            , url: [[${ctx}]] + '/message/getmessage' //数据接口
+            , method: 'post'
+            , where: {staffId: [[${session.staff.loginName}]]}
+            , width: 685
+            , size: 'sm'
+            , cols: [[ //表头
+                {field: 'sender', title: '催收员', width: 110, sort: true}
+                , {field: 'date', title: '日期', width: 130, sort: true}
+                , {field: 'message', title: '消息内容', width: 300, sort: true}
+                , {title: '操作', width: 140, align: 'center', toolbar: '#onmessage', fixed: 'right'}
+
+            ]]
+        });
+
+        table.on('tool(message)', function (obj) {
+            var layEvent = obj.event;
+            if (layEvent === 'yes') {
+                $.post([[${ctx}]] + '/message/read', {message: JSON.stringify(obj.data)}, function (data) {
+                    layer.msg(data.message)
+                });
+                console.log("yes");
+            }
+            if (layEvent === 'no') {
+                console.log("no")
+            }
+
+        })
     });
     /*]]>*/
 

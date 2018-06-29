@@ -120,6 +120,7 @@ public class StaffCtrl {
             staffService.save(data);
             return new AjaxReturn(0,"添加成功");
         }catch (Exception e){
+            e.printStackTrace();
             return new AjaxReturn(1,"添加失败");
         }
     }

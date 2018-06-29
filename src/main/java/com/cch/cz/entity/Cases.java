@@ -23,9 +23,13 @@ public class Cases extends BaseEntity {
      */
     public final static int NORMAL = 0;
     /**
-     * 结案
+     * 结案申请
      */
     public final static int END = 3;
+    /**
+     * 结案
+     */
+    public final static int FINALLYEND = 4;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

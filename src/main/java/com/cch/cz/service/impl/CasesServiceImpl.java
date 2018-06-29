@@ -1,22 +1,20 @@
 package com.cch.cz.service.impl;
 
+import com.cch.cz.authority.entity.Role;
+import com.cch.cz.authority.mapper.RoleMapper;
 import com.cch.cz.base.service.impl.BaseServiceImpl;
 import com.cch.cz.common.UtilFun;
-import com.cch.cz.entity.AdjustLog;
-import com.cch.cz.entity.Cases;
-import com.cch.cz.entity.Staff;
-import com.cch.cz.mapper.AdjustLogMapper;
-import com.cch.cz.mapper.CasesMapper;
-import com.cch.cz.mapper.StaffMapper;
+import com.cch.cz.entity.*;
+import com.cch.cz.entity.enu.MessageTyoe;
+import com.cch.cz.entity.enu.MgStatus;
+import com.cch.cz.mapper.*;
 import com.cch.cz.service.CasesService;
+import com.cch.cz.service.MessageStatusService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2018/3/18.
@@ -30,6 +28,12 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     private AdjustLogMapper adjustLogMapper;
     @Resource
     private StaffMapper staffMapper;
+    @Resource
+    private MessageMapper messageMapper;
+    @Resource
+    private MessageStatusMapper messageStatusMapper;
+    @Resource
+    private RoleMapper roleMapper;
 
     @Override
     @Transactional
@@ -82,12 +86,36 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     }
 
     @Override
+    @Transactional
     public void managerCase(List<Cases> cases) {
+        Role admin = roleMapper.getByName("admin");
+        Message message = new Message();
+        MessageStatus messageStatus = new MessageStatus();
         for (int i = 0; i < cases.size(); i++) {
+            Staff staff = new Staff();
+            staff.setCompanyId(cases.get(i).getCompanyId());
+            staff.setPlace(Long.toString(admin.getId()));
+            List<Staff> staff1 = staffMapper.findByEntity(staff);
+
 
             if (cases.get(i).getStatus() == Cases.REVOKE) cases.get(i).setRevokeDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
 
-            if (cases.get(i).getStatus() == Cases.END) cases.get(i).setEndDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
+            if (cases.get(i).getStatus() == Cases.END) {
+
+                cases.get(i).setEndDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
+                message.setId(UUID.randomUUID().getLeastSignificantBits());
+                message.setCaseId(cases.get(i).getId());
+                message.setMessage("结案申请：" + cases.get(i).getEndReason());
+                message.setType(MessageTyoe.END.value());
+                message.setSender(cases.get(i).getStaffId());
+                message.setDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
+                messageMapper.save(message);
+                messageStatus.setMessageId(message.getId());
+                messageStatus.setReceiver(staff1.get(0).getLoginName());
+                messageStatus.setStatus(MgStatus.NOREAD.value());
+                messageStatusMapper.save(messageStatus);
+
+            }
 
             if (cases.get(i).getStatus() == Cases.RETAIN) {
                 cases.get(i).setRethinDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
@@ -103,6 +131,7 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     }
 
     @Override
+    @Transactional
     public void randomAllot(String[] company,List<Map> cases) {
         for (int i = 0; i < cases.size(); i++) {
             for (int j = 0; j <company.length ; j++) {

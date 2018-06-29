@@ -3,10 +3,7 @@ package com.cch.cz.base.dao;
 
 import com.cch.cz.base.dao.provider.BaseProvider;
 import com.cch.cz.base.entity.BaseEntity;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
