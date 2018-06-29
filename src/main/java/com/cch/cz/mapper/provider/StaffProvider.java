@@ -15,7 +15,7 @@ public class StaffProvider extends BaseProvider<Staff,String> {
         String sql =new SQL(){{
             SELECT(BuildSql.select(Staff.class));
             FROM(" t_staff");
-            WHERE("company_id =#{company}");
+            WHERE("company_id =#{company} and is_enable=0");
         }}.toString();
         logger.info(sql);
         return sql;

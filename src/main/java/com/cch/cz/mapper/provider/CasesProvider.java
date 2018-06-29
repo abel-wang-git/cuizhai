@@ -33,6 +33,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             if (UtilFun.isEmptyString(para.getArrears()))
                 where.append(" and sum_arrears between #{arrears}+0 and #{sumArrears}+0");
             WHERE(where.toString());
+
+            ORDER_BY(" convert(name using gbk) ");
         }}.toString();
         logger.info(sql);
         return sql;
@@ -141,6 +143,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and sum_arrears between #{arrears}+0 and #{sumArrears}+0");
             
             WHERE(where.toString());
+            ORDER_BY(" convert(name using gbk) ");
         }}.toString();
         logger.info(sql);
         return sql;

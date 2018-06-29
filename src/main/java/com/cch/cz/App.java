@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @SpringBootApplication
-@MapperScan({"com.cch.mapper","com.cch.cz.authority.mapper.*"})
+@MapperScan({"com.cch.cz.mapper", "com.cch.cz.authority.mapper"})
 @EnableAspectJAutoProxy(proxyTargetClass=true, exposeProxy=true)
 @EnableTransactionManagement
 @EnableScheduling
