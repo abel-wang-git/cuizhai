@@ -1,14 +1,14 @@
 package com.cch.cz.entity.enu;
 
-public enum MessageTyoe {
+public enum MessageType {
     END(0), RETAIN(1), GLOBAL(2);
     private int value;
 
-    MessageTyoe(int value) {
+    MessageType(int value) {
         this.value = value;
     }
 
-    public static MessageTyoe valueOf(int value) {
+    public static MessageType valueOf(int value) {
         switch (value) {
             case 0:
                 return END;

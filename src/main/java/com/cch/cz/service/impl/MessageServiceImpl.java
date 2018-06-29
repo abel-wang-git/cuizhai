@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Message;
 import com.cch.cz.entity.MessageStatus;
+import com.cch.cz.entity.enu.MessageType;
 import com.cch.cz.entity.enu.MgStatus;
 import com.cch.cz.mapper.CasesMapper;
 import com.cch.cz.mapper.MessageMapper;
@@ -42,7 +43,12 @@ public class MessageServiceImpl extends BaseServiceImpl<com.cch.cz.entity.Messag
         messageStatusMapper.update(messageStatus);
         Message message1 = JSON.parseObject(message, Message.class);
         Cases cases = casesMapper.findOne(new Cases(), message1.getCaseId());
-        cases.setStatus(Cases.FINALLYEND);
+        if (message1.getType() == MessageType.END.value()) {
+            cases.setStatus(Cases.FINALLYEND);
+        }
+        if (message1.getType() == MessageType.RETAIN.value()) {
+            cases.setStatus(Cases.FINALLYRETAIN);
+        }
         casesMapper.update(cases);
     }
 }

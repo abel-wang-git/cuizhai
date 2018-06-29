@@ -15,7 +15,11 @@ public class Cases extends BaseEntity {
      */
     public final static int REVOKE = 1;
     /**
-     * 留案的case
+     * 留案申请的case
+     */
+    public final static int FINALLYRETAIN = 5;
+    /**
+     * 留案申请的case
      */
     public final static int RETAIN = 2;
     /**

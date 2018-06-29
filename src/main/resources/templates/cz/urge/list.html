@@ -82,7 +82,9 @@
     正常
     {{#  } }}
     {{#  if(d.status === 2){ }}
-    {{# }}
+    留案申请中
+    {{#  } }}
+    {{#  if(d.status === 5){ }}
     留案
     {{#  } }}
     {{#  if(d.status === 1){ }}
@@ -298,7 +300,7 @@
                 , {field: 'sumArrears', title: '总欠款', width: '10%', sort: true}
                 , {field: 'lastUrge', title: '最后一次催记时间', width: '10%', sort: true}
                 , {field: 'status', title: '状态', width: '6%',templet:'#status'}
-                , {fixed: 'urge', title: '操作', width: 160, align: 'center', toolbar: '#urge', fixed: 'right'}
+                , {fixed: 'urge', title: '操作', width: 190, align: 'center', toolbar: '#urge', fixed: 'right'}
             ]]
             ,done: function(res, curr, count){
                 layui.$('table tbody tr ').each(function () {
@@ -316,6 +318,10 @@
                     }
                     if ($(this).children().eq(9).text().trim() == '结案申请中') {
                         $(this).css('background-color', '#7dffb8');
+                        $(this).css('color', '');
+                    }
+                    if ($(this).children().eq(9).text().trim() == '留案申请中') {
+                        $(this).css('background-color', '#ffcec2');
                         $(this).css('color', '');
                     }
                 });
