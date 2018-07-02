@@ -81,7 +81,6 @@ public class StaffCtrl {
     }
 
 
-
     @GetMapping(value = "/toAdd")
     public String toAdd(Model model){
 
@@ -120,7 +119,6 @@ public class StaffCtrl {
             staffService.save(data);
             return new AjaxReturn(0,"添加成功");
         }catch (Exception e){
-            e.printStackTrace();
             return new AjaxReturn(1,"添加失败");
         }
     }
@@ -138,13 +136,20 @@ public class StaffCtrl {
     @PostMapping(value = "/update")
     @ResponseBody
     public AjaxReturn add(@RequestParam String  data,@RequestParam String oldId){
-        try {
-            staffService.update(JSON.parseObject(data,Staff.class),oldId);
-            return new AjaxReturn(0,"修改成功");
-        }catch (Exception e){
-            e.printStackTrace();
-            return new AjaxReturn(1,"修改失败");
-        }
+            Staff staff = JSON.parseObject(data,Staff.class);
+            Cases cases = new Cases();
+            cases.setStaffId(staff.getLoginName());
+            List<Cases> list = casesService.findByEntity(cases);
+            if (UtilFun.isEmptyList(list)){
+                Map map = new HashMap();
+                map.put("cases",list);
+                return new AjaxReturn(0,"该催收员存在案件无法修改",map);
+            }else{
+                staff.setIsEnable(IsEnable.DISENABLE.value());
+                staffService.update(staff,oldId);
+                return new AjaxReturn(1,"修改成功");
+            }
+
     }
 
     @PostMapping(value = "/isenable")

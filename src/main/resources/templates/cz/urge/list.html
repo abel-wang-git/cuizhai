@@ -178,7 +178,7 @@
                     <div class="layui-input-inline">
                         <select name="status" lay-verify="required" autocomplete="off" class="layui-input" lay-filter="status">
                             <option value="">请选择</option>
-                            <option value="接通">接通</option>
+                            <option value="接通">正常接通</option>
                             <option value="无人接听">无人接听</option>
                             <option value="关机">关机</option>
                             <option value="挂机">挂机</option>
@@ -202,7 +202,8 @@
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-inline">
                     <textarea type="text" name="rmarks" required="required " lay-verify="required" placeholder=""
-                              autocomplete="off" class="layui-input" style="height: 100px;"></textarea>
+                              autocomplete="off" class="layui-input" style="height: 100px;" id="text" onblur="ctst()"></textarea>
+                        <span id="span"></span>
                     </div>
                 </div>
 
@@ -256,10 +257,25 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <textarea id="retainReason" lay-verify="required" placeholder="留案原因" class="layui-textarea"></textarea>
+            <textarea id="retainReason" lay-verify="required" placeholder="留案原因" class="layui-textarea"  ></textarea>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function ctst() {
+        var span= document.getElementById("span");
+        var mytext=document.getElementById("text");
+        var value= mytext.value;
+        var len = value.length;
+        if(!len||len<10){
+            alert("最少输入十个字符！");
+            return false;
+        }else {
+            span.innerHTML="";
+        }
+    }
+</script>
+
 <script th:inline="javascript">
     /*<![CDATA[*/
     layui.config({
@@ -393,17 +409,19 @@
                         obj.data.status = 2;
                         obj.data.rethinDay = day;
                         obj.data.retainReason = $("#retainReason").val();
-                        $.ajax({
-                            url: [[${ctx}]] + "/case/manager",
-                            type: "post",
-                            dataType: 'json',
-                            data: {cases: '[' + JSON.stringify(obj.data) + ']'},
-                            success: function (data) {
-                                layer.close(index);
-                                layer.msg(data.message);
-                                cases.reload();
-                            }
-                        });
+                            $.ajax({
+                                url: [[${ctx}]] + "/case/manager",
+                                type: "post",
+                                dataType: 'json',
+                                data: {cases: '[' + JSON.stringify(obj.data) + ']'},
+                                success: function (data) {
+                                    layer.close(index);
+                                    layer.msg(data.message);
+                                    cases.reload();
+                                }
+                            });
+
+
                     }
                 });
             }

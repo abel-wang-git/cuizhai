@@ -79,7 +79,8 @@
                     contentType:'application/json;charset=utf-8',
                     data:JSON.stringify(data.field),
                     success:function (data) {
-                        layer.msg(data.message)
+                        layer.msg(data.message);
+                        history.go(-1);
                     }
             });
             return false;

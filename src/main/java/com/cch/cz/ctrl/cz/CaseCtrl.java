@@ -301,7 +301,6 @@ public class CaseCtrl {
         if (staff.getLoginName() != null && roleService.findOne(Long.valueOf(staff.getPlace())).getDesign().equals("管理员"))
             staffId = "";
         List<Map> urges = casesService.isUrge("yes", staff.getCompanyId() != null ? staff.getCompanyId() : null, staffId);
-
         return new Table(urges.size(), urges);
     }
 

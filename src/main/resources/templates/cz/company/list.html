@@ -9,7 +9,9 @@
 <a class="layui-btn layui-btn-sm" id="add">添加公司</a>
 
 <table id="company" lay-filter="company"></table>
-
+<script type="text/html" id="del">
+    <a class="layui-btn  layui-btn-xs" lay-event="del">删除</a>
+</script>
 <div id="form" style="display: none">
 
 </div>
@@ -29,8 +31,9 @@
             , url: 'list' //数据接口
             , method: 'post'
             , cols: [[ //表头
-                {field: 'name', title: '公司名称', width: '50%', sort: true}
-                ,{field: 'area', title: '负责地区', width: '50%', sort: true}
+                {field: 'name', title: '公司名称', width: '30%', sort: true}
+                ,{field: 'area', title: '负责地区', width: '30%', sort: true}
+                ,{field: 'del', title: '删除公司', width: '30%', sort: true,toolbar:'#del'}
             ]]
         });
         $("#add").click(function(){
@@ -45,7 +48,27 @@
 
             })
         });
-
+        table.on('tool(company)',function (obj) {
+            var layEvent = obj.event;
+            var data = obj.data;
+            console.log(data);
+            if(layEvent==='del'){
+                layer.confirm("确定删除？",function (index) {
+                    obj.del();
+                    layer.close(index);
+                    $.ajax({
+                        url:[[${ctx}]] + "/company/delete",
+                        type:"post",
+                        dataType:"json",
+                        data:{id: JSON.stringify(data.id)},
+                        success:function (data) {
+                            layer.message(data.message);
+                        }
+                    })
+                    window.location.reload();
+                })
+            }
+        })
 
     });
 

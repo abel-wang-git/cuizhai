@@ -1,5 +1,6 @@
 package com.cch.cz.ctrl.cz;
 
+import com.alibaba.fastjson.JSON;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.entity.Company;
@@ -54,6 +55,18 @@ public class CompanyCtrl {
        return new AjaxReturn(0,"添加成功");
     }
 
+    @PostMapping(value = "/delete")
+    @ResponseBody
+    public AjaxReturn del(@RequestParam Long id){
+        try {
+            companyService.delete(id);
+            return new AjaxReturn(0,"删除成功！！");
+        }catch (Exception e){
+            e.printStackTrace();
+            return new AjaxReturn(1,"删除失败！！");
+
+        }
+    }
 
 
 
