@@ -5,11 +5,10 @@ import com.cch.cz.authority.mapper.RoleMapper;
 import com.cch.cz.base.service.impl.BaseServiceImpl;
 import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.*;
-import com.cch.cz.entity.enu.MessageTyoe;
+import com.cch.cz.entity.enu.MessageType;
 import com.cch.cz.entity.enu.MgStatus;
 import com.cch.cz.mapper.*;
 import com.cch.cz.service.CasesService;
-import com.cch.cz.service.MessageStatusService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -99,14 +98,14 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
 
 
             if (cases.get(i).getStatus() == Cases.REVOKE) cases.get(i).setRevokeDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
-
+            //结案
             if (cases.get(i).getStatus() == Cases.END) {
 
                 cases.get(i).setEndDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
                 message.setId(UUID.randomUUID().getLeastSignificantBits());
                 message.setCaseId(cases.get(i).getId());
                 message.setMessage("结案申请：" + cases.get(i).getEndReason());
-                message.setType(MessageTyoe.END.value());
+                message.setType(MessageType.END.value());
                 message.setSender(cases.get(i).getStaffId());
                 message.setDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
                 messageMapper.save(message);
@@ -116,9 +115,20 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
                 messageStatusMapper.save(messageStatus);
 
             }
-
+            //留案
             if (cases.get(i).getStatus() == Cases.RETAIN) {
                 cases.get(i).setRethinDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
+                message.setId(UUID.randomUUID().getMostSignificantBits());
+                message.setCaseId(cases.get(i).getId());
+                message.setMessage("留案申请：" + cases.get(i).getEndReason());
+                message.setType(MessageType.RETAIN.value());
+                message.setSender(cases.get(i).getStaffId());
+                message.setDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
+                messageMapper.save(message);
+                messageStatus.setMessageId(message.getId());
+                messageStatus.setReceiver(staff1.get(0).getLoginName());
+                messageStatus.setStatus(MgStatus.NOREAD.value());
+                messageStatusMapper.save(messageStatus);
             }
             this.update(cases.get(i));
         }
