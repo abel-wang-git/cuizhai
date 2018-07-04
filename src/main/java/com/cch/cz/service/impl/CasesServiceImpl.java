@@ -7,6 +7,7 @@ import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.*;
 import com.cch.cz.entity.enu.MessageType;
 import com.cch.cz.entity.enu.MgStatus;
+import com.cch.cz.exception.ObjectNullException;
 import com.cch.cz.mapper.*;
 import com.cch.cz.service.CasesService;
 import org.springframework.stereotype.Service;
@@ -86,8 +87,11 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
 
     @Override
     @Transactional
-    public void managerCase(List<Cases> cases) {
+    public void managerCase(List<Cases> cases) throws ObjectNullException {
         Role admin = roleMapper.getByName("admin");
+        if (admin == null) {
+            admin = roleMapper.getByName("branchManager");
+        }
         Message message = new Message();
         MessageStatus messageStatus = new MessageStatus();
         for (int i = 0; i < cases.size(); i++) {
@@ -95,7 +99,7 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
             staff.setCompanyId(cases.get(i).getCompanyId());
             staff.setPlace(Long.toString(admin.getId()));
             List<Staff> staff1 = staffMapper.findByEntity(staff);
-
+            if (staff1 == null || staff1.size() == 0) throw new ObjectNullException("该公司不存在管理员");
 
             if (cases.get(i).getStatus() == Cases.REVOKE) cases.get(i).setRevokeDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
             //结案

@@ -3,6 +3,7 @@ package com.cch.cz.service;
 import com.cch.cz.base.service.BaseService;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
+import com.cch.cz.exception.ObjectNullException;
 
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,7 @@ public interface CasesService extends BaseService<Cases,Long>  {
     /**
      *留案 撤案 结案
      */
-    void managerCase(List<Cases> cases);
+    void managerCase(List<Cases> cases) throws ObjectNullException;
 
     /**
      * 动态查询
