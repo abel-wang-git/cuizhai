@@ -4,6 +4,7 @@ package com.cch.autocode;
 import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Message;
 import com.cch.cz.entity.MessageStatus;
+import com.cch.cz.entity.UploadLog;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -26,7 +27,7 @@ public class GenerateBase {
     static String basePath=System.getProperty("user.dir")+"/src/main/java/";
 
     public static void main(String[] args) {
-        generateBase(new MessageStatus());
+        generateBase(new UploadLog());
     }
 
     public static void generateBase(Object entity){

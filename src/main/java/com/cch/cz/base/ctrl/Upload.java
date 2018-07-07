@@ -1,5 +1,6 @@
 package com.cch.cz.base.ctrl;
 
+import com.cch.cz.authority.entity.User;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.common.ExcelTool;
 import com.cch.cz.common.Execl;
@@ -7,12 +8,17 @@ import com.cch.cz.common.UploadUtil;
 import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
+import com.cch.cz.entity.UploadLog;
 import com.cch.cz.exception.UploadException;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.StaffService;
+import com.cch.cz.service.UploadLogService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.IteratorUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,6 +42,8 @@ public class Upload {
     private StaffService staffService;
     @Resource
     private CasesService casesService;
+    @Resource
+    private UploadLogService uploadLogService;
 
     @RequestMapping(value = "/upload")
     @ResponseBody
@@ -43,6 +51,7 @@ public class Upload {
         AjaxReturn ajaxRetrun = new AjaxReturn();
         Map data = new HashMap();
         ajaxRetrun.setCode(1);
+        String md5=null;
         try {
             File name = UploadUtil.upload(request,"archcase/");
             Workbook workbook = WorkbookFactory.create(new FileInputStream(name));
@@ -67,7 +76,8 @@ public class Upload {
                     }
                 }
             }
-
+            md5= DigestUtils.md5Hex(IOUtils.toByteArray(new FileInputStream(name)));
+            if(null!=uploadLogService.findOne(md5))throw new UploadException("上传过相同的案件");
             for (int i = 0; i <sheets.size() ; i++) {
                 //获取标题行
                 int row_num = sheets.get(i).getLastRowNum();
@@ -96,6 +106,12 @@ public class Upload {
             e.printStackTrace();
             return ajaxRetrun;
         }
+        UploadLog log = new UploadLog();
+        log.setMd5(md5);
+        log.setDate(new Date());
+        User user= (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+        log.setUser(user.getUserName());
+        uploadLogService.save(log);
         ajaxRetrun.setData(data);
         ajaxRetrun.setCode(0);
         ajaxRetrun.setMessage("上传成功");
