@@ -46,8 +46,11 @@ public class CaseCtrl {
     @PostMapping(value = "/exp")
     @ResponseBody
     public AjaxReturn expCase(@RequestBody List<Cases> data) {
-
-        casesService.expCase(data);
+        try {
+            casesService.expCase(data);
+        }catch (Exception e){
+            return new AjaxReturn(1, "导入失败");
+        }
 
         return new AjaxReturn(0, "导入成功");
     }

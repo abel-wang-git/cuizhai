@@ -7,6 +7,7 @@ import com.cch.cz.common.UploadUtil;
 import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
+import com.cch.cz.exception.UploadException;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.StaffService;
 import org.apache.commons.collections.IteratorUtils;
@@ -22,10 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2018/3/16.
@@ -41,7 +39,7 @@ public class Upload {
 
     @RequestMapping(value = "/upload")
     @ResponseBody
-    public AjaxReturn uploadImage (HttpServletRequest request) {
+    public AjaxReturn uploadImage (HttpServletRequest request) throws UploadException {
         AjaxReturn ajaxRetrun = new AjaxReturn();
         Map data = new HashMap();
         ajaxRetrun.setCode(1);
@@ -62,14 +60,13 @@ public class Upload {
             for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
                 Sheet sheet = workbook.getSheetAt(i);
                 sheets.add(sheet);
-
-                List title = IteratorUtils.toList(sheet.getRow(0).cellIterator());
-                for (Object t:title) {
-                    if(!UtilFun.isEmptyString(t.toString()))ajaxRetrun.setMessage("标题栏存在空值");
+                for (int j =0 ;j<sheet.getRow(0).getLastCellNum();j++) {
+                     Cell a=sheet.getRow(0).getCell(j);
+                    if(null==sheet.getRow(0).getCell(j)||ExcelTool.getCellValue(sheet.getRow(0).getCell(j)).trim()==null){
+                       throw new UploadException("表头存在空值");
+                    }
                 }
             }
-            if(UtilFun.isEmptyString(ajaxRetrun.getMessage()))
-                return ajaxRetrun;
 
             for (int i = 0; i <sheets.size() ; i++) {
                 //获取标题行
@@ -85,9 +82,19 @@ public class Upload {
         } catch (IOException e) {
             ajaxRetrun.setMessage("上传失败");
             e.printStackTrace ();
+            return ajaxRetrun;
         } catch (InvalidFormatException e) {
             ajaxRetrun.setMessage("上传失败");
             e.printStackTrace();
+            return ajaxRetrun;
+        }catch (UploadException u){
+            ajaxRetrun.setMessage(u.getMessage());
+            u.printStackTrace();
+            return ajaxRetrun;
+        } catch (Exception e){
+            ajaxRetrun.setMessage("上传失败");
+            e.printStackTrace();
+            return ajaxRetrun;
         }
         ajaxRetrun.setData(data);
         ajaxRetrun.setCode(0);
@@ -96,7 +103,7 @@ public class Upload {
     }
 
     private  void setAttr(List result, Sheet sheet, List title,
-                                int i, String caseName,String caseType) {
+                                int i, String caseName,String caseType) throws UploadException {
         Cases cases = new Cases();
         Row r = sheet.getRow(i);
         if(null==r)return;
@@ -112,6 +119,9 @@ public class Upload {
             if (curr == null) continue;
             if (title.get(j).toString().trim().equals("催收员")) {
                 Staff staff=staffService.findOne(ExcelTool.getCellValue(curr).trim());
+                if(null==staff){
+                    throw new UploadException("不存在催收员"+ExcelTool.getCellValue(curr).trim());
+                }
                 if(UtilFun.isEmptyString(ExcelTool.getCellValue(curr))){
                     cases.setStaffId(ExcelTool.getCellValue(curr));
                     cases.setCompanyId(staff.getCompanyId());
