@@ -30,4 +30,5 @@ public interface StaffMapper extends BaseMapper<Staff,String> {
             "c.id = s.company_id\n" +
             "and c.name like #{company}")
     List<Map> listByCompanyccaa(@Param("company") String company);
+
 }

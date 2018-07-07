@@ -1,6 +1,8 @@
 package com.cch.cz.ctrl.cz;
 
 import com.alibaba.fastjson.JSON;
+import com.cch.cz.authority.entity.Role;
+import com.cch.cz.authority.entity.User;
 import com.cch.cz.authority.entity.key.UserRoleKey;
 import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.authority.service.UserService;
@@ -14,8 +16,10 @@ import com.cch.cz.service.CasesService;
 import com.cch.cz.service.CompanyService;
 import com.cch.cz.service.StaffService;
 import com.cch.cz.service.UrgeGroupService;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -178,6 +182,19 @@ public class StaffCtrl {
         return new AjaxReturn(0, "分配成功");
     }
 
-
-
+    @PostMapping(value = "/randomTooStaff")
+    @ResponseBody
+    public Table rts(@RequestParam int page,@RequestParam int limit){
+        PageHelper.startPage(page,limit);
+        Table table = new Table();
+        table.setData(staffService.findAll());
+        table.setCount(staffService.count(new Staff()).intValue());
+        return table;
+    }
+//    @PostMapping(value = "/randomto")
+//    @ResponseBody
+//    public AjaxReturn random(@RequestParam("cases") String casess, @RequestParam("staff[]") String[] staff ){
+//        Staff staffa = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
+//
+//    }
 }

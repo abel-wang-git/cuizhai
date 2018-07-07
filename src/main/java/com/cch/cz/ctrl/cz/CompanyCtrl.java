@@ -64,7 +64,6 @@ public class CompanyCtrl {
         }catch (Exception e){
             e.printStackTrace();
             return new AjaxReturn(1,"删除失败！！");
-
         }
     }
 

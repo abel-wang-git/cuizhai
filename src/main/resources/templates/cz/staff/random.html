@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>公司信息</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+<table id="random" lay-filter="random"></table>
+<script th:src="@{/static/layui/layui.js}"></script>
+<script th:inline="javascript">
+    layui.use('table',function () {
+        var table = layui.table
+            , $ = layui.$
+            ,form = layui.form;
+        table.render({
+            elem:'#random'
+            ,id:'random'
+            ,height:'full'
+            ,url:[[${ctx}]] +'/staff/randomTooStaff'
+            , method: 'post'
+            , page: true //开启分页
+            , cols: [[ //表头
+                , {field: 'loginName', title: '登录名', width: 100, sort: true}
+                , {field: 'scampany', title: '所属公司', width: 150, sort: true}
+                , {field: 'isEnable', title: '是否禁用', width: 150, sort: true}
+                , {field: 'sName', title: '员工姓名', width: 150, sort: true}
+                , {field: 'sphone', title: '电话', width: 150, sort: true}
+                , {field: 'splace', title: '权限', width: 150, sort: true}
+                , {field: 'cName', title: '公司名称', width: 150, sort: true}
+            ]]
+        })
+        }
+    )
+</script>
+</body>
+</html>
