@@ -6,6 +6,7 @@ import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.entity.*;
+import com.cch.cz.exception.ObjectNullException;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.CompanyService;
 import com.cch.cz.service.StaffService;
@@ -170,7 +171,12 @@ public class CaseCtrl {
     public AjaxReturn manager(@RequestParam("cases") String ids) {
         List<Cases> casess = JSON.parseArray(ids, Cases.class);
 
-        casesService.managerCase(casess);
+        try {
+            casesService.managerCase(casess);
+        } catch (ObjectNullException e) {
+            e.printStackTrace();
+            return new AjaxReturn(0, "操作失败，该公司不存在管理员");
+        }
 
         return new AjaxReturn(0, "操作成功");
     }
