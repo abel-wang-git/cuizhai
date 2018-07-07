@@ -31,12 +31,23 @@ public class MessageCtrl {
         return new Table(list.size(), list);
     }
 
+    //同意
     @PostMapping(value = "/read")
     @ResponseBody
     public AjaxReturn read(@RequestParam String message) {
         messageService.read(message);
-        return new AjaxReturn();
+        return new AjaxReturn(0, "操作成功");
     }
+
+    //拒绝
+    @PostMapping(value = "/refuse")
+    @ResponseBody
+    public AjaxReturn refuse(@RequestParam String message) {
+        messageService.refuse(message);
+        return new AjaxReturn(0, "操作成功");
+    }
+
+
 
 
 }

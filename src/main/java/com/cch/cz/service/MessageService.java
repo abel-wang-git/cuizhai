@@ -9,4 +9,6 @@ public interface MessageService extends BaseService<com.cch.cz.entity.Message, j
     List<Map> getNoRead(String staffId);
 
     void read(String message);
+
+    void refuse(String message);
 }

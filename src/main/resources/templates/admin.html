@@ -148,7 +148,7 @@
             ]]
         });
 
-        table.render({
+        var amessage = table.render({
             elem: '#message'
             , id: 'message'
             , url: [[${ctx}]] + '/message/getmessage' //数据接口
@@ -169,12 +169,16 @@
             var layEvent = obj.event;
             if (layEvent === 'yes') {
                 $.post([[${ctx}]] + '/message/read', {message: JSON.stringify(obj.data)}, function (data) {
+                    amessage.reload()
                     layer.msg(data.message)
                 });
                 console.log("yes");
             }
             if (layEvent === 'no') {
-                console.log("no")
+                $.post([[${ctx}]] + '/message/refuse', {message: JSON.stringify(obj.data)}, function (data) {
+                    amessage.reload()
+                    layer.msg(data.message)
+                });
             }
 
         })

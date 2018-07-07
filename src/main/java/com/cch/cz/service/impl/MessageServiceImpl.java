@@ -51,4 +51,20 @@ public class MessageServiceImpl extends BaseServiceImpl<com.cch.cz.entity.Messag
         }
         casesMapper.update(cases);
     }
+
+    @Override
+    public void refuse(String message) {
+        MessageStatus messageStatus = JSON.parseObject(message, MessageStatus.class);
+        messageStatus.setStatus(MgStatus.READ.value());
+        messageStatusMapper.update(messageStatus);
+        Message message1 = JSON.parseObject(message, Message.class);
+        Cases cases = casesMapper.findOne(new Cases(), message1.getCaseId());
+        if (message1.getType() == MessageType.END.value()) {
+            cases.setStatus(Cases.NORMAL);
+        }
+        if (message1.getType() == MessageType.RETAIN.value()) {
+            cases.setStatus(Cases.NORMAL);
+        }
+        casesMapper.update(cases);
+    }
 }
