@@ -143,7 +143,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and sum_arrears between #{arrears}+0 and #{sumArrears}+0");
             
             WHERE(where.toString());
-            ORDER_BY(" convert(name using gbk) ");
+            ORDER_BY(" convert(name using gbk) ,id_card,contract_num ");
         }}.toString();
         logger.info(sql);
         return sql;
