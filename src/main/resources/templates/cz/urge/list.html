@@ -495,7 +495,7 @@
         $("#next").click(function () {
             var index= Number(cursor)+1;
             cursor++;
-            if (index === cases.page.limit) {
+            if (index === 10) {
                 index=0;
                 cursor=0;
                 table.reload("cases",{page:{curr:Number(currpage)+1}
