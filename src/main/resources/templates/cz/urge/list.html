@@ -64,7 +64,10 @@
     <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
 </form>
 <table id="cases" lay-filter="cases"></table>
-
+<div id="pav">
+    <div style="float: right;padding-right: 30px;position: relative;bottom: 40px">当前总欠款：<span id="sumArrears"></span>
+    </div>
+</div>
 
 <script type="text/html" id="urge">
     <a class="layui-btn  layui-btn-xs" lay-event="urge">催记</a>
@@ -72,24 +75,29 @@
     <a class="layui-btn  layui-btn-xs" lay-event="rethin">留案申请</a>
 </script>
 <script type="text/html" id="status">
+
+    {{#  if(d.status === 0){ }}
+    正常
+    {{#  } }}
+    {{#  if(d.status === 1){ }}
+    撤案
+    {{#  } }}
+    {{#  if(d.status === 2){ }}
+    留案申请中
+    {{#  } }}
     {{#  if(d.status === 3){ }}
     结案申请中
     {{#  } }}
     {{#  if(d.status === 4){ }}
     结案
     {{#  } }}
-    {{#  if(d.status === 0){ }}
-    正常
-    {{#  } }}
-    {{#  if(d.status === 2){ }}
-    留案申请中
-    {{#  } }}
     {{#  if(d.status === 5){ }}
     留案
     {{#  } }}
-    {{#  if(d.status === 1){ }}
-    撤案
+    {{#  if(d.status === 6){ }}
+    承诺还款
     {{#  } }}
+
 </script>
 
 <script type="text/html" id="overday">
@@ -180,8 +188,10 @@
                     <div class="layui-input-inline">
                         <select name="status" lay-verify="required" autocomplete="off" class="layui-input" lay-filter="status">
                             <option value="">请选择</option>
-                            <option value="接通">正常接通</option>
+                            <option value="正常接通">正常接通</option>
                             <option value="无人接听">无人接听</option>
+                            <option value="暂停服务">暂停服务</option>
+                            <option value="暂时无法接通">暂时无法接通</option>
                             <option value="关机">关机</option>
                             <option value="挂机">挂机</option>
                             <option value="停机">停机</option>
@@ -203,9 +213,8 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">备注</label>
                     <div class="layui-input-inline">
-                    <textarea type="text" name="rmarks" required="required " lay-verify="required" placeholder=""
-                              autocomplete="off" class="layui-input" style="height: 100px;" id="text" onblur="ctst()"></textarea>
-                        <span id="span"></span>
+                    <textarea type="text" name="rmarks" required="required " lay-verify="required|rmarks" placeholder=""
+                              autocomplete="off" class="layui-input" style="height: 100px;"></textarea>
                     </div>
                 </div>
 
@@ -233,18 +242,21 @@
 
 </div>
 <div id="reloption" style="display:none;">
-    <option value="承诺还款">承诺还款</option>
-    <option value="已还款">已还款</option>
-    <option value="还款处理中">还款处理中</option>
-    <option value="违诺或跳票">违诺或跳票</option>
-    <option value="无还款意愿">无还款意愿</option>
-    <option value="联系人承诺转告债务人">联系人承诺转告债务人</option>
-    <option value="有还款意愿暂时无还款能力">有还款意愿暂时无还款能力</option>
-    <option value="是本人，否认借款">是本人，否认借款</option>
-    <option value="不是本人，但认识借款人">不是本人，但认识借款人</option>
-    <option value="借款人入狱或死亡">借款人入狱或死亡</option>
-    <option value="借款人因病住院或意外伤残">借款人因病住院或意外伤残</option>
-    <option value="其他">其他</option>
+    <select>
+        <option value="承诺还款">承诺还款</option>
+        <option value="已还款">已还款</option>
+        <option value="还款处理中">还款处理中</option>
+        <option value="违诺或跳票">违诺或跳票</option>
+        <option value="无还款意愿">无还款意愿</option>
+        <option value="联系人承诺转告债务人">联系人承诺转告债务人</option>
+        <option value="有还款意愿暂时无还款能力">有还款意愿暂时无还款能力</option>
+        <option value="是本人，否认借款">是本人，否认借款</option>
+        <option value="不是本人，但认识借款人">不是本人，但认识借款人</option>
+        <option value="借款人入狱或死亡">借款人入狱或死亡</option>
+        <option value="借款人因病住院或意外伤残">借款人因病住院或意外伤残</option>
+        <option value="其他">其他</option>
+    </select>
+
 </div>
 <div id="supplementlayer" style="display: none">
     <textarea id="demo" style="display: none;"></textarea>
@@ -263,21 +275,6 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    function ctst() {
-        var span= document.getElementById("span");
-        var mytext=document.getElementById("text");
-        var value= mytext.value;
-        var len = value.length;
-        if(!len||len<10){
-            alert("最少输入十个字符！");
-            return false;
-        }else {
-            span.innerHTML="";
-        }
-    }
-</script>
-
 <script th:inline="javascript">
     /*<![CDATA[*/
     layui.config({
@@ -289,6 +286,14 @@
             , form = layui.form,
              layedit = layui.layedit
              , laydate = layui.laydate;
+        //表单验证
+        form.verify({
+            rmarks: [
+                /^[\S\s]{10,100}$/
+                , '备注信息不少于10字符不多余100字符'
+            ]
+        });
+        //日期渲染
         laydate.render({
             elem: '#rethinDay'
             , format: 'yyyy/MM/dd'
@@ -301,7 +306,7 @@
             , id: 'cases'
             , height:'full-60'
             , url: [[${ctx}]] + '/case/list/bystaff' //数据接口
-            , page: true //开启分页
+            , page: {elem: 'pav'} //开启分页
             , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
             , where: {staff: JSON.stringify(JSON.parse('{"staffId":"'+[[${session.staff.loginName}]]+'"}'))}
             , method: 'post'
@@ -340,7 +345,15 @@
                         $(this).css('background-color', '#ffcec2');
                         $(this).css('color', '');
                     }
+                    if ($(this).children().eq(9).text().trim() == '承诺还款') {
+                        $(this).css('background-color', '#ff92ec');
+                        $(this).css('color', '');
+                    }
                 });
+                $.post([[${ctx}]] + '/case/list/sum', {where: JSON.stringify(JSON.parse('{"staffId":"' + [[${session.staff.loginName}]] + '"}'))}, function (data) {
+                    $("#sumArrears").text(data);
+                    console.log(data);
+                })
                 currdata=res;
                 currpage=curr;
             }
@@ -350,10 +363,6 @@
                 layer.msg("委案已经撤回");
                 return;
             }
-//            if(obj.data.status===3){
-//                layer.msg("委案已经结案");
-//                return;
-//            }
             cursor = obj.tr.attr("data-index");
             if(obj.event==='urge'){
                 setcase(obj.data)
@@ -486,7 +495,7 @@
         $("#next").click(function () {
             var index= Number(cursor)+1;
             cursor++;
-            if(index===10) {
+            if (index === cases.page.limit) {
                 index=0;
                 cursor=0;
                 table.reload("cases",{page:{curr:Number(currpage)+1}
@@ -506,9 +515,9 @@
         });
 
         form.on('select(status)', function(data){
-            if(data.value==="接通"){
+            if (data.value === "正常接通") {
                 $("#result").empty();
-                $("#result").append($("#reloption").html());
+                $("#result").append($("#reloption >select").html());
                 $("#cuishouEnd").show();
             }else {
                 $("#result").empty();
@@ -532,6 +541,7 @@
                 , {field: 'rmarks', title: '备注', width: '200', sort: true}
             ]]
         });
+        //添加崔记
         form.on('submit(urge)', function (data) {
             $.ajax({
                 url: [[${ctx}]] + "/urge/add",
@@ -542,6 +552,7 @@
                 success: function (data) {
                     layer.msg(data.message);
                     $('form')[1].reset();
+                    $("#cuishouEnd").hide();
                     log.reload({where:{cases:$("#caseId").val()}});
                 }
             });

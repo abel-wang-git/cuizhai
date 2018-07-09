@@ -39,6 +39,7 @@ public class UrgeRecordServiceImpl extends BaseServiceImpl<UrgeRecord,Long> impl
     public void save(UrgeRecord urgeRecord) {
         Cases cases= casesMapper.findOne(new Cases(),urgeRecord.getCaseId());
         cases.setLastUrge(urgeRecord.getCreateDate());
+        if (urgeRecord.getResult().equals("承诺还款")) cases.setStatus(Cases.PROMISE);
         casesMapper.update(cases);
         super.save(urgeRecord);
     }

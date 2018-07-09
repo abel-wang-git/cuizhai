@@ -11,21 +11,18 @@ import javax.persistence.*;
 @Table(name = "t_case")
 public class Cases extends BaseEntity {
     /**
+     * 委案上传后的默认状态，上传后还未做任何处理
+     */
+    public final static int NORMAL = 0;
+    /**
      * 被撤回的case
      */
     public final static int REVOKE = 1;
-    /**
-     * 留案申请的case
-     */
-    public final static int FINALLYRETAIN = 5;
+
     /**
      * 留案申请的case
      */
     public final static int RETAIN = 2;
-    /**
-     * 委案上传后的默认状态，上传后还未做任何处理
-     */
-    public final static int NORMAL = 0;
     /**
      * 结案申请
      */
@@ -34,6 +31,14 @@ public class Cases extends BaseEntity {
      * 结案
      */
     public final static int FINALLYEND = 4;
+    /**
+     * 留案申请的case
+     */
+    public final static int FINALLYRETAIN = 5;
+    /**
+     * 承诺还款
+     */
+    public final static int PROMISE = 6;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

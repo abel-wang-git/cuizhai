@@ -159,8 +159,25 @@ public class CaseCtrl {
         PageHelper.startPage(page, limit);
         List<Cases> caseslist = casesService.listByStaff(where);
         Page<Cases> pages = (Page<Cases>) caseslist;
-
         return new Table((int) pages.getTotal(), caseslist);
+    }
+
+    /**
+     * 崔记页面求和总欠款
+     *
+     * @param cases 条件
+     * @return
+     */
+    @PostMapping(value = "/list/sum")
+    @ResponseBody
+    public Double sumArrearsByStaff(@RequestParam("where") String cases) {
+        Cases where = JSON.parseObject(cases, Cases.class);
+        List<Cases> caseslist = casesService.listByStaff(where);
+        Double sum = 0.0;
+        for (Cases c : caseslist) {
+            sum += Double.parseDouble(c.getSumArrears());
+        }
+        return sum;
     }
 
     /**
