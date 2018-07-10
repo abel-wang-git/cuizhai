@@ -87,6 +87,7 @@ public class CaseCtrl {
     /**
      * @return 按地区分组后的case
      */
+    @Deprecated
     @PostMapping(value = "/grouparea")
     @ResponseBody
     public Table groupArea() {
@@ -99,7 +100,8 @@ public class CaseCtrl {
 
     /**
      *
-     *
+     *分配到公司
+     * 相同身份证 合同号 的分配到同一员工
      */
     @PostMapping(value = "/allot")
     @ResponseBody
@@ -134,6 +136,7 @@ public class CaseCtrl {
      * @param staff
      * @return
      */
+    @Deprecated
     @PostMapping(value = "/allotstaff")
     @ResponseBody
     public AjaxReturn allotStaff(@RequestParam("cases") String cases,
@@ -168,6 +171,7 @@ public class CaseCtrl {
      * @param cases 条件
      * @return
      */
+
     @PostMapping(value = "/list/sum")
     @ResponseBody
     public Double sumArrearsByStaff(@RequestParam("where") String cases) {
@@ -229,7 +233,7 @@ public class CaseCtrl {
 
     /**
      * 随机分配到员工
-     *
+     *相同身份证 合同号 的分配到同一员工
      * @param staff
      * @return
      */

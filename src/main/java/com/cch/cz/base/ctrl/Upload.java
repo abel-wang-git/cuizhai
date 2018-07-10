@@ -128,7 +128,6 @@ public class Upload {
         cases.setCaseName(caseName);
         cases.setType(caseType);
         cases.setStatus(Cases.NORMAL);
-        //员工id设置为未分配
         cases.setCompanyId(-1L);
         for (int j = 0; j < title.size(); j++) {
             Cell curr = r.getCell(j);

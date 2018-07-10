@@ -165,14 +165,52 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     @Transactional
     public void randomToStaff(String[] staff,List<Cases> cases) {
         int index = 0;
-        for (int i = 0; i < cases.size(); i++) {
+        Cases where = new Cases();
+        where.setStatus(Cases.NORMAL);
+        List<Cases> identical = new ArrayList();
+        int length = cases.size();
+        for (int i = 0; i < length; i++) {
             Cases c =cases.get(i);
             if(index==staff.length) index=0;
             c.setStaffId(staff[index]);
-            index++;
+
             update(c);
+            //寻找身份证相同的案件分配
+            where.setCompanyId(c.getCompanyId());
+            where.setIdCard(c.getIdCard());
+            identical = null;
+            identical = findByEntity(where);
+            length = identical(staff, cases, index, identical, length, i);
+            where.setIdCard(null);
+            //寻找合同号相同的案件分配
+            where.setContractNum(c.getContractNum());
+            identical = null;
+            identical = findByEntity(where);
+            length = identical(staff, cases, index, identical, length, i);
+            where.setContractNum(null);
+            index++;
         }
     }
+
+    private int identical(String[] staff, List<Cases> cases, int index, List<Cases> identical, int length, int i) {
+        if (UtilFun.isEmptyList(identical)) {
+            for (Cases ac : identical) {
+                if (ac.getStaffId() == null) {
+                    ac.setStaffId(staff[index]);
+                    update(ac);
+                    //分配过得直接从list里删除不作二次分配
+                    for (int j = i + 1; j < length; j++) {
+                        if (ac.getId().longValue() == cases.get(j).getId().longValue()) {
+                            cases.remove(i);
+                            length = cases.size();
+                        }
+                    }
+                }
+            }
+        }
+        return length;
+    }
+
 
     @Override
     @Transactional
@@ -186,6 +224,7 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
             adjustLogMapper.save(adjustLog);
             cases.setStaffId(staffid);
             update(cases);
+
         }
     }
 
@@ -201,6 +240,31 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
         for (Cases c :cases) {
             c.setCompanyId(Long.parseLong(company));
             update(c);
+        }
+        //list是根据身份证和合同号排序的只需要找和最后一条相同的未分配的case
+        Cases lastCase = cases.get(cases.size() - 1);
+        Cases where = new Cases();
+        where.setStatus(Cases.NORMAL);
+        //查找身份证相同的
+        where.setIdCard(lastCase.getIdCard());
+        List<Cases> idcard = casesMapper.findByEntity(where);
+        identical(company, idcard);
+
+        //合同号相同的
+        where.setIdCard(null);
+        where.setContractNum(lastCase.getContractNum());
+        List<Cases> contractNum = casesMapper.findByEntity(where);
+        identical(company, contractNum);
+    }
+
+    private void identical(String company, List<Cases> idcard) {
+        if (idcard.size() > 0) {
+            for (Cases c : idcard) {
+                if (c.getStaffId() == null && c.getCompanyId() == -1) {
+                    c.setCompanyId(Long.parseLong(company));
+                    update(c);
+                }
+            }
         }
     }
 
