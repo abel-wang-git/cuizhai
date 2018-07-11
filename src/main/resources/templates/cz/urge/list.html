@@ -64,6 +64,11 @@
     <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
 </form>
 <table id="cases" lay-filter="cases"></table>
+<div style="display: none; height: 300px; width: auto" id="adjustbdiv">
+    <table id="supplementl" lay-filter="supplementl"></table>
+
+</div>
+
 <div id="pav">
     <div style="float: right;padding-right: 30px;position: relative;bottom: 40px">当前总欠款：<span id="sumArrears"></span>
     </div>
@@ -135,9 +140,10 @@
         <h2 class="layui-colla-title ">客户信息</h2>
         <div class="layui-colla-content layui-show">
 
-            <span name ="name"></span> 性别：<span name ="sex"></span> 身份证：<span name ="idCard"></span><button name="Id" class="layui-btn layui-btn-xs" id="supplement">补充信息</button><br/>
+            <span name ="name"></span> 性别：<span name ="sex"></span> 身份证：<span name ="idCard"></span><button name="Id" class="layui-btn layui-btn-xs" id="supplement">补充信息</button>
+            <button name="cd" class="layui-btn layui-btn-xs" id="supplementb">协查信息</button><br/>
 
-            手机：<span name ="customerPhoneNumber"></span>
+            手机：<span name ="customerPhoneNumber"></span><br/>
             <!--住宅电话：<span name ="customerResidencePhone"></span><br/>-->
             <!--配偶姓名：<span name ="customerSpouse"></span>-->
             <!--电话：<span name ="customerSpousePhone"></span><br/>-->
@@ -145,6 +151,9 @@
             <!--电话：<span name ="customerRelativePhone"></span><br/>-->
             <!--其他联系人姓名：<span name ="customerRelativeOther"></span>-->
             <!--电话：<span name ="customerOtherPhone"></span><br/>-->
+            客户办公电话：<span name ="customerOfficePhone"></span><br/>
+            客户公司名称：<span name ="customerCompany"></span><br/>
+            客户公司地址：<span name ="customerCompanyAddress"></span><br/>
             还款账号：<span name ="repaymentAccount"></span><br/>
             购买商品：<span name ="commodity"></span>
             品牌：<span name ="brand"></span><br/>
@@ -166,7 +175,6 @@
             总欠款：<span name ="sumArrears"></span><br/>
             补充信息：<span name ="supplement"></span>
         </div>
-
     </div>
 
 
@@ -300,6 +308,40 @@
             , min: 0
             , max: 30
             , theme: 'grid'
+        });
+       var supplement = table.render({
+            elem: '#supplementl'
+            , id: 'supplement'
+            , height:'full'
+            , url: 'list' //数据接口
+            , page: {elem: 'pav'} //开启分页
+            , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'customerDepartment', title: '客户公司部门', width: '8%', sort: true}
+                , {field: 'customerResidencePhone', title: '客户住宅电话', width: '8%', sort: true}
+                , {field: 'customerResidenceAddress', title: '客户住宅地址', width: '8%'}
+                , {field: 'customerSpouse', title: '客户配偶姓名', width: '8%'}
+                , {field: 'customerSpousePhone', title: '客户配偶联系电话', width: '8%'}
+                , {field: 'customerRelativeName', title: '客户亲戚姓名', width: '8%', sort: true}
+                , {field: 'customerRelationship', title: '客户与亲戚关系', width: '8%', sort: true}
+                , {field: 'customerRelativePhone', title: '客户亲戚联系电话', width: '8%', sort: true}
+                , {field: 'customerRelativeOther', title: '其他联系人姓名', width: '8%', sort: true}
+                , {field: 'customerRelaOther', title: '其他联系人关系', width: '8%', sort: true}
+                , {field: 'customerOtherPhone', title: '其他联系人电话', width:'8%', sort: true}
+            ]]
+        });
+        $('#supplementb').click(function () {
+            layer.open({
+                type: 1
+                , title: '协查信息'
+                , area: ['1510px', '90%']
+                , content: $("#adjustbdiv")
+                , yes: function (index) {
+                    supplement.reload();
+                }
+            })
+
         });
         var cases = table.render({
             elem: '#cases'
@@ -447,7 +489,7 @@
 
 
         function setcase(cases) {
-            $("span[name='name']").text(cases.name);
+             $("span[name='name']").text(cases.name);
             $("button[name='Id']").attr("attr",cases.id);
             $("span[name='customerPhoneNumber']").text(cases.customerPhoneNumber);
 //            $("span[name='customerResidencePhone']").text(cases.customerResidencePhone);
@@ -457,6 +499,9 @@
 //            $("span[name='customerRelativePhone']").text(cases.customerRelativePhone);
 //            $("span[name='customerRelativeOther']").text(cases.customerRelativeOther);
 //            $("span[name='customerOtherPhone']").text(cases.customerOtherPhone);
+            $("span[name='customerOfficePhone']").text(cases.customerOfficePhone);
+            $("span[name='customerCompany']").text(cases.customerCompany);
+            $("span[name='customerCompanyAddress']").text(cases.customerCompanyAddress);
             $("span[name='repaymentAccount']").text(cases.repaymentAccount);
             $("span[name='commodity']").text(cases.commodity);
             $("span[name='brand']").text(cases.brand);

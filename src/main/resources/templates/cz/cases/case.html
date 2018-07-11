@@ -11,6 +11,7 @@
 <button type="button" class="layui-btn layui-btn-sm" id="adjust" lay-filter="adjust">调案</button>
 <button type="button" class="layui-btn layui-btn-sm" id="end" lay-filter="end">结案</button>
 <button shiro:hasAnyRoles ="superadmin ,admin" type="button" class="layui-btn layui-btn-sm" id="upload">上传委案</button>
+<button shiro:hasAnyRoles="superadmin,admin" type="button" class="layui-btn layui-btn-sm" id = "supplement">补充信息</button>
 <button type="button" class="layui-btn layui-btn-sm" id="adjusta" lay-filter="adjusta">调案记录</button>
 
 <form class="layui-form where" method="post" id="search">
@@ -247,6 +248,39 @@
                         data: JSON.stringify(res.data.data),
                         success: function (data) {
                             cases.reload();
+                            layer.msg(res.message);
+                            layer.closeAll('loading');
+                        }
+                    });
+                }else{
+                    layer.msg(res.message)
+                    layer.closeAll('loading');
+                }
+
+
+            }
+            , error: function () {
+                layer.msg('上传出错');
+                layer.closeAll('loading');
+            }
+        });
+//补充信息
+        upload.render({
+            elem: '#supplement'
+            , url: [[${ctx}]] + '/supplementa'
+            , accept: 'file'
+            , before: function (obj) {
+                layer.load();
+            }
+            , done: function (res) {
+                if(res.code==1) {
+                    $.ajax({
+                        url: "supplement",
+                        type: "post",
+                        dataType: 'json',
+                        contentType: 'application/json;charset=utf-8',
+                        data: JSON.stringify(res.data.data),
+                        success: function (data) {
                             layer.msg(res.message);
                             layer.closeAll('loading');
                         }

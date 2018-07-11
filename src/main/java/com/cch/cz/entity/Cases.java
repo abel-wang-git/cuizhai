@@ -111,11 +111,11 @@ public class Cases extends BaseEntity {
     /*客户户籍地址*/
     private String customerAddress;
     /*客户办公电话*/
-//    private String customerOfficePhone;
+    private String customerOfficePhone;
     /*客户公司名称*/
-//    private String customerCompany;
-//    /*客户公司地址*/
-//    private String customerCompanyAddress;
+    private String customerCompany;
+    /*客户公司地址*/
+    private String customerCompanyAddress;
 //    /*客户公司部门*/
 //    private String customerDepartment;
 //    /*客户住宅电话*/
@@ -208,6 +208,7 @@ public class Cases extends BaseEntity {
      * 补充信息
      */
     private String supplement;
+
 
     public Integer getStatus() {
         return status;
@@ -489,7 +490,20 @@ public class Cases extends BaseEntity {
         this.customerAddress = customerAddress;
     }
 
- /*   public String getCustomerOfficePhone() {
+    public String getCustomerOfficePhone(){ return customerOfficePhone; }
+
+    public void setCustomerOfficePhone(String customerOfficePhone){ this.customerOfficePhone = customerOfficePhone;
+    }
+    public String getCustomerCompany(){ return customerCompany; }
+
+    public void setCustomerCompany(String customerCompany){ this.customerCompany = customerCompany; }
+
+    public String getCustomerCompanyAddress(){ return customerCompanyAddress; }
+
+    public void setCustomerCompanyAddress(String customerCompanyAddress){ this.customerCompanyAddress = customerCompanyAddress; }
+
+
+    /*   public String getCustomerOfficePhone() {
         return customerOfficePhone;
     }
 
