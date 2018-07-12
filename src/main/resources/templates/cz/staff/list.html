@@ -60,7 +60,7 @@
             <div class="layui-input-inline">
                 <select  name="CompanyId" required ="required " lay-verify="required" lay-filter="group">
                     <option value=""></option>
-                    <option value="1">宏鑫通</option>
+                    <option value="3">宏鑫通</option>
                     <option value="2">去去去去</option>
                 </select>
             </div>
@@ -72,6 +72,8 @@
         </div>
         <input name="oldId" type="hidden"/>
         <input name="loginName" type="hidden"/>
+        <input name="isEnable" type="hidden"/>
+        <input name="urgeGroup" type="hidden"/>
     </form>
 </div>
 
@@ -134,10 +136,15 @@
         table.on('tool(staff)', function (obj) {
             var layEvent = obj.event;
             if (layEvent === 'update') {
+                console.log(obj.data)
                 $("input[name='name']").val(obj.data.sName);
                 $("input[name='loginName']").val(obj.data.loginName);
                 $("input[name='oldId']").val(obj.data.loginName);
+                $("select[name='place']").val(obj.data.place);
+                $("select[name='CompanyId']").val(obj.data.companyId);
                 $("input[name='phone']").val(obj.data.phone);
+                $("input[name='isEnable']").val(obj.data.isEnable);
+                $("input[name='urgeGroup']").val(obj.data.urgeGroup);
                 form.render('select')
                 aaa = layer.open({
                     type: 1
@@ -147,24 +154,14 @@
                     , content: $("#update")
                     // , btn: ['提交修改']
                     , yes: function (index) {
-                        // alert(obj);
-                        // $.ajax({
-                        //     url:"update",
-                        //     type: "post",
-                        //     dataType: 'json',
-                        //     data: {data:JSON.stringify(obj.data),oldId:obj.data.loginName},
-                        //     success: function (data) {
-                        //         layer.msg(data.message);
-                        //         // $('#update').css("right","-350px");
-                        //         staff.reload()
-                        //     }
-                        // });
                     }
                     , cancel: function (index, layero) {
                         $('input[name="customerAddress"]').val("");
                         $('select[name="province"]').val("");
                         $('select[name="city"]').val("");
                         $('select[name="area"]').val("");
+                        $("input[name='isEnable']").val("");
+                        $("input[name='urgeGroup']").val("");
                         form.render('select');
                     }
                 })

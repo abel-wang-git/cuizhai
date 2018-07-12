@@ -149,7 +149,7 @@ public class StaffCtrl {
                 map.put("cases",list);
                 return new AjaxReturn(0,"该催收员存在案件无法修改",map);
             }else{
-                staff.setIsEnable(IsEnable.DISENABLE.value());
+//                staff.setIsEnable(IsEnable.DISENABLE.value());
                 staffService.update(staff,oldId);
                 return new AjaxReturn(1,"修改成功");
             }

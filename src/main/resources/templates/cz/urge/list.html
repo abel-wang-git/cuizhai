@@ -524,7 +524,8 @@
             $("span[name='serviceCharge']").text(cases.serviceCharge);
             $("span[name='sumArrears']").text(cases.sumArrears);
             $("input[name='caseId']").val(cases.id);
-            $("span[name='supplement']").html(cases.supplement);
+            $("span[name='supplement']").html(typeof(cases.supplement) == "undefined" ? '' : cases.supplement);
+            console.log(cases.supplement)
         }
 
         function setoption(cases) {

@@ -46,7 +46,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             FROM(BuildSql.tablename(Cases.class));
             where.append(" staff_id =#{staffId} and status !=1");
             if(UtilFun.isEmptyString(cases.getName()))
-                where.append( " and name = #{name}");
+                where.append(" and name like '" + cases.getName() + "%'");
             if(UtilFun.isEmptyString(cases.getCustomerPhoneNumber()))
                 where.append( " and customer_phone_number = #{customerPhoneNumber}");
             if(UtilFun.isEmptyString(cases.getCustomerAddress()))
