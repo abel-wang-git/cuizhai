@@ -255,15 +255,15 @@ public class Upload {
             if (title.get(j).toString().trim().equals("客户户籍地址")) {
                 cases.setCustomerAddress(ExcelTool.getCellValue(curr));
             }
-//            if (title.get(j).toString().trim().equals("客户办公电话")) {
-//                cases.setCustomerOfficePhone(ExcelTool.getCellValue(curr));
-//            }
-//            if (title.get(j).toString().trim().equals("客户公司名称")) {
-//                cases.setCustomerCompany(ExcelTool.getCellValue(curr));
-//            }
-//            if (title.get(j).toString().trim().equals("客户公司地址")) {
-//                cases.setCustomerCompanyAddress(ExcelTool.getCellValue(curr));
-//            }
+            if (title.get(j).toString().trim().equals("客户办公电话")) {
+                cases.setCustomerOfficePhone(ExcelTool.getCellValue(curr));
+            }
+            if (title.get(j).toString().trim().equals("客户公司名称")) {
+                cases.setCustomerCompany(ExcelTool.getCellValue(curr));
+            }
+            if (title.get(j).toString().trim().equals("客户公司地址")) {
+                cases.setCustomerCompanyAddress(ExcelTool.getCellValue(curr));
+            }
 //            if (title.get(j).toString().trim().equals("客户公司部门")) {
 //                cases.setCustomerDepartment(ExcelTool.getCellValue(curr));
 //            }
