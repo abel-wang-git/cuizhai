@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>title</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">公告内容</label>
+        <div class="layui-input-inline">
+            <textarea type="text" name="message" required lay-verify="required" placeholder="公告内容" autocomplete="off"
+                      class="layui-textarea"></textarea>
+        </div>
+        <input type="hidden" name="sender" th:value="${session.user.userName}"/>
+    </div>
+    <a class="layui-btn" lay-submit="lay-submit" lay-filter="sdfasdf">立即提交</a>
+
+</form>
+<script th:src="@{/static/layui/layui.js}"></script>
+<script th:inline="javascript">
+    //Demo
+    layui.use('form', function () {
+        var form = layui.form
+            , $ = layui.$;
+        //监听提交
+        form.on('submit(sdfasdf)', function (data) {
+            $.post("notice", {message: JSON.stringify(data.field)});
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
