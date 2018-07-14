@@ -17,6 +17,6 @@ import java.util.Map;
 @Mapper
 public interface MessageMapper extends BaseMapper<com.cch.cz.entity.Message, java.lang.Long> {
 
-    @Select("select ms.id,m.message,m.sender,m.date,m.type,m.case_id as caseId,ms.receiver,ms.status ,ms.message_id as messageId  from t_message m,t_message_status ms where m.id=ms.message_id and ms.status= #{status} and receiver=#{staffid}")
+    @Select("select m.id as mid, ms.id,m.message,m.sender,m.date,m.type,m.case_id as caseId,ms.receiver,ms.status ,ms.message_id as messageId  from t_message m left outer join  t_message_status ms on (m.id=ms.message_id)  where (ms.status=#{status}) and (receiver=#{staffid})")
     List<Map> getMessage(@Param("staffid") String staffId, @Param("status") int value);
 }

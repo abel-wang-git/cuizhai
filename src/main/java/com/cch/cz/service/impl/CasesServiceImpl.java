@@ -124,7 +124,7 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
                 cases.get(i).setRethinDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
                 message.setId(UUID.randomUUID().getMostSignificantBits());
                 message.setCaseId(cases.get(i).getId());
-                message.setMessage("留案申请：" + cases.get(i).getEndReason());
+                message.setMessage("留案申请：" + cases.get(i).getRetainReason());
                 message.setType(MessageType.RETAIN.value());
                 message.setSender(cases.get(i).getStaffId());
                 message.setDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));

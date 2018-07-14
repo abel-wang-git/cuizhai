@@ -6,8 +6,12 @@ import com.cch.cz.base.Table;
 import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Message;
 import com.cch.cz.entity.MessageStatus;
+import com.cch.cz.entity.Staff;
+import com.cch.cz.entity.enu.MessageType;
 import com.cch.cz.entity.enu.MgStatus;
 import com.cch.cz.service.MessageService;
+import com.cch.cz.service.MessageStatusService;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +28,8 @@ public class MessageCtrl {
 
     @Resource
     private MessageService messageService;
-
+    @Resource
+    private MessageStatusService messageStatusService;
     @PostMapping(value = "/getmessage")
     @ResponseBody
     public Table getNoRead(@RequestParam String staffId) {
@@ -33,10 +38,12 @@ public class MessageCtrl {
     }
 
     //同意
-    @PostMapping(value = "/read")
+    @PostMapping(value = "/cat")
     @ResponseBody
-    public AjaxReturn read(@RequestParam String message) {
-        messageService.read(message);
+    public AjaxReturn cat(@RequestParam String message) {
+        MessageStatus m = JSON.parseObject(message, MessageStatus.class);
+        m.setStatus(MgStatus.READ.value());
+        messageStatusService.update(m);
         return new AjaxReturn(0, "操作成功");
     }
 
@@ -44,6 +51,14 @@ public class MessageCtrl {
     @PostMapping(value = "/refuse")
     @ResponseBody
     public AjaxReturn refuse(@RequestParam String message) {
+        messageService.refuse(message);
+        return new AjaxReturn(0, "操作成功");
+    }
+
+    //拒绝
+    @PostMapping(value = "/read")
+    @ResponseBody
+    public AjaxReturn read(@RequestParam String message) {
         messageService.refuse(message);
         return new AjaxReturn(0, "操作成功");
     }
@@ -60,9 +75,8 @@ public class MessageCtrl {
     @ResponseBody
     public AjaxReturn notice(@RequestParam String message) {
         Message m = JSON.parseObject(message, Message.class);
-        m.setDate(UtilFun.DateToString(new Date(), UtilFun.YYYYMMDD));
-        m.setId(UUID.randomUUID().getLeastSignificantBits());
-        messageService.save(m);
+
+        messageService.notic(m);
         return new AjaxReturn(0, "操作成功");
     }
 

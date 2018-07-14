@@ -51,6 +51,12 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="layui-col-md12 layui-card">
+                            <div class="layui-card-header">代办事宜</div>
+                            <div class="layui-card-body">
+                                <table id="message" lay-filter="message"></table>
+                            </div>
+                        </div>
                         <div class=" layui-col-md6 layui-card">
                             <div class="layui-card-header">已跟进</div>
                             <div class="layui-card-body">
@@ -64,9 +70,7 @@
                                 <table id="wtj" lay-filter="wtj"></table>
                             </div>
                         </div>
-                        <div style="float: left;" class="layui-card">
-                            <table id="message" lay-filter="message"></table>
-                        </div>
+
                     </div>
                 </div>
 
@@ -100,9 +104,12 @@
     </form>
 </div>
 <script type="text/html" id="onmessage">
-
+    {{#  if(d.type == 2){ }}
+    <a class="layui-btn  layui-btn-xs" lay-event="cat">查看</a>
+    {{#  }else{ }}
     <a class="layui-btn  layui-btn-xs" lay-event="yes">同意</a>
     <a class="layui-btn  layui-btn-xs" lay-event="no">不同意</a>
+    {{#  } }}
 </script>
 <script th:src="@{/static/layui/layui.js}"></script>
 <!-- layui规范化用法 -->
@@ -177,6 +184,13 @@
             if (layEvent === 'no') {
                 $.post([[${ctx}]] + '/message/refuse', {message: JSON.stringify(obj.data)}, function (data) {
                     amessage.reload()
+                    layer.msg(data.message)
+                });
+            }
+            if (layEvent === 'cat') {
+                console.log(obj.data)
+                $.post([[${ctx}]] + '/message/cat', {message: JSON.stringify(obj.data)}, function (data) {
+                    amessage.reload();
                     layer.msg(data.message)
                 });
             }

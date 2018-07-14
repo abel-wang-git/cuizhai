@@ -421,6 +421,10 @@
                     });
                 layer.full(addurge);
             }else if(obj.event==='end'){
+                if (obj.data.status !== 0 && obj.data.status !== 6) {
+                    layer.msg("非法操作");
+                    return;
+                }
                 $("#endReason").val(obj.data.endReason);
                 layer.open({
                     type: 1
@@ -447,8 +451,8 @@
                     }
                 })
             } else if (obj.event == "rethin") {
-                if (obj.data.status === 2) {
-                    layer.msg("已留案")
+                if (obj.data.status !== 0 && obj.data.status !== 6) {
+                    layer.msg("非法操作");
                     return;
                 }
                 layer.open({
