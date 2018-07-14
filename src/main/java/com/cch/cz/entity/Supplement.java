@@ -10,8 +10,16 @@ public class Supplement extends BaseEntity{
     public final static int NORMAL = 0;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    /*合同号*/
+    private Long contractNum;
+    /*委外公司*/
+    private String appointCompany;
+    /*委派日期*/
+    private String appointData;
+    /*退案日期*/
+    private String stopAppoint;
+    /*客户id*/
+    private String customerId;
      /*客户公司部门*/
     private String customerDepartment;
     /*客户住宅电话*/
@@ -35,6 +43,46 @@ public class Supplement extends BaseEntity{
     /*其他联系人电话*/
     private String customerOtherPhone;
 
+
+    public Long getContractNum() {
+        return contractNum;
+    }
+
+    public void setContractNum(Long contractNum) {
+        this.contractNum = contractNum;
+    }
+
+    public String getAppointCompany() {
+        return appointCompany;
+    }
+
+    public void setAppointCompany(String appointCompany) {
+        this.appointCompany = appointCompany;
+    }
+
+    public String getAppointData() {
+        return appointData;
+    }
+
+    public void setAppointData(String appointData) {
+        this.appointData = appointData;
+    }
+
+    public String getStopAppoint() {
+        return stopAppoint;
+    }
+
+    public void setStopAppoint(String stopAppoint) {
+        this.stopAppoint = stopAppoint;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
     private Integer status;
     public Integer getStatus() {
         return status;
@@ -42,14 +90,6 @@ public class Supplement extends BaseEntity{
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getCustomerDepartment() {

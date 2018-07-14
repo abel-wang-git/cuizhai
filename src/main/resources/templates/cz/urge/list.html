@@ -230,6 +230,7 @@
                     <div class="layui-input-block">
                         <button class="layui-btn" lay-submit="lay-submit" lay-filter="urge">添加催记</button>
                         <a class="layui-btn" id="next">下一位</a>
+                        <a class="layui-btn" id="eext">上一位</a>
 
                     </div>
                 </div>
@@ -546,6 +547,27 @@
                 cursor=0;
                 table.reload("cases",{page:{curr:Number(currpage)+1}
                 ,done:function (res, curr, count) {
+                        setcase(res.data[index]);
+                        setoption(res.data[index]);
+                        currdata=res;
+                        currpage=curr;
+                        log.reload({where:{cases:$("#caseId").val()}});
+                    }});
+            }else{
+                setcase(currdata.data[index]);
+                setoption(currdata.data[index]);
+                log.reload({where:{cases:$("#caseId").val()}});
+            }
+
+        });
+        $("#eext").click(function () {
+            var index= Number(cursor)-1;
+            cursor--;
+            if (index === 10) {
+                index=0;
+                cursor=0;
+                table.reload("cases",{page:{curr:Number(currpage)-1}
+                    ,done:function (res, curr, count) {
                         setcase(res.data[index]);
                         setoption(res.data[index]);
                         currdata=res;
