@@ -228,7 +228,9 @@
 
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit="lay-submit" lay-filter="urge">添加催记</button>
+                        <button class="layui-btn" lay-verify="timeo" lay-submit="lay-submit" lay-filter="urge"
+                                id="urgeadd">添加催记
+                        </button>
                         <a class="layui-btn" id="next">下一位</a>
                         <a class="layui-btn" id="eext">上一位</a>
 
@@ -301,6 +303,12 @@
                 /^[\S\s]{10,100}$/
                 , '备注信息不少于10字符不多余100字符'
             ]
+            , timeo: function () {
+                if ($('#urgeadd').is('.layui-btn-disabled')) {
+
+                    return '操作频繁';
+                }
+            }
         });
         //日期渲染
         laydate.render({
@@ -395,7 +403,6 @@
                 });
                 $.post([[${ctx}]] + '/case/list/sum', {where: JSON.stringify(JSON.parse('{"staffId":"' + [[${session.staff.loginName}]] + '"}'))}, function (data) {
                     $("#sumArrears").text(data);
-                    console.log(data);
                 })
                 currdata=res;
                 currpage=curr;
@@ -530,7 +537,6 @@
             $("span[name='sumArrears']").text(cases.sumArrears);
             $("input[name='caseId']").val(cases.id);
             $("span[name='supplement']").html(typeof(cases.supplement) == "undefined" ? '' : cases.supplement);
-            console.log(cases.supplement)
         }
 
         function setoption(cases) {
@@ -615,6 +621,7 @@
         });
         //添加崔记
         form.on('submit(urge)', function (data) {
+
             $.ajax({
                 url: [[${ctx}]] + "/urge/add",
                 type: "post",
@@ -624,6 +631,10 @@
                 success: function (data) {
                     layer.msg(data.message);
                     $('form')[1].reset();
+                    $('#urgeadd').addClass(" layui-btn-disabled");
+                    setTimeout((function () {
+                        $('#urgeadd').removeClass("layui-btn-disabled")
+                    }), 60000)
                     $("#cuishouEnd").hide();
                     log.reload({where:{cases:$("#caseId").val()}});
                 }
