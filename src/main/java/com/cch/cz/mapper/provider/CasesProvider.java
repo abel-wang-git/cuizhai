@@ -61,6 +61,10 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 if (cases.getLastUrge().equals("no"))
                     where.append("and last_urge is  null");
             }
+            if (UtilFun.isEmptyString(cases.getAppointData()))
+                where.append(" and appoint_data=#{appointData}");
+            if (UtilFun.isEmptyString(cases.getType()))
+                where.append(" and type=#{type}");
             if (UtilFun.isEmptyString(cases.getOverrangingDay())) {
                 String d = cases.getOverrangingDay();
                 switch (d) {
@@ -120,8 +124,11 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             SELECT(BuildSql.select(Cases.class));
             FROM(BuildSql.tablename(Cases.class));
             StringBuilder where = new StringBuilder(" 1=1 ");
-            if (null != cases.getStatus() && cases.getStatus() != -1)
+            if (null != cases.getStatus() && cases.getStatus() != -1) {
                 where.append(" and status = #{status} ");
+            } else {
+                where.append(" and status !=1 ");
+            }
             if (UtilFun.isEmptyString(cases.getName()))
                 where.append(" and name = #{name} ");
             if (UtilFun.isEmptyString(cases.getCustomerPhoneNumber()))

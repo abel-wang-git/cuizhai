@@ -60,7 +60,8 @@ public class StaffCtrl {
     @PostMapping(value = "/list")
     @ResponseBody
     public Table hKlist(@RequestParam int page , @RequestParam int limit){
-        List<Map> staffs =  staffService.listStaff();
+        Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
+        List<Map> staffs = staffService.listStaff(staff == null ? null : staff.getCompanyId());
         PageHelper.startPage(page,limit);
         Table table = new Table();
         Page<Map> staffa = (Page<Map>) staffService.listByStaff();

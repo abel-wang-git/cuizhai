@@ -148,7 +148,7 @@ public class CaseCtrl {
 
 
     /**
-     * 查找属于该公司的case
+     * 查找属于该员工的case
      *
      * @param cases 条件
      * @return
@@ -174,7 +174,7 @@ public class CaseCtrl {
 
     @PostMapping(value = "/list/sum")
     @ResponseBody
-    public Double sumArrearsByStaff(@RequestParam("where") String cases) {
+    public Double sumArrearsByStaff(@RequestParam("staff") String cases) {
         Cases where = JSON.parseObject(cases, Cases.class);
         List<Cases> caseslist = casesService.listByStaff(where);
         Double sum = 0.0;

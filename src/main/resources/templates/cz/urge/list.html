@@ -26,6 +26,24 @@
         </div>
     </div>
     <div class="layui-inline">
+        <label class="layui-form-label">案件类型：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <select name="type" class="layui-input">
+                <option value="">全部</option>
+                <option value="正常委外">正常委外</option>
+                <option value="360+">360+</option>
+                <option value="佰赢专案">佰赢专案</option>
+                <option value="提前委外">提前委外</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">委案日期：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="appointData" id="appointData" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-inline">
         <label class="layui-form-label">合同号：</label>
         <div class="layui-input-inline" style="width: 100px;">
             <input name="contractNum" type="text" class="layui-input"/>
@@ -64,14 +82,13 @@
     <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
 </form>
 <table id="cases" lay-filter="cases"></table>
-<div style="display: none; height: 300px; width: auto" id="adjustbdiv">
-    <table id="supplementl" lay-filter="supplementl"></table>
-
-</div>
-
 <div id="pav">
     <div style="float: right;padding-right: 30px;position: relative;bottom: 40px">当前总欠款：<span id="sumArrears"></span>
     </div>
+</div>
+<div style="display: none; height: 300px; width: auto" id="adjustbdiv">
+    <table id="supplementl" lay-filter="supplementl"></table>
+
 </div>
 
 <script type="text/html" id="urge">
@@ -155,8 +172,13 @@
             客户公司名称：<span name ="customerCompany"></span><br/>
             客户公司地址：<span name ="customerCompanyAddress"></span><br/>
             还款账号：<span name ="repaymentAccount"></span><br/>
+            户名：<span name="accountMaster"></span><br/>
+            开户行：<span name="bank"></span><br/>
+            代扣账户：<span name="withholdingAccount"></span><br/>
+            代扣开户行：<span name="withholding"></span><br/>
             购买商品：<span name ="commodity"></span>
             品牌：<span name ="brand"></span><br/>
+            pos点：<span name="posPlace"></span><br/>
             户籍地址：<span name ="customerAddress"></span><br/>
             委派日期：<span name ="appointData"></span>
             退案日期：<span name ="stopAppoint"></span><br/>
@@ -173,6 +195,8 @@
             欠款金额：<span name ="arrears"></span>
             委外催收费：<span name ="serviceCharge"></span>
             总欠款：<span name ="sumArrears"></span><br/>
+            合同数量：<span name="contractsNum"></span><br/>
+            合同申请日：<span name="contractApplyDate"></span><br/>
             补充信息：<span name ="supplement"></span>
         </div>
     </div>
@@ -297,6 +321,21 @@
             , form = layui.form,
              layedit = layui.layedit
              , laydate = layui.laydate;
+        $.fn.serializeObject = function () {
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function () {
+                if (o[this.name]) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
         //表单验证
         form.verify({
             rmarks: [
@@ -316,6 +355,11 @@
             , format: 'yyyy/MM/dd'
             , min: 0
             , max: 30
+            , theme: 'grid'
+        });
+        laydate.render({
+            elem: '#appointData'
+            , format: 'yyyy/MM/dd'
             , theme: 'grid'
         });
        var supplement = table.render({
@@ -363,6 +407,7 @@
             , method: 'post'
             , cols: [[ //表头
                 {field: 'name', title: '姓名', width: '7%', sort: true}
+                , {field: 'contractNum', title: '合同号', width: '8%'}
                 , {field: 'customerPhoneNumber', title: '手机', width: '8%', sort: true}
                 , {field: 'appointData', title: '委案日期', width: '10%'}
                 , {field: 'stopAppoint', title: '退案日期', width: '10%'}
@@ -370,6 +415,7 @@
                 , {field: 'overrangingDay', title: '逾期天数', width: '5%', sort: true}
                 , {field: 'repaymentMoney', title: '已还金额', width: '10%', sort: true}
                 , {field: 'sumArrears', title: '总欠款', width: '10%', sort: true}
+                , {field: 'customerAddress', title: '户籍地址', width: '11%'}
                 , {field: 'lastUrge', title: '最后一次催记时间', width: '10%', sort: true}
                 , {field: 'status', title: '状态', width: '6%',templet:'#status'}
                 , {fixed: 'urge', title: '操作', width: 210, align: 'center', toolbar: '#urge', fixed: 'right'}
@@ -401,7 +447,7 @@
                         $(this).css('color', '');
                     }
                 });
-                $.post([[${ctx}]] + '/case/list/sum', {where: JSON.stringify(JSON.parse('{"staffId":"' + [[${session.staff.loginName}]] + '"}'))}, function (data) {
+                $.post([[${ctx}]] + '/case/list/sum', {staff: JSON.stringify($('#search').serializeObject())}, function (data) {
                     $("#sumArrears").text(data);
                 })
                 currdata=res;
@@ -536,6 +582,13 @@
             $("span[name='serviceCharge']").text(cases.serviceCharge);
             $("span[name='sumArrears']").text(cases.sumArrears);
             $("input[name='caseId']").val(cases.id);
+            $("span[name='contractsNum']").text(cases.contractsNum);
+            $("span[name='contractApplyDate']").text(cases.contractApplyDate);
+            $("span[name='accountMaster']").text(cases.accountMaster);
+            $("span[name='bank']").text(cases.bank);
+            $("span[name='posPlace']").text(cases.posPlace);
+            $("span[name='withholding']").text(cases.withholding);
+            $("span[name='withholdingAccount']").text(cases.withholdingAccount);
             $("span[name='supplement']").html(typeof(cases.supplement) == "undefined" ? '' : cases.supplement);
         }
 

@@ -69,8 +69,8 @@ public class StaffServiceImpl extends BaseServiceImpl<Staff,String> implements S
     }
 
     @Override
-    public List<Map> listStaff() {
-        return staffMapper.listStaff();
+    public List<Map> listStaff(Long company) {
+        return staffMapper.listStaff(company);
     }
 
     @Override
@@ -80,7 +80,6 @@ public class StaffServiceImpl extends BaseServiceImpl<Staff,String> implements S
 
     @Override
     public List<Map> listBycompanyccaa(String company){
-        System.out.println(company);
         return staffMapper.listByCompanyccaa(company);}
 
     @Override

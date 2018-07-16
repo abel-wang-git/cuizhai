@@ -31,7 +31,7 @@ public interface StaffService extends BaseService<Staff,String>  {
      */
     void disable(List<Cases> cases, String[] staff);
 
-    List<Map> listStaff();
+    List<Map> listStaff(Long company);
     List<Map> listByStaff();
     List<Map> listBycompanyccaa(String company);
 }
