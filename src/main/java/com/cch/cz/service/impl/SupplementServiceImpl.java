@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-public class SupplementServiceImpl  extends BaseServiceImpl<com.cch.cz.entity.Supplement,Long> implements SupplementService{
+public class SupplementServiceImpl extends BaseServiceImpl<com.cch.cz.entity.Supplement, String> implements SupplementService {
     @Resource
     private SupplementMapper supplementMapper;
 

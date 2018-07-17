@@ -117,27 +117,35 @@ public class Cases extends BaseEntity {
     /*客户公司地址*/
     private String customerCompanyAddress;
 //    /*客户公司部门*/
-//    private String customerDepartment;
+private String customerDepartment;
 //    /*客户住宅电话*/
-//    private String customerResidencePhone;
+private String customerResidencePhone;
 //    /*客户住宅地址*/
-//    private String customerResidenceAddress;
+private String customerResidenceAddress;
 //    /*客户配偶姓名*/
-//    private String customerSpouse;
+@Transient
+private String customerSpouse;
 //    /*客户配偶联系电话*/
-//    private String customerSpousePhone;
+@Transient
+private String customerSpousePhone;
 //    /*客户亲戚姓名*/
-//    private String customerRelativeName;
+@Transient
+private String customerRelativeName;
 //    /*客户与亲戚关系*/
-//    private String customerRelationship;
+@Transient
+private String customerRelationship;
 //    /*客户亲戚联系电话*/
-//    private String customerRelativePhone;
+@Transient
+private String customerRelativePhone;
 //    /*其他联系人姓名*/
-//    private String customerRelativeOther;
+@Transient
+private String customerRelativeOther;
 //    /*其他联系人关系*/
-//    private String customerRelaOther;
+@Transient
+private String customerRelaOther;
     /*其他联系人电话*/
-//    private String customerOtherPhone;
+    @Transient
+    private String customerOtherPhone;
     /*客户邮箱*/
     private String customerMail;
     /*代扣开户行*/
@@ -500,29 +508,6 @@ public class Cases extends BaseEntity {
 
     public String getCustomerCompanyAddress(){ return customerCompanyAddress; }
 
-    public void setCustomerCompanyAddress(String customerCompanyAddress){ this.customerCompanyAddress = customerCompanyAddress; }
-
-
-    /*   public String getCustomerOfficePhone() {
-        return customerOfficePhone;
-    }
-
-    public void setCustomerOfficePhone(String customerOfficePhone) {
-        this.customerOfficePhone = customerOfficePhone;
-    }
-
-    public String getCustomerCompany() {
-        return customerCompany;
-    }
-
-    public void setCustomerCompany(String customerCompany) {
-        this.customerCompany = customerCompany;
-    }
-
-    public String getCustomerCompanyAddress() {
-        return customerCompanyAddress;
-    }
-
     public void setCustomerCompanyAddress(String customerCompanyAddress) {
         this.customerCompanyAddress = customerCompanyAddress;
     }
@@ -614,7 +599,6 @@ public class Cases extends BaseEntity {
     public void setCustomerOtherPhone(String customerOtherPhone) {
         this.customerOtherPhone = customerOtherPhone;
     }
-*/
     public String getCustomerMail() {
         return customerMail;
     }
