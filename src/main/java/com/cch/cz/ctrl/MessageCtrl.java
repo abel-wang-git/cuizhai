@@ -59,7 +59,7 @@ public class MessageCtrl {
     @PostMapping(value = "/read")
     @ResponseBody
     public AjaxReturn read(@RequestParam String message) {
-        messageService.refuse(message);
+        messageService.read(message);
         return new AjaxReturn(0, "操作成功");
     }
 
