@@ -50,6 +50,7 @@ public class UrgeRecordCtrl {
 
     @GetMapping(value = "/list")
     public  String list(Model model){
+
         return "/cz/urge/list";
     }
     @PostMapping(value = "/add")

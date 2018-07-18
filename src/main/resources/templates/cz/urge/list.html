@@ -6,6 +6,7 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
+<!--查询-->
 <form class="layui-form where" method="post" id="search">
     <div class="layui-inline">
         <label class="layui-form-label">姓名：</label>
@@ -86,10 +87,6 @@
     <div style="float: right;padding-right: 30px;position: relative;bottom: 40px">当前总欠款：<span id="sumArrears"></span>
     </div>
 </div>
-<div style="display: none; height: 300px; width: auto" id="adjustbdiv">
-    <table id="supplementl" lay-filter="supplementl"></table>
-
-</div>
 
 <script type="text/html" id="urge">
     <a class="layui-btn  layui-btn-xs" lay-event="urge">催记</a>
@@ -158,16 +155,7 @@
         <div class="layui-colla-content layui-show">
 
             <span name ="name"></span> 性别：<span name ="sex"></span> 身份证：<span name ="idCard"></span><button name="Id" class="layui-btn layui-btn-xs" id="supplement">补充信息</button>
-            <button name="cd" class="layui-btn layui-btn-xs" id="supplementb">协查信息</button><br/>
-
             手机：<span name ="customerPhoneNumber"></span><br/>
-            <!--住宅电话：<span name ="customerResidencePhone"></span><br/>-->
-            <!--配偶姓名：<span name ="customerSpouse"></span>-->
-            <!--电话：<span name ="customerSpousePhone"></span><br/>-->
-            <!--亲戚姓名：<span name ="customerRelativeName"></span>-->
-            <!--电话：<span name ="customerRelativePhone"></span><br/>-->
-            <!--其他联系人姓名：<span name ="customerRelativeOther"></span>-->
-            <!--电话：<span name ="customerOtherPhone"></span><br/>-->
             客户办公电话：<span name ="customerOfficePhone"></span><br/>
             客户公司名称：<span name ="customerCompany"></span><br/>
             客户公司地址：<span name ="customerCompanyAddress"></span><br/>
@@ -205,65 +193,144 @@
     <div class="layui-col-md6 layui-colla-item">
         <h2 class="layui-colla-title">添加催记</h2>
         <div class="layui-colla-content layui-show">
-            <form class="layui-form" method="post">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">催收对象</label>
-                    <div class="layui-input-inline">
-                        <select name="target" lay-verify="required" autocomplete="off" class="layui-input">
+            <div class="layui-tab layui-tab-card">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">崔记</li>
+                    <li>协查</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <!--崔记-->
+                        <form class="layui-form" method="post">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">催收对象</label>
+                                <div class="layui-input-inline">
+                                    <select name="target" lay-verify="required" autocomplete="off" class="layui-input">
 
-                        </select>
-                    </div>
-                </div>
+                                    </select>
+                                </div>
+                            </div>
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label">接通状态</label>
-                    <div class="layui-input-inline">
-                        <select name="status" lay-verify="required" autocomplete="off" class="layui-input" lay-filter="status">
-                            <option value="">请选择</option>
-                            <option value="正常接通">正常接通</option>
-                            <option value="无人接听">无人接听</option>
-                            <option value="暂停服务">暂停服务</option>
-                            <option value="暂时无法接通">暂时无法接通</option>
-                            <option value="关机">关机</option>
-                            <option value="挂机">挂机</option>
-                            <option value="停机">停机</option>
-                            <option value="正在通话">正在通话</option>
-                            <option value="来电提醒">来电提醒</option>
-                            <option value="空号">空号</option>
-                        </select>
-                    </div>
-                </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">接通状态</label>
+                                <div class="layui-input-inline">
+                                    <select name="status" lay-verify="required" autocomplete="off" class="layui-input"
+                                            lay-filter="status">
+                                        <option value="">请选择</option>
+                                        <option value="正常接通">正常接通</option>
+                                        <option value="无人接听">无人接听</option>
+                                        <option value="暂停服务">暂停服务</option>
+                                        <option value="暂时无法接通">暂时无法接通</option>
+                                        <option value="关机">关机</option>
+                                        <option value="挂机">挂机</option>
+                                        <option value="停机">停机</option>
+                                        <option value="正在通话">正在通话</option>
+                                        <option value="来电提醒">来电提醒</option>
+                                        <option value="空号">空号</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                <div class="layui-form-item" id="cuishouEnd" style="display: none">
-                    <label class="layui-form-label">催收结果</label>
-                    <div class="layui-input-inline">
-                        <select id="result" name="result" lay-verify="required" autocomplete="off" class="layui-input" lay-filter="result">
-                        </select>
-                    </div>
-                </div>
+                            <div class="layui-form-item" id="cuishouEnd" style="display: none">
+                                <label class="layui-form-label">催收结果</label>
+                                <div class="layui-input-inline">
+                                    <select id="result" name="result" lay-verify="required" autocomplete="off"
+                                            class="layui-input" lay-filter="result">
+                                    </select>
+                                </div>
+                            </div>
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label">备注</label>
-                    <div class="layui-input-inline">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">备注</label>
+                                <div class="layui-input-inline">
                     <textarea type="text" name="rmarks" required="required " lay-verify="required|rmarks" placeholder=""
                               autocomplete="off" class="layui-input" style="height: 100px;"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-verify="timeo" lay-submit="lay-submit"
+                                            lay-filter="urge"
+                                            id="urgeadd">添加催记
+                                    </button>
+
+
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="caseId" id="caseId"/>
+                            <input type="hidden" name="staffId" th:value="${session.staff.loginName}"/>
+                        </form>
                     </div>
-                </div>
+                    <!--协查-->
+                    <div class="layui-tab-item">
+                        <form class="layui-form" method="post">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">催收对象</label>
+                                <div class="layui-input-inline">
+                                    <select name="suTarget" lay-verify="required" autocomplete="off"
+                                            class="layui-input">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">接通状态</label>
+                                <div class="layui-input-inline">
+                                    <select name="suStatus" lay-verify="required" autocomplete="off" class="layui-input"
+                                            lay-filter="sustatus">
+                                        <option value="">请选择</option>
+                                        <option value="正常接通">正常接通</option>
+                                        <option value="无人接听">无人接听</option>
+                                        <option value="暂停服务">暂停服务</option>
+                                        <option value="暂时无法接通">暂时无法接通</option>
+                                        <option value="关机">关机</option>
+                                        <option value="挂机">挂机</option>
+                                        <option value="停机">停机</option>
+                                        <option value="正在通话">正在通话</option>
+                                        <option value="来电提醒">来电提醒</option>
+                                        <option value="空号">空号</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <button class="layui-btn" lay-verify="timeo" lay-submit="lay-submit" lay-filter="urge"
-                                id="urgeadd">添加催记
-                        </button>
-                        <a class="layui-btn" id="next">下一位</a>
-                        <a class="layui-btn" id="eext">上一位</a>
+                            <div class="layui-form-item" id="suEnd" style="display: none">
+                                <label class="layui-form-label">催收结果</label>
+                                <div class="layui-input-inline">
+                                    <select id="suResult" name="suResult" lay-verify="required" autocomplete="off"
+                                            class="layui-input" lay-filter="result">
+                                    </select>
+                                </div>
+                            </div>
 
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">备注</label>
+                                <div class="layui-input-inline">
+                                    <textarea type="text" name="suRemark" required="required "
+                                              lay-verify="required|rmarks"
+                                              autocomplete="off" class="layui-input" style="height: 100px;"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-verify="timeo" lay-submit="lay-submit"
+                                            lay-filter="suadd"
+                                            id="suadd">添加协查
+                                    </button>
+
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="caseId"/>
+                            <input type="hidden" name="staffId" th:value="${session.staff.loginName}"/>
+                        </form>
                     </div>
+                    <a class="layui-btn" id="next">下一位</a>
+                    <a class="layui-btn" id="eext">上一位</a>
                 </div>
+            </div>
 
-                <input type="hidden" name="caseId" id="caseId"/>
-                <input type="hidden" name="staffId" th:value="${session.staff.loginName}"/>
-            </form>
         </div>
     </div>
 
@@ -283,18 +350,20 @@
         <option value="还款处理中">还款处理中</option>
         <option value="违诺或跳票">违诺或跳票</option>
         <option value="无还款意愿">无还款意愿</option>
-        <option value="联系人承诺转告债务人">联系人承诺转告债务人</option>
         <option value="有还款意愿暂时无还款能力">有还款意愿暂时无还款能力</option>
         <option value="是本人，否认借款">是本人，否认借款</option>
+        <option value="其他">其他</option>
+    </select>
+
+</div>
+<div id="sureloption" style="display:none;">
+    <select>
+        <option value="联系人承诺转告债务人">联系人承诺转告债务人</option>
         <option value="不是本人，但认识借款人">不是本人，但认识借款人</option>
         <option value="借款人入狱或死亡">借款人入狱或死亡</option>
         <option value="借款人因病住院或意外伤残">借款人因病住院或意外伤残</option>
         <option value="其他">其他</option>
     </select>
-
-</div>
-<div id="supplementlayer" style="display: none">
-    <textarea id="demo" style="display: none;"></textarea>
 </div>
 
 <div class="layui-inline" style="display: none;padding-top: 20px" id="day">
@@ -315,11 +384,12 @@
     layui.config({
         base: [[${ctx}]] + '/static/layui/js/'
     }).use('cityselect');
-    layui.use(['table', 'form', 'laytpl', 'layedit', 'laydate'], function () {
+    layui.use(['table', 'form', 'laytpl', 'layedit', 'laydate', 'element'], function () {
          var table = layui.table
             , $ = layui.$
             , form = layui.form,
              layedit = layui.layedit
+             , element = layui.element
              , laydate = layui.laydate;
         $.fn.serializeObject = function () {
             var o = {};
@@ -362,40 +432,7 @@
             , format: 'yyyy/MM/dd'
             , theme: 'grid'
         });
-       var supplement = table.render({
-            elem: '#supplementl'
-            , id: 'supplement'
-            , height:'full'
-            , url: 'list' //数据接口
-            , page: {elem: 'pav'} //开启分页
-            , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-            , method: 'post'
-            , cols: [[ //表头
-                {field: 'customerDepartment', title: '客户公司部门', width: '8%', sort: true}
-                , {field: 'customerResidencePhone', title: '客户住宅电话', width: '8%', sort: true}
-                , {field: 'customerResidenceAddress', title: '客户住宅地址', width: '8%'}
-                , {field: 'customerSpouse', title: '客户配偶姓名', width: '8%'}
-                , {field: 'customerSpousePhone', title: '客户配偶联系电话', width: '8%'}
-                , {field: 'customerRelativeName', title: '客户亲戚姓名', width: '8%', sort: true}
-                , {field: 'customerRelationship', title: '客户与亲戚关系', width: '8%', sort: true}
-                , {field: 'customerRelativePhone', title: '客户亲戚联系电话', width: '8%', sort: true}
-                , {field: 'customerRelativeOther', title: '其他联系人姓名', width: '8%', sort: true}
-                , {field: 'customerRelaOther', title: '其他联系人关系', width: '8%', sort: true}
-                , {field: 'customerOtherPhone', title: '其他联系人电话', width:'8%', sort: true}
-            ]]
-        });
-        $('#supplementb').click(function () {
-            layer.open({
-                type: 1
-                , title: '协查信息'
-                , area: ['1510px', '90%']
-                , content: $("#adjustbdiv")
-                , yes: function (index) {
-                    supplement.reload();
-                }
-            })
 
-        });
         var cases = table.render({
             elem: '#cases'
             , id: 'cases'
@@ -461,8 +498,10 @@
             }
             cursor = obj.tr.attr("data-index");
             if(obj.event==='urge'){
-                setcase(obj.data)
-                setoption(obj.data)
+                setcase(obj.data);
+                setoption(obj.data);
+                //协查对象
+                setsu(obj.data);
                 log.reload({where:{cases:$("#caseId").val()}});
                 var addurge=layer.open({
                     type: 1
@@ -595,11 +634,20 @@
         function setoption(cases) {
             $("select[name='target']").empty();
             $("select[name='target']").append("<option value='[本人]"+cases.customerPhoneNumber+"'>[本人]"+cases.customerPhoneNumber+"</option>")
-//            $("select[name='target']").append("<option value='[配偶]"+cases.customerSpousePhone+"'>[配偶]"+cases.customerSpousePhone+"</option>")
-//            $("select[name='target']").append("<option value='[亲戚]"+cases.customerRelativePhone+"'>[亲戚]"+cases.customerRelativePhone+"</option>")
-//            $("select[name='target']").append("<option value='[其他]"+cases.customerOtherPhone+"'>[其他]"+cases.customerOtherPhone+"</option>")
-//            $("select[name='target']").append("<option value='[住宅]"+cases.customerResidencePhone+"'>[住宅]"+cases.customerResidencePhone+"</option>")
+            $("select[name='target']").append("<option value='[住宅]" + cases.customerResidencePhone + "'>[住宅]" + cases.customerResidencePhone + "</option>")
             form.render('select');
+        }
+
+        function setsu(cases) {
+            $.post([[${ctx}]] + "/supplement/bynum", {num: cases.contractNum}, function (data) {
+                if (data.code === 0) {
+                    $("select[name='suTarget']").empty();
+                    $("select[name='suTarget']").append("<option value='[配偶]" + data.data.supplement.customerSpousePhone + "'>[配偶]" + data.data.supplement.customerSpousePhone + "</option>")
+                    $("select[name='suTarget']").append("<option value='[亲戚]" + data.data.supplement.customerRelativePhone + "'>[亲戚]" + data.data.supplement.customerRelativePhone + "</option>")
+                    $("select[name='suTarget']").append("<option value='[其他]" + data.data.supplement.customerOtherPhone + "'>[其他]" + data.data.supplement.customerOtherPhone + "</option>")
+                    form.render('select');
+                }
+            });
         }
 
         $("#next").click(function () {
@@ -612,6 +660,7 @@
                 ,done:function (res, curr, count) {
                         setcase(res.data[index]);
                         setoption(res.data[index]);
+                        setsu(res.data[index]);
                         currdata=res;
                         currpage=curr;
                         log.reload({where:{cases:$("#caseId").val()}});
@@ -619,6 +668,7 @@
             }else{
                 setcase(currdata.data[index]);
                 setoption(currdata.data[index]);
+                setsu(currdata.data[index]);
                 log.reload({where:{cases:$("#caseId").val()}});
             }
 
@@ -633,6 +683,7 @@
                     ,done:function (res, curr, count) {
                         setcase(res.data[index]);
                         setoption(res.data[index]);
+                        setsu(res.data[index]);
                         currdata=res;
                         currpage=curr;
                         log.reload({where:{cases:$("#caseId").val()}});
@@ -640,6 +691,7 @@
             }else{
                 setcase(currdata.data[index]);
                 setoption(currdata.data[index]);
+                setsu(currdata.data[index]);
                 log.reload({where:{cases:$("#caseId").val()}});
             }
 
@@ -654,6 +706,19 @@
                 $("#result").empty();
                 $("#result").append("<option value='"+data.value+"'>"+data.value+"</option>");
                 $("#cuishouEnd").hide();
+            }
+            form.render('select');
+        });
+
+        form.on('select(sustatus)', function (data) {
+            if (data.value === "正常接通") {
+                $("#suResult").empty();
+                $("#suResult").append($("#sureloption >select").html());
+                $("#suEnd").show();
+            } else {
+                $("#suResult").empty();
+                $("#suResult").append("<option value='" + data.value + "'>" + data.value + "</option>");
+                $("#suEnd").hide();
             }
             form.render('select');
         });
@@ -674,7 +739,6 @@
         });
         //添加崔记
         form.on('submit(urge)', function (data) {
-
             $.ajax({
                 url: [[${ctx}]] + "/urge/add",
                 type: "post",
@@ -695,34 +759,27 @@
             return false;
         });
 
-        var ed=layedit.build('demo',{
-            tool:[]
-        });
-
-        $("#supplement").click(function () {
-            var id=$(this).attr("attr");
-            $("#demo").text($("span[name='supplement']").html());
-            layer.open({
-                type: 1
-                , title: "补充信息"
-                , shade: 0
-                , content:$("#supplementlayer")
-                , btn: ['确定']
-                ,yes:function () {
-                    $.ajax({
-                        url: [[${ctx}]] + "/case/update",
-                        type: "post",
-                        dataType: 'json',
-                        async:false,
-                        data: {cases:JSON.stringify(JSON.parse('{"id":"'+id+'","supplement":"'+ layedit.getContent(ed)+'"}'))},
-                        success: function (data) {
-                            layer.msg(data.message);
-                            $("span[name='supplement']").html(layedit.getContent(ed));
-                        }
-                    });
+        form.on('submit(suadd)', function (data) {
+            $.ajax({
+                url: [[${ctx}]] + "/surge/add",
+                type: "post",
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8',
+                data: JSON.stringify(data.field),
+                success: function (data) {
+                    layer.msg(data.message);
+                    $('form')[1].reset();
+                    $('#suadd').addClass(" layui-btn-disabled");
+                    setTimeout((function () {
+                        $('#suadd').removeClass("layui-btn-disabled")
+                    }), 60000)
+                    $("#suEnd").hide();
+                    log.reload({where: {cases: $("#caseId").val()}});
                 }
             });
-        })
+            return false;
+        });
+
     })
     /*]]>*/
 </script>

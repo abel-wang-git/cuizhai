@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -34,13 +35,35 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     private MessageStatusMapper messageStatusMapper;
     @Resource
     private RoleMapper roleMapper;
+    @Resource
+    private SupplementMapper supplementMapper;
 
     @Override
     @Transactional
-    public void expCase(List<Cases> casesList) {
+    public void expCase(List<Cases> casesList) throws IllegalAccessException {
         for (Cases c : casesList) {
             casesMapper.save(c);
+            Supplement supplement = new Supplement();
+            supplement.setContractNum(c.getContractNum());
+            supplement.setCustomerOtherPhone(c.getCustomerOtherPhone());
+            supplement.setCustomerRelaOther(c.getCustomerRelaOther());
+            supplement.setCustomerRelativeOther(c.getCustomerRelativeOther());
+            supplement.setCustomerRelationship(c.getCustomerRelationship());
+            supplement.setCustomerRelativeName(c.getCustomerRelativeName());
+            supplement.setCustomerRelativePhone(c.getCustomerRelativePhone());
+            supplement.setCustomerSpouse(c.getCustomerSpouse());
+            supplement.setCustomerSpousePhone(c.getCustomerSpousePhone());
+            Field[] fields = Supplement.class.getDeclaredFields();
+            for (Field f : fields) {
+                f.setAccessible(true);
+                if (f.get(supplement) != null) {
+                    supplementMapper.save(supplement);
+                    break;
+                }
+                f.setAccessible(false);
+            }
         }
+
     }
 
     @Override

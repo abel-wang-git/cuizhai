@@ -4,6 +4,7 @@ import com.cch.cz.base.service.BaseService;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.exception.ObjectNullException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,8 @@ import java.util.Map;
 public interface CasesService extends BaseService<Cases,Long>  {
 
 
-    void expCase(List<Cases> casesList);
+    @Transactional
+    void expCase(List<Cases> casesList) throws IllegalAccessException;
 
     List<Map> groupCasesByArea();
 
