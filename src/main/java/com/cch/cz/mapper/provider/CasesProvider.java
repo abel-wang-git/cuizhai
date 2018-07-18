@@ -98,7 +98,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
 
     public String listByCompany(Map<String, Object> para) {
         String sql = new SQL() {{
-            SELECT(" count(*) as num ,COALESCE(sum(service_charge),0) as money");
+            SELECT(" count(*) as num ,COALESCE(sum(sum_arrears),0) as money");
             StringBuilder where = new StringBuilder(" 1=1");
             FROM(BuildSql.tablename(Cases.class));
 
@@ -147,7 +147,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and staff_id = #{StaffId}");
             if (UtilFun.isEmptyString(cases.getArrears()))
                 where.append(" and sum_arrears between #{arrears}+0 and #{sumArrears}+0");
-            
+            if (null!=cases.getCompanyId())
+                where.append(" and company_id = #{companyId}");
             WHERE(where.toString());
             ORDER_BY(" convert(name using gbk) ,id_card,contract_num ");
         }}.toString();
