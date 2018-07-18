@@ -2,6 +2,7 @@ package com.cch.cz.ctrl.cz;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.cch.cz.authority.entity.Role;
 import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
@@ -217,8 +218,16 @@ public class CaseCtrl {
     public Table dynamic(@RequestParam(defaultValue = "0") int page,
                          @RequestParam(defaultValue = "0") int limit,
                          @RequestParam String data) {
+        Role role = roleService.getByname("branchManager");
+        Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
         PageHelper.startPage(page, limit);
-        Page<Cases> list = (Page<Cases>) casesService.dynamicList(JSON.parseObject(data, Cases.class));
+        Cases c =JSON.parseObject(data, Cases.class);
+        //查询登录账号是否为分公司管理员
+        if(staff.getPlace().equals(role.getId().toString())){
+            c.setCompanyId(staff.getCompanyId());
+        }
+        List l=casesService.dynamicList(c);
+        Page<Cases> list = (Page<Cases>) l;
 
 
         return new Table((int) list.getTotal(), list);
