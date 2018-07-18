@@ -49,6 +49,7 @@ public class CaseCtrl {
         try {
             casesService.expCase(data);
         }catch (Exception e){
+            e.printStackTrace();
             return new AjaxReturn(1, "导入失败");
         }
 

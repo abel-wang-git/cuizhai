@@ -184,8 +184,8 @@ public class BaseProvider<M extends BaseEntity,PK> {
         StringBuilder sele=new StringBuilder();
         Field[] fields=m.getClass().getDeclaredFields();
         for (Field f: fields) {
-            if(Modifier.isPrivate(f.getModifiers()))
-            sele.append(addUnderscores(f.getName())).append(" as ").append(f.getName()).append(" ,");
+            if(Modifier.isPrivate(f.getModifiers())&&f.getAnnotation(Transient.class)==null)
+                sele.append(addUnderscores(f.getName())).append(" as ").append(f.getName()).append(" ,");
         }
         sele.deleteCharAt(sele.length()-1);
         return sele.toString();
