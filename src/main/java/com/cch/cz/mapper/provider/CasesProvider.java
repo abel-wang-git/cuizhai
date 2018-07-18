@@ -59,7 +59,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 if (cases.getLastUrge().equals("yes"))
                     where.append(" and last_urge is not null ");
                 if (cases.getLastUrge().equals("no"))
-                    where.append("and last_urge is  null");
+                    where.append(" and last_urge is  null");
             }
             if (UtilFun.isEmptyString(cases.getAppointData()))
                 where.append(" and appoint_data=#{appointData}");

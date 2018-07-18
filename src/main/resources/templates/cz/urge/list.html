@@ -195,7 +195,7 @@
         <div class="layui-colla-content layui-show">
             <div class="layui-tab layui-tab-card">
                 <ul class="layui-tab-title">
-                    <li class="layui-this">崔记</li>
+                    <li class="layui-this">催记</li>
                     <li>协查</li>
                 </ul>
                 <div class="layui-tab-content">
@@ -333,11 +333,18 @@
 
         </div>
     </div>
-
-    <div class="layui-col-md12 layui-colla-item">
+    <div style="clear:both;"></div>
+    <div class="layui-col-md6 layui-colla-item">
         <h2 class="layui-colla-title">历史催收记录</h2>
         <div class="layui-colla-content layui-show">
             <table id="log" lay-filter="log"></table>
+        </div>
+
+    </div>
+    <div class="layui-col-md6 layui-colla-item">
+        <h2 class="layui-colla-title">协查催收记录</h2>
+        <div class="layui-colla-content layui-show">
+            <table id="sulog" lay-filter="sulog"></table>
         </div>
     </div>
 
@@ -413,7 +420,7 @@
                 , '备注信息不少于10字符不多余100字符'
             ]
             , timeo: function () {
-                if ($('#urgeadd').is('.layui-btn-disabled')) {
+                if ($('#urgeadd').is('.layui-btn-disabled') || $('#suadd').is('.layui-btn-disabled')) {
 
                     return '操作频繁';
                 }
@@ -503,6 +510,7 @@
                 //协查对象
                 setsu(obj.data);
                 log.reload({where:{cases:$("#caseId").val()}});
+                sulog.reload({where: {cases: $("#caseId").val()}});
                 var addurge=layer.open({
                     type: 1
                     , title: '添加催记'
@@ -664,12 +672,14 @@
                         currdata=res;
                         currpage=curr;
                         log.reload({where:{cases:$("#caseId").val()}});
+                        sulog.reload({where: {cases: $("#caseId").val()}});
                     }});
             }else{
                 setcase(currdata.data[index]);
                 setoption(currdata.data[index]);
                 setsu(currdata.data[index]);
                 log.reload({where:{cases:$("#caseId").val()}});
+                sulog.reload({where: {cases: $("#caseId").val()}});
             }
 
         });
@@ -687,12 +697,14 @@
                         currdata=res;
                         currpage=curr;
                         log.reload({where:{cases:$("#caseId").val()}});
+                        sulog.reload({where: {cases: $("#caseId").val()}});
                     }});
             }else{
                 setcase(currdata.data[index]);
                 setoption(currdata.data[index]);
                 setsu(currdata.data[index]);
                 log.reload({where:{cases:$("#caseId").val()}});
+                sulog.reload({where: {cases: $("#caseId").val()}});
             }
 
         });
@@ -722,6 +734,7 @@
             }
             form.render('select');
         });
+
         var log= table.render({
             elem: '#log'
             , id: 'log'
@@ -735,6 +748,21 @@
                 , {field: 'status', title: '状态', width: '200', sort: true}
                 , {field: 'createDate', title: '催收日期', width: '200', sort: true}
                 , {field: 'rmarks', title: '备注', width: '200', sort: true}
+            ]]
+        });
+        var sulog = table.render({
+            elem: '#sulog'
+            , id: 'sulog'
+            , height: 315
+            , url: [[${ctx}]] + '/surge/bycase' //数据接口
+            , where: {cases: $("#caseId").val()}
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'suTarget', title: '催收对象', width: '200', sort: true, fixed: 'left'}
+                , {field: 'suResult', title: '结果', width: '200', sort: true}
+                , {field: 'suStatus', title: '状态', width: '200', sort: true}
+                , {field: 'createDate', title: '催收日期', width: '200', sort: true}
+                , {field: 'suRemark', title: '备注', width: '200', sort: true}
             ]]
         });
         //添加崔记
@@ -758,7 +786,7 @@
             });
             return false;
         });
-
+        //添加协查
         form.on('submit(suadd)', function (data) {
             $.ajax({
                 url: [[${ctx}]] + "/surge/add",
@@ -768,13 +796,13 @@
                 data: JSON.stringify(data.field),
                 success: function (data) {
                     layer.msg(data.message);
-                    $('form')[1].reset();
+                    $('form')[2].reset();
                     $('#suadd').addClass(" layui-btn-disabled");
                     setTimeout((function () {
                         $('#suadd').removeClass("layui-btn-disabled")
                     }), 60000)
                     $("#suEnd").hide();
-                    log.reload({where: {cases: $("#caseId").val()}});
+                    sulog.reload({where: {cases: $("#caseId").val()}});
                 }
             });
             return false;
