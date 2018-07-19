@@ -183,6 +183,7 @@
             欠款金额：<span name ="arrears"></span>
             委外催收费：<span name ="serviceCharge"></span>
             总欠款：<span name ="sumArrears"></span><br/>
+            合同号：<span name="contractNum"></span><br/>
             合同数量：<span name="contractsNum"></span><br/>
             合同申请日：<span name="contractApplyDate"></span><br/>
             补充信息：<span name ="supplement"></span>
@@ -630,6 +631,7 @@
             $("span[name='sumArrears']").text(cases.sumArrears);
             $("input[name='caseId']").val(cases.id);
             $("span[name='contractsNum']").text(cases.contractsNum);
+            $("span[name='contractNum']").text(cases.contractNum);
             $("span[name='contractApplyDate']").text(cases.contractApplyDate);
             $("span[name='accountMaster']").text(cases.accountMaster);
             $("span[name='bank']").text(cases.bank);
