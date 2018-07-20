@@ -61,10 +61,10 @@ public class StaffCtrl {
     @ResponseBody
     public Table hKlist(@RequestParam int page , @RequestParam int limit){
         Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
-        List<Map> staffs = staffService.listStaff(staff == null ? null : staff.getCompanyId());
         PageHelper.startPage(page,limit);
+        Page<Map> staffs =(Page<Map>) staffService.listStaff(staff == null ? null : staff.getCompanyId());
         Table table = new Table();
-        Page<Map> staffa = (Page<Map>) staffService.listByStaff();
+        List<Map> staffa = staffService.listByStaff();
         for (Map map : staffs) {
             String id = (String) map.get("loginName");
             for (Map map1 : staffa) {
@@ -74,7 +74,7 @@ public class StaffCtrl {
             }
         }
         table.setData(staffs);
-        table.setCount((int) staffa.getTotal());
+        table.setCount((int) staffs.getTotal());
         return table;
     }
 
