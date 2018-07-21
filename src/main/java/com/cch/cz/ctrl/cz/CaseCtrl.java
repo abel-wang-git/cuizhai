@@ -223,7 +223,7 @@ public class CaseCtrl {
         PageHelper.startPage(page, limit);
         Cases c =JSON.parseObject(data, Cases.class);
         //查询登录账号是否为分公司管理员
-        if(staff.getPlace().equals(role.getId().toString())){
+        if (null != staff.getPlace() && staff.getPlace().equals(role.getId().toString())) {
             c.setCompanyId(staff.getCompanyId());
         }
         List l=casesService.dynamicList(c);

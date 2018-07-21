@@ -10,10 +10,12 @@ import com.cch.cz.entity.enu.MgStatus;
 import com.cch.cz.exception.ObjectNullException;
 import com.cch.cz.mapper.*;
 import com.cch.cz.service.CasesService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -41,6 +43,29 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     @Override
     @Transactional
     public void expCase(List<Cases> casesList) throws IllegalAccessException {
+        HashSet<String> idc = new HashSet<>();
+        HashSet<String> com = new HashSet<>();
+        for (Cases c : casesList) {
+            if (c.getStaffId() == null) {
+                idc.add(c.getIdCard());
+                com.add(c.getContractNum());
+            }
+        }
+        String idcs = StringUtils.join(idc.toArray(), "','");
+        String coms = StringUtils.join(com.toArray(), "','");
+
+        List<Cases> list = casesMapper.findinIdcard("'" + idcs + "'");
+        List<Cases> comes = casesMapper.findinIdcard("'" + coms + "'");
+        list.addAll(comes);
+        for (Cases c : list) {
+            for (Cases c1 : casesList) {
+                if (c.getIdCard().equals(c1.getIdCard()) || c.getContractNum().equals(c1.getContractsNum())) {
+                    c1.setStaffId(c.getStaffId());
+                    c1.setCompanyId(c.getCompanyId());
+                }
+            }
+        }
+
         for (Cases c : casesList) {
             casesMapper.save(c);
             Supplement supplement = new Supplement();
@@ -64,6 +89,44 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
             }
         }
 
+    }
+
+    @Override
+    @Transactional
+    public void randomToStaff(String[] staff, List<Cases> cases) {
+        HashSet<String> idc = new HashSet<>();
+        HashSet<String> com = new HashSet<>();
+        for (Cases c : cases) {
+            idc.add(c.getIdCard());
+            com.add(c.getContractNum());
+        }
+        String idcs = StringUtils.join(idc.toArray(), "','");
+        String coms = StringUtils.join(com.toArray(), "','");
+        List<Cases> list = casesMapper.findinIdcardno("'" + idcs + "'");
+        List<Cases> comes = casesMapper.findinIdcardno("'" + coms + "'");
+        list.addAll(comes);
+        int index = 0;
+        Cases where = new Cases();
+        where.setStatus(Cases.NORMAL);
+        int length = cases.size();
+        for (int i = 0; i < length; i++) {
+            Cases c = cases.get(i);
+            if (index == staff.length) index = 0;
+            c.setStaffId(staff[index]);
+
+            update(c);
+            index++;
+        }
+        //寻找相同合同号和身份证号未分配的分配给同一个员工
+        for (Cases c : list) {
+            for (Cases c1 : cases) {
+                if (c1.getIdCard().equals(c.getIdCard()) || c1.getContractNum().equals(c.getContractsNum())) {
+                    c.setCompanyId(c1.getCompanyId());
+                    c.setStaffId(c1.getStaffId());
+                    update(c);
+                }
+            }
+        }
     }
 
     @Override
@@ -184,36 +247,7 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
         return casesMapper.groupCasesByCaseName();
     }
 
-    @Override
-    @Transactional
-    public void randomToStaff(String[] staff,List<Cases> cases) {
-        int index = 0;
-        Cases where = new Cases();
-        where.setStatus(Cases.NORMAL);
-        List<Cases> identical = new ArrayList();
-        int length = cases.size();
-        for (int i = 0; i < length; i++) {
-            Cases c =cases.get(i);
-            if(index==staff.length) index=0;
-            c.setStaffId(staff[index]);
 
-            update(c);
-            //寻找身份证相同的案件分配
-            where.setCompanyId(c.getCompanyId());
-            where.setIdCard(c.getIdCard());
-            identical = null;
-            identical = findByEntity(where);
-            length = identical(staff, cases, index, identical, length, i);
-            where.setIdCard(null);
-            //寻找合同号相同的案件分配
-            where.setContractNum(c.getContractNum());
-            identical = null;
-            identical = findByEntity(where);
-            length = identical(staff, cases, index, identical, length, i);
-            where.setContractNum(null);
-            index++;
-        }
-    }
 
     private int identical(String[] staff, List<Cases> cases, int index, List<Cases> identical, int length, int i) {
         if (UtilFun.isEmptyList(identical)) {
