@@ -373,7 +373,9 @@
         <option value="其他">其他</option>
     </select>
 </div>
-
+<div id="supplementlayer" style="display: none">
+    <textarea id="demo" style="display: none;"></textarea>
+</div>
 <div class="layui-inline" style="display: none;padding-top: 20px" id="day">
     <div class="layui-form-item">
         <label class="layui-form-label">留案期</label>
@@ -652,9 +654,15 @@
             $.post([[${ctx}]] + "/supplement/bynum", {num: cases.contractNum}, function (data) {
                 if (data.code === 0) {
                     $("select[name='suTarget']").empty();
-                    $("select[name='suTarget']").append("<option value='[配偶]" + data.data.supplement.customerSpousePhone + "'>[配偶]" + data.data.supplement.customerSpousePhone + "</option>")
-                    $("select[name='suTarget']").append("<option value='[亲戚]" + data.data.supplement.customerRelativePhone + "'>[亲戚]" + data.data.supplement.customerRelativePhone + "</option>")
-                    $("select[name='suTarget']").append("<option value='[其他]" + data.data.supplement.customerOtherPhone + "'>[其他]" + data.data.supplement.customerOtherPhone + "</option>")
+                    if (data.data.supplement.customerSpousePhone !== "") {
+                        $("select[name='suTarget']").append("<option value='[配偶]" + data.data.supplement.customerSpousePhone + "'>[配偶:" + data.data.supplement.customerSpouse + "]" + data.data.supplement.customerSpousePhone + "</option>")
+                    }
+                    if (data.data.supplement.customerRelativePhone !== "") {
+                        $("select[name='suTarget']").append("<option value='[亲戚]" + data.data.supplement.customerRelativePhone + "'>[" + data.data.supplement.customerRelationship + ":" + data.data.supplement.customerRelativeName + "]" + data.data.supplement.customerRelativePhone + "</option>")
+                    }
+                    if (data.data.supplement.customerOtherPhone !== "") {
+                        $("select[name='suTarget']").append("<option value='[其他]" + data.data.supplement.customerOtherPhone + "'>[" + data.data.supplement.customerRelaOther + ":" + data.data.supplement.customerRelativeOther + "]" + data.data.supplement.customerOtherPhone + "</option>")
+                    }
                     form.render('select');
                 }
             });
@@ -809,6 +817,34 @@
             });
             return false;
         });
+        var ed = layedit.build('demo', {
+            tool: []
+        });
+        //补充信息
+        $("#supplement").click(function () {
+            var id = $(this).attr("attr");
+            $("#demo").text($("span[name='supplement']").html());
+            layer.open({
+                type: 1
+                , title: "补充信息"
+                , shade: 0
+                , content: $("#supplementlayer")
+                , btn: ['确定']
+                , yes: function () {
+                    $.ajax({
+                        url: [[${ctx}]] + "/case/update",
+                        type: "post",
+                        dataType: 'json',
+                        async: false,
+                        data: {cases: JSON.stringify(JSON.parse('{"id":"' + id + '","supplement":"' + layedit.getContent(ed) + '"}'))},
+                        success: function (data) {
+                            layer.msg(data.message);
+                            $("span[name='supplement']").html(layedit.getContent(ed));
+                        }
+                    });
+                }
+            });
+        })
 
     })
     /*]]>*/
