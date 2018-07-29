@@ -88,9 +88,9 @@ public class StaffCtrl {
 
     @GetMapping(value = "/toAdd")
     public String toAdd(Model model){
-
+        Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
         model.addAttribute(new Staff());
-        model.addAttribute("companys",companyService.findAll());
+        model.addAttribute("companys", staff.getCompanyId() == null ? companyService.findAll() : companyService.listBystaff(staff));
         model.addAttribute("roles",roleService.findAll());
         model.addAttribute("group",urgeGroupService.findAll());
 

@@ -5,7 +5,7 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
-<fieldset th:if="${company.pId==null}" class="layui-elem-field">
+<fieldset class="layui-elem-field">
     <legend>分配到公司</legend>
     <!--公司列表-->
     <table id="allots" lay-filter="allots"></table>

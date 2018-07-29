@@ -49,6 +49,28 @@ public class Upload {
     @RequestMapping(value = "/upload")
     @ResponseBody
     public AjaxReturn uploadImage (HttpServletRequest request) throws UploadException {
+        List<String> title1 = new ArrayList<>();
+        title1.add("合同号");
+        title1.add("委案日期");
+        title1.add("退案日期");
+        title1.add("客户姓名");
+        title1.add("性别");
+        title1.add("身份证");
+        title1.add("贷款类型");
+        title1.add("贷款本金");
+        title1.add("期款");
+        title1.add("期数");
+        title1.add("已还款金额");
+        title1.add("最后还款日");
+        title1.add("逾期天数");
+        title1.add("未付期款");
+        title1.add("委外催收费");
+        title1.add("总欠款金额");
+        title1.add("还款账号");
+        title1.add("户名");
+        title1.add("开户行");
+        title1.add("客户户籍地址");
+        title1.add("客户手机");
         AjaxReturn ajaxRetrun = new AjaxReturn();
         Map data = new HashMap();
         ajaxRetrun.setCode(1);
@@ -73,9 +95,23 @@ public class Upload {
                 for (int j =0 ;j<sheet.getRow(0).getLastCellNum();j++) {
                      Cell a=sheet.getRow(0).getCell(j);
                     if(null==sheet.getRow(0).getCell(j)||ExcelTool.getCellValue(sheet.getRow(0).getCell(j)).trim()==null){
-                       throw new UploadException("表头存在空值");
+                        throw new UploadException("表头存在空值");
+                    } else {
+                        Iterator<String> iterator = title1.iterator();
+                        while (iterator.hasNext()) {
+                            String t = iterator.next();
+                            if (ExcelTool.getCellValue(sheet.getRow(0).getCell(j)).trim().equals(t))
+                                iterator.remove();
+                        }
                     }
                 }
+            }
+            String quet = "";
+            if (title1.size() > 0) {
+                for (String t : title1) {
+                    quet += (t + ",");
+                }
+                throw new UploadException("缺少" + quet + "信息");
             }
             md5= DigestUtils.md5Hex(IOUtils.toByteArray(new FileInputStream(name)));
             if(null!=uploadLogService.findOne(md5))throw new UploadException("上传过相同的案件");
@@ -146,26 +182,10 @@ public class Upload {
             if (title.get(j).toString().trim().equals("身份证")) {
                 //相同身份证号码分配到同一催收员
                 cases.setIdCard(ExcelTool.getCellValue(curr));
-//                if(cases.getStaffId()==null) {
-//                    Staff staff = casesService.findStaffByIdcard(ExcelTool.getCellValue(curr));
-//                    if (UtilFun.isEmptyString(cases.getStaffId())&&null!=staff) {
-//                        cases.setCompanyId(staff.getCompanyId());
-//                        cases.setStaffId(staff.getLoginName());
-//                    }
-//                }
             }
             if (title.get(j).toString().trim().equals("合同号")) {
                 //相同合同号分配到同一催收员
                 cases.setContractNum(ExcelTool.getCellValue(curr));
-//                if(cases.getStaffId()==null) {
-//                Cases where = new Cases();
-//                where.setContractNum(ExcelTool.getCellValue(curr));
-//                List<Cases> casesList = casesService.findByEntity(where);
-//                if (UtilFun.isEmptyList(casesList)) {
-//                    cases.setStaffId(casesList.get(0).getStaffId());
-//                    cases.setCompanyId(casesList.get(0).getCompanyId());
-//                }
-//            }
             }
 
             if (title.get(j).toString().trim().equals("委外公司")||title.get(j).toString().trim().equals("公司")) {

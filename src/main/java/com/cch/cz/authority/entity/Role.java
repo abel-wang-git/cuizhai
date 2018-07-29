@@ -12,6 +12,13 @@ import java.util.List;
 @Entity
 @Table(name = "t_role")
 public class Role extends BaseEntity {
+    public static final String SUPERADMIN = "superadmin";
+    public static final String ADMIN = "admin";
+    public static final String URGE = "urge";
+    public static final String BRANCH_MANAGER = "branchManager";
+    public static final String BUSINESS = "business";
+
+
     /**
      *角色id
      */

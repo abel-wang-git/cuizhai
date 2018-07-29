@@ -32,7 +32,7 @@ public class Cases extends BaseEntity {
      */
     public final static int FINALLYEND = 4;
     /**
-     * 留案申请的case
+     * 留案5
      */
     public final static int FINALLYRETAIN = 5;
     /**
