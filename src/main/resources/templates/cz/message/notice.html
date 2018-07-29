@@ -6,27 +6,66 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
-<form class="layui-form" action="">
-    <div class="layui-form-item">
-        <label class="layui-form-label">公告内容</label>
-        <div class="layui-input-inline">
-            <textarea type="text" name="message" required lay-verify="required" placeholder="公告内容" autocomplete="off"
-                      class="layui-textarea"></textarea>
-        </div>
-        <input type="hidden" name="sender" th:value="${session.user.userName}"/>
-    </div>
-    <a class="layui-btn" lay-submit="lay-submit" lay-filter="sdfasdf">立即提交</a>
+<button class="layui-btn" id="add">添加公告</button>
+<table id="notice" lay-filter="notice"></table>
 
-</form>
+<div style="display: none" id="noticelayer">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <!--<label class="layui-form-label">公告内容</label>-->
+            <!--<div class="layui-input-block">-->
+            <textarea type="text" name="message" required lay-verify="required" placeholder="公告内容" autocomplete="off"
+                      class="layui-textarea" style="height: 280px"></textarea>
+            <!--</div>-->
+            <input type="hidden" name="sender" th:value="${session.user.userName}"/>
+        </div>
+        <div class="layui-form-item" style="clear: both;">
+            <a class="layui-btn" lay-submit="lay-submit" lay-filter="sdfasdf">立即提交</a>
+        </div>
+
+    </form>
+</div>
+
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
     //Demo
-    layui.use('form', function () {
+    layui.use(['form', 'table'], function () {
         var form = layui.form
+            , table = layui.table
             , $ = layui.$;
+
+        var notice = table.render({
+            elem: '#notice'
+            , id: 'notice'
+            , url: 'list' //数据接口
+            , width: 725
+            , method: 'post'
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'message', title: '内容', width: 450, sort: true}
+                , {field: 'sender', title: '发送者', width: 150, sort: true}
+                , {field: 'date', title: '日期', width: 120, sort: true}
+//                , {title: '修改', width: 160, align: 'center', toolbar: '#updata', fixed: 'right'}
+            ]]
+        });
+        $("#add").click(function () {
+            layer.open({
+                type: 1
+                , title: '留案'
+                , area: ['500px', '400px']
+                , content: $("#noticelayer")
+                , cancel: function () {
+                    notice.reload()
+                }
+            })
+        })
+
         //监听提交
         form.on('submit(sdfasdf)', function (data) {
-            $.post("notice", {message: JSON.stringify(data.field)});
+            $.post("notice", {message: JSON.stringify(data.field)}, function (data) {
+                layer.msg(data.message);
+                $('form')[0].reset()
+            });
             return false;
         });
     });

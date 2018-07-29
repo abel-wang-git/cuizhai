@@ -14,6 +14,7 @@ public class Message extends BaseEntity {
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     //内容
+    @Column(length = 16777216)
     private String message;
     //发送人
     private String sender;
