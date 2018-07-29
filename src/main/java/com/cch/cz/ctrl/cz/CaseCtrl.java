@@ -361,4 +361,11 @@ public class CaseCtrl {
         return new Table(urges.size(), urges);
     }
 
+
+    @PostMapping(value = "/detail")
+    public String detail(Model model, @RequestParam String id) {
+
+        model.addAttribute("cases", casesService.findOne(Long.parseLong(id)));
+        return "/cz/cases/detail";
+    }
 }

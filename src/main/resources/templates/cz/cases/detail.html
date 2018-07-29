@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>title</title>
+    <div th:include="fragment/head :: head"></div>
+</head>
+<body>
+<span th:text="${cases.name}"></span>
+性别：<span name="sex" th:text="${cases.sex}"></span>
+身份证：<span name="idCard" th:text="${cases.idCard}"></span>
+手机：<span name="customerPhoneNumber" th:text="${cases.customerPhoneNumber}"></span><br/>
+还款账号：<span name="repaymentAccount" th:text="${cases.repaymentAccount}"></span><br/>
+购买商品：<span name="commodity" th:text="${cases.commodity}"></span>
+品牌：<span name="brand" th:text="${cases.brand}"></span><br/>
+pos点：<span name="posPlace" th:text="${cases.posPlace}"></span><br/>
+户籍地址：<span name="customerAddress" th:text="${cases.customerAddress}"></span><br/>
+委派日期：<span name="appointData" th:text="${cases.appointData}"></span>
+退案日期：<span name="stopAppoint" th:text="${cases.stopAppoint}"></span><br/>
+贷款本金：<span name="loanPrincipal" th:text="${cases.loanPrincipal}"></span>
+期款：<span name="installmentMoney" th:text="${cases.installmentMoney}"></span>
+期数：<span name="installmentNum" th:text="${cases.installmentNum}"></span><br/>
+已还款金额：<span name="repaymentMoney" th:text="${cases.repaymentMoney}">  </span>
+最后还款日：<span name="deadline" th:text="${cases.deadline}"></span><br/>
+逾期天数：<span name="overrangingDay" th:text="${cases.overrangingDay}"></span>
+欠款金额：<span name="arrears" th:text="${cases.arrears}"></span>
+委外催收费：<span name="serviceCharge" th:text="${cases.serviceCharge}"></span>
+总欠款：<span name="sumArrears" th:text="${cases.sumArrears}"></span><br/>
+合同号：<span name="contractNum" th:text="${cases.contractNum}"></span><br/>
+<script th:src="@{/static/layui/layui.js}"></script>
+</body>
+</html>

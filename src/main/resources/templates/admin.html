@@ -110,6 +110,8 @@
     <a class="layui-btn  layui-btn-xs" lay-event="yes">同意</a>
     <a class="layui-btn  layui-btn-xs" lay-event="no">不同意</a>
     {{#  } }}
+    <a class="layui-btn  layui-btn-xs" lay-event="more">详细信息</a>
+
 </script>
 <script th:src="@{/static/layui/layui.js}"></script>
 <!-- layui规范化用法 -->
@@ -167,7 +169,7 @@
                 {field: 'sender', title: '员工', width: 110, sort: true}
                 , {field: 'date', title: '日期', width: 130, sort: true}
                 , {field: 'message', title: '消息内容', width: 300, sort: true}
-                , {title: '操作', width: 140, align: 'center', toolbar: '#onmessage', fixed: 'right'}
+                , {title: '操作', width: 200, align: 'center', toolbar: '#onmessage', fixed: 'right'}
 
             ]]
         });
@@ -179,7 +181,6 @@
                     amessage.reload()
                     layer.msg(data.message)
                 });
-                console.log("yes");
             }
             if (layEvent === 'no') {
                 $.post([[${ctx}]] + '/message/refuse', {message: JSON.stringify(obj.data)}, function (data) {
@@ -188,11 +189,31 @@
                 });
             }
             if (layEvent === 'cat') {
-                console.log(obj.data)
                 $.post([[${ctx}]] + '/message/cat', {message: JSON.stringify(obj.data)}, function (data) {
                     amessage.reload();
                     layer.msg(data.message)
                 });
+            }
+            if (layEvent === 'more') {
+                console.log(obj)
+                if (obj.data.type !== 2) {
+                    $.post([[${ctx}]] + '/case/detail', {id: obj.data.caseId}, function (str) {
+                        layer.open({
+                            type: 1
+                            , title: '留案'
+                            , area: ['380px', '340px']
+                            , content: str
+                        });
+                    });
+
+                } else {
+                    layer.open({
+                        type: 1
+                        , title: '留案'
+                        , area: ['380px', '340px']
+                        , content: obj.data.message
+                    });
+                }
             }
 
         })
