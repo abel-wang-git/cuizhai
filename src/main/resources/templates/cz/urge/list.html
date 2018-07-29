@@ -97,12 +97,12 @@
 </form>
 <table id="cases" lay-filter="cases"></table>
 <div id="pav">
-    <div style="float: right;padding-right: 30px;position: relative;bottom: 40px">当前总欠款：<span id="sumArrears"></span>
+    <div style="float: right;padding-right: 30px;position: relative;bottom: 40px">当前总金额：<span id="sumArrears"></span>
     </div>
 </div>
 
 <script type="text/html" id="urge">
-    <a class="layui-btn  layui-btn-xs" lay-event="urge">催记</a>
+    <a class="layui-btn  layui-btn-xs" lay-event="urge">添加记录</a>
     <a class="layui-btn  layui-btn-xs" lay-event="end">结案申请</a>
     <a class="layui-btn  layui-btn-xs" lay-event="rethin">留案申请</a>
 </script>
@@ -205,19 +205,19 @@
 
 
     <div class="layui-col-md6 layui-colla-item">
-        <h2 class="layui-colla-title">添加催记</h2>
+        <h2 class="layui-colla-title">添加记录</h2>
         <div class="layui-colla-content layui-show">
             <div class="layui-tab layui-tab-card">
                 <ul class="layui-tab-title">
-                    <li class="layui-this">催记</li>
-                    <li>协查</li>
+                    <li class="layui-this">记录</li>
+                    <li>补充记录</li>
                 </ul>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
                         <!--崔记-->
                         <form class="layui-form" method="post">
                             <div class="layui-form-item">
-                                <label class="layui-form-label">催收对象</label>
+                                <label class="layui-form-label">记录对象</label>
                                 <div class="layui-input-inline">
                                     <select name="target" lay-verify="required" autocomplete="off" class="layui-input">
 
@@ -246,7 +246,7 @@
                             </div>
 
                             <div class="layui-form-item" id="cuishouEnd" style="display: none">
-                                <label class="layui-form-label">催收结果</label>
+                                <label class="layui-form-label">记录结果</label>
                                 <div class="layui-input-inline">
                                     <select id="result" name="result" lay-verify="required" autocomplete="off"
                                             class="layui-input" lay-filter="result">
@@ -266,7 +266,7 @@
                                 <div class="layui-input-block">
                                     <button class="layui-btn" lay-verify="timeo" lay-submit="lay-submit"
                                             lay-filter="urge"
-                                            id="urgeadd">添加催记
+                                            id="urgeadd">添加记录
                                     </button>
 
 
@@ -281,7 +281,7 @@
                     <div class="layui-tab-item">
                         <form class="layui-form" method="post">
                             <div class="layui-form-item">
-                                <label class="layui-form-label">催收对象</label>
+                                <label class="layui-form-label">记录对象</label>
                                 <div class="layui-input-inline">
                                     <select name="suTarget" lay-verify="required" autocomplete="off"
                                             class="layui-input">
@@ -309,7 +309,7 @@
                             </div>
 
                             <div class="layui-form-item" id="suEnd" style="display: none">
-                                <label class="layui-form-label">催收结果</label>
+                                <label class="layui-form-label">记录结果</label>
                                 <div class="layui-input-inline">
                                     <select id="suResult" name="suResult" lay-verify="required" autocomplete="off"
                                             class="layui-input" lay-filter="result">
@@ -330,7 +330,7 @@
                                 <div class="layui-input-block">
                                     <button class="layui-btn" lay-verify="timeo" lay-submit="lay-submit"
                                             lay-filter="suadd"
-                                            id="suadd">添加协查
+                                            id="suadd">添加补充记录
                                     </button>
 
                                 </div>
@@ -349,14 +349,14 @@
     </div>
     <div style="clear:both;"></div>
     <div class="layui-col-md6 layui-colla-item">
-        <h2 class="layui-colla-title">历史催收记录</h2>
+        <h2 class="layui-colla-title">历史记录</h2>
         <div class="layui-colla-content layui-show">
             <table id="log" lay-filter="log"></table>
         </div>
 
     </div>
     <div class="layui-col-md6 layui-colla-item">
-        <h2 class="layui-colla-title">协查催收记录</h2>
+        <h2 class="layui-colla-title">历史补充记录</h2>
         <div class="layui-colla-content layui-show">
             <table id="sulog" lay-filter="sulog"></table>
         </div>
@@ -474,7 +474,7 @@
                 , {field: 'overday', title: '时间段', width: '8%', templet: '#overday'}
                 , {field: 'overrangingDay', title: '逾期天数', width: '5%', sort: true}
                 , {field: 'repaymentMoney', title: '已还金额', width: '10%', sort: true}
-                , {field: 'sumArrears', title: '总欠款', width: '10%', sort: true}
+                , {field: 'sumArrears', title: '总金额', width: '10%', sort: true}
                 , {field: 'customerAddress', title: '户籍地址', width: '11%'}
                 , {field: 'lastUrge', title: '最后一次催记时间', width: '10%', sort: true}
                 , {field: 'status', title: '状态', width: '6%',templet:'#status'}
@@ -529,7 +529,7 @@
                 sulog.reload({where: {cases: $("#caseId").val()}});
                 var addurge=layer.open({
                     type: 1
-                    , title: '添加催记'
+                    , title: '添加记录'
                    , shade: 0
                     , content:$("#add")
                     ,cancel: function(index, layero){
@@ -769,7 +769,7 @@
 //                {field: 'target', title: '催收对象', width: '200', sort: true, fixed: 'left'}
                  {field: 'result', title: '结果', width: '200', sort: true}
                 , {field: 'status', title: '状态', width: '200', sort: true}
-                , {field: 'createDate', title: '催收日期', width: '200', sort: true}
+                , {field: 'createDate', title: '记录日期', width: '200', sort: true}
                 , {field: 'rmarks', title: '备注', width: '200', sort: true}
             ]]
         });
@@ -781,10 +781,10 @@
             , where: {cases: $("#caseId").val()}
             , method: 'post'
             , cols: [[ //表头
-                {field: 'suTarget', title: '催收对象', width: '200', sort: true, fixed: 'left'}
+                {field: 'suTarget', title: '记录对象', width: '200', sort: true, fixed: 'left'}
                 , {field: 'suResult', title: '结果', width: '200', sort: true}
                 , {field: 'suStatus', title: '状态', width: '200', sort: true}
-                , {field: 'createDate', title: '催收日期', width: '200', sort: true}
+                , {field: 'createDate', title: '记录日期', width: '200', sort: true}
                 , {field: 'suRemark', title: '备注', width: '200', sort: true}
             ]]
         });
