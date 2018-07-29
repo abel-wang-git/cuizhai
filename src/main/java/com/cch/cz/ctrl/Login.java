@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.cch.cz.authority.entity.User;
 import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.authority.service.UserService;
+import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.StaffService;
@@ -52,7 +53,7 @@ public class Login {
         //当前委案
         List<Map> normal=casesService.listByCompany(staff.getCompanyId()!=null?staff.getCompanyId():null,staffId,-1);
         //结案数量
-        List<Map> end=casesService.listByCompany(staff.getCompanyId()!=null?staff.getCompanyId():null,staffId,3);
+        List<Map> end = casesService.listByCompany(staff.getCompanyId() != null ? staff.getCompanyId() : null, staffId, Cases.FINALLYEND);
         //已跟进
         //未跟进
         List<Map> nourge = casesService.isUrge(null, staff.getCompanyId() != null ? staff.getCompanyId() : null, staffId);

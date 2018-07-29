@@ -89,6 +89,9 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
 
                 }
             }
+            if (cases.getStatus() != null && cases.getStatus() != -1) {
+                where.append(" and status = #{status}");
+            }
             WHERE(where.toString());
 
         }}.toString();
