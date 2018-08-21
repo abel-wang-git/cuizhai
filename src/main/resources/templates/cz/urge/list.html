@@ -371,6 +371,7 @@
 
 
 </div>
+
 <div id="reloption" style="display:none;">
     <select>
         <option value="承诺还款">承诺还款</option>
@@ -384,6 +385,7 @@
     </select>
 
 </div>
+
 <div id="sureloption" style="display:none;">
     <select>
         <option value="联系人承诺转告债务人">联系人承诺转告债务人</option>
@@ -393,6 +395,7 @@
         <option value="其他">其他</option>
     </select>
 </div>
+
 <div id="supplementlayer" style="display: none">
     <textarea id="demo" style="display: none;"></textarea>
 </div>
@@ -675,6 +678,7 @@
             $("select[name='target']").empty();
             $("select[name='target']").append("<option value='[本人]"+cases.customerPhoneNumber+"'>[本人]"+cases.customerPhoneNumber+"</option>")
             $("select[name='target']").append("<option value='[住宅]" + cases.customerResidencePhone + "'>[住宅]" + cases.customerResidencePhone + "</option>")
+            $("select[name='target']").append("<option value='[公司]" + cases.customerOfficePhone + "'>[公司]" + cases.customerOfficePhone + "</option>")
             form.render('select');
         }
 
