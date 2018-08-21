@@ -143,7 +143,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             if (null!=cases.getCompanyId()&&cases.getCompanyId()==-1)
                 where.append(" and company_id = -1");
             if(UtilFun.isEmptyString(cases.getCustomerAddress()))
-                where.append(" and customer_address like #{customerAddress}");
+                where.append(" and customer_address like concat('%',#{customerAddress},'%')");
             if(UtilFun.isEmptyString(cases.getAppointData()))
                 where.append(" and DATE_FORMAT(left(appoint_data,10),'%Y-%m-%d') =  DATE_FORMAT(left(TRIM(#{appointData}),10),'%Y-%m-%d')");
             if (UtilFun.isEmptyString(cases.getIdCard()))
