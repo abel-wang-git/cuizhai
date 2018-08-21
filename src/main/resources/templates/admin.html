@@ -36,7 +36,7 @@
 
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
-                        <div class=" layui-col-md12 layui-card">
+                        <div class=" layui-col-md6 layui-card">
                             <div class="layui-card-header">统计信息</div>
                             <div class="layui-card-body">
                                 <div style="font-size: 22px; color: #01AAED">
@@ -48,15 +48,22 @@
                                     <span th:text="${end[0]['num']}"></span><br/>
                                     当前结案总金额：
                                     <span th:text="${#numbers.formatDecimal(end[0]['money'],3,2)}"></span><br/>
+                                    承诺还款的案件：
+                                    <span th:text="${promise}"></span><br/>
+                                    今日跟进的案件数量：
+                                    <span th:text="${today}"></span><br/>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="layui-col-md12 layui-card">
+                        <div class="layui-col-md6 layui-card">
                             <div class="layui-card-header">代办事宜</div>
                             <div class="layui-card-body">
                                 <table id="message" lay-filter="message"></table>
                             </div>
                         </div>
+                        <div class="layui-row">
+
                         <div class=" layui-col-md6 layui-card">
                             <div class="layui-card-header">已跟进</div>
                             <div class="layui-card-body">
@@ -69,6 +76,7 @@
                             <div class="layui-card-body">
                                 <table id="wtj" lay-filter="wtj"></table>
                             </div>
+                        </div>
                         </div>
 
                     </div>
@@ -163,13 +171,13 @@
             , url: [[${ctx}]] + '/message/getmessage' //数据接口
             , method: 'post'
             , where: {staffId: [[${session.staff.loginName}]]}
-            , width: 685
+//            , width: 685
             , size: 'sm'
             , cols: [[ //表头
-                {field: 'sender', title: '员工', width: 110, sort: true}
-                , {field: 'date', title: '日期', width: 130, sort: true}
-                , {field: 'message', title: '消息内容', width: 300, sort: true}
-                , {title: '操作', width: 200, align: 'center', toolbar: '#onmessage', fixed: 'right'}
+                {field: 'sender', title: '员工', width:'15%', sort: true}
+                , {field: 'date', title: '日期', width: '15%', sort: true}
+                , {field: 'message', title: '消息内容', width: '30%', sort: true}
+                , {title: '操作', width: '40%', align: 'center', toolbar: '#onmessage', fixed: 'right'}
 
             ]]
         });

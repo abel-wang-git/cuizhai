@@ -345,5 +345,10 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
         return casesMapper.isUrge(isUrge, company, staff);
     }
 
+    @Override
+    public List<Cases> todayUrge(String s) {
+        return casesMapper.todayUrge(s);
+    }
+
 
 }

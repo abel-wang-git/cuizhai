@@ -111,4 +111,11 @@ public interface CasesService extends BaseService<Cases,Long>  {
      * @param company
      */
     List<Map> isUrge(String isUrge, Long company, String staff);
+
+    /**
+     * 今日催记
+     * @param s
+     * @return
+     */
+    List<Cases> todayUrge(String s);
 }

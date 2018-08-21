@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.cch.cz.authority.entity.User;
 import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.authority.service.UserService;
+import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.service.CasesService;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -54,14 +56,21 @@ public class Login {
         List<Map> normal=casesService.listByCompany(staff.getCompanyId()!=null?staff.getCompanyId():null,staffId,-1);
         //结案数量
         List<Map> end = casesService.listByCompany(staff.getCompanyId() != null ? staff.getCompanyId() : null, staffId, Cases.FINALLYEND);
-        //已跟进
         //未跟进
         List<Map> nourge = casesService.isUrge(null, staff.getCompanyId() != null ? staff.getCompanyId() : null, staffId);
-
+        //承诺还款的数量
+        Cases where = new Cases();
+        where.setStatus(Cases.PROMISE);
+        if(staff.getCompanyId() != null)where.setCompanyId(staff.getCompanyId());
+        List<Cases> promise=casesService.findByEntity(where);
+        //今日跟进的案件数量
+        List<Cases> nowcase=casesService.todayUrge(UtilFun.DateToString(new Date(),UtilFun.YMD));
         model.addAttribute("normal",normal);
         model.addAttribute("nourge", nourge);
         model.addAttribute("end",end);
         model.addAttribute("ctx", con);
+        model.addAttribute("promise", promise.size());
+        model.addAttribute("today", nowcase.size());
         return "/admin";
     }
 
