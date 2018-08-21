@@ -23,7 +23,7 @@ layui.define(['element', 'layer', 'util', 'form'], function (exports) {
             setTimeout(function () {
                 //模拟菜单加载
                 layer.close(index);
-                var h = $("div.layui-body").outerHeight(true)-$("div.layui-tab").outerHeight(true);
+                var h = $("div.layui-body").outerHeight(true)-$("ul.layui-tab-title").outerHeight(true)-20;
                 element.tabAdd('tab', { title: title, content: '<iframe src="' + url + '" style="position: absolute;width: 100%;border: none;height: '+h+'px;"></iframe>', id: id });
                 //切换到指定索引的卡片
                 element.tabChange('tab', id);

@@ -92,6 +92,8 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
             if (cases.getStatus() != null && cases.getStatus() != -1) {
                 where.append(" and status = #{status}");
             }
+            if(UtilFun.isEmptyString(cases.getStopAppoint()))
+                where.append(" and last_urge like concat(#{stopAppoint},'%')");
             WHERE(where.toString());
 
         }}.toString();

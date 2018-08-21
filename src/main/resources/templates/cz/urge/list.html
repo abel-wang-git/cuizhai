@@ -57,6 +57,13 @@
             <input name="appointData" id="appointData" type="text" class="layui-input"/>
         </div>
     </div>
+
+    <div class="layui-inline">
+        <label class="layui-form-label">最后跟进日期：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="stopAppoint" id="stopAppoint" class="layui-input"/>
+        </div>
+    </div>
     <div class="layui-inline">
         <label class="layui-form-label">合同号：</label>
         <div class="layui-input-inline" style="width: 100px;">
@@ -456,6 +463,13 @@
             , theme: 'grid'
         });
 
+        laydate.render({
+            elem: '#stopAppoint'
+            , format: 'yyyy-MM-dd'
+            , theme: 'grid'
+            ,max:0
+        });
+
         var cases = table.render({
             elem: '#cases'
             , id: 'cases'
@@ -604,6 +618,7 @@
         });
 
         form.on('submit(search)', function (data) {
+            console.log(data.field)
             cases.reload({page: {curr: 1 },where:{staff:JSON.stringify(data.field)}});
             return false;
         });
