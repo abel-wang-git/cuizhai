@@ -34,6 +34,7 @@ public class UrgeRecordProvider extends BaseProvider<UrgeRecord,Long> {
                 where.append(" and c.appoint_data=#{appointData}");
             if(UtilFun.isEmptyString((String) para.get("cname"))) where.append(" and c.name=#{cname}");
             if(UtilFun.isEmptyString((String) para.get("customerPhoneNumber"))) where.append(" and c.customer_phone_number=#{customerPhoneNumber} ");
+            if(UtilFun.isEmptyString((String) para.get("createDate"))) where.append(" and u.create_date like  concat(#{createDate},'%') ");
             WHERE(where.toString());
         }}.toString();
 

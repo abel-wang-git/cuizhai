@@ -37,6 +37,12 @@
         </div>
     </div>
     <div class="layui-inline">
+        <label class="layui-form-label">催记时间：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="createDate" id="createDate" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-inline">
         <label class="layui-form-label">手机：</label>
         <div class="layui-input-inline" style="width: 100px;">
             <input name="customerPhoneNumber" type="text" class="layui-input"/>
@@ -136,6 +142,12 @@
             , format: 'yyyy/MM/dd'
             , min: -30
             , max: 30
+            , theme: 'grid'
+        });
+        laydate.render({
+            elem: '#createDate'
+            , format: 'yyyy-MM-dd'
+            , max: 0
             , theme: 'grid'
         });
     })
