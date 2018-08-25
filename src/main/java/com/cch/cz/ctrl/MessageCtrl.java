@@ -35,9 +35,12 @@ public class MessageCtrl {
     private MessageStatusService messageStatusService;
     @PostMapping(value = "/getmessage")
     @ResponseBody
-    public Table getNoRead(@RequestParam String staffId) {
-        List<Map> list = messageService.getNoRead(staffId);
-        return new Table(list.size(), list);
+    public Table getNoRead(@RequestParam String staffId,@RequestParam(defaultValue = "0") int page,
+                           @RequestParam(defaultValue = "0") int limit) {
+        PageHelper.startPage(page, limit);
+        List<Map> list1 = messageService.getNoRead(staffId);
+        Page list = (Page) list1;
+        return new Table((int) list.getTotal(), list);
     }
 
     //同意

@@ -171,6 +171,7 @@
             , url: [[${ctx}]] + '/message/getmessage' //数据接口
             , method: 'post'
             , where: {staffId: [[${session.staff.loginName}]]}
+            , page:true
 //            , width: 685
             , size: 'sm'
             , cols: [[ //表头
