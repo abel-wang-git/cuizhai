@@ -16,20 +16,21 @@
 </style>
 <body>
 <a class="layui-btn layui-btn-sm" href="toAdd">添加员工</a>
-
-<a class="layui-btn layui-btn-sm" href="toAddcompany">公司筛选</a>
-
-
-
-
+<form class="layui-form where" method="post" id="search">
+    <div class="layui-inline">
+        <label class="layui-form-label">公司：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <select name="CompanyId" required ="required " lay-verify="required" lay-filter="group">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
+</form>
 <table id="staff" lay-filter="staff"></table>
 <div id="casetes" style="display: none" class="casttes">
 </div>
     <div id="update" style="display: none" class="update">
-        <div>
-            <br/>
-        </div>
-
     <form class="layui-form" >
         <div class="layui-form-item">
             <label class="layui-form-label">员工名称</label>
@@ -47,21 +48,14 @@
         <div class="layui-form-item">
             <label class="layui-form-label">岗位</label>
             <div class="layui-input-inline">
-                <select  name="place" required ="required " lay-verify="required" lay-filter="group">
-                    <option value=""></option>
-                    <option value="2">管理员</option>
-                    <option value="3">催收员</option>
-                    <option value="4">业务部</option>
+                <select  id="place" name="place" required ="required " lay-verify="required" lay-filter="group">
                 </select>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">公司</label>
             <div class="layui-input-inline">
-                <select  name="CompanyId" required ="required " lay-verify="required" lay-filter="group">
-                    <option value=""></option>
-                    <option value="3">宏鑫通</option>
-                    <option value="2">去去去去</option>
+                <select id="companyId" name="CompanyId" required ="required " lay-verify="required" lay-filter="group">
                 </select>
             </div>
         </div>
@@ -102,8 +96,25 @@
         var table = layui.table
             , $ = layui.$
             ,form = layui.form;
+        var aaa;
+            //岗位列表
+            $.post("getRole",{},function (data) {
+                if(data.code===0){
+                    for (var i =0;i<data.data.roles.length;i++){
+                        $("#place").append("<option value='"+data.data.roles[i].id+"'>"+data.data.roles[i].design+"</option>");
+                    }
+                }
+                form.render('select');
+            });
+            $.post("getCompany",{},function (data) {
+                if(data.code===0){
+                    for (var i =0;i<data.data.companies.length;i++){
+                        $("select[name='CompanyId']").append("<option value='"+data.data.companies[i].id+"'>"+data.data.companies[i].name+"</option>");
+                    }
+                }
+                form.render('select');
+            });
 
-        var aaa =null;
         //员工
         var staff=table.render({
             elem: '#staff'
@@ -126,18 +137,12 @@
                 , {title: '修改', width: 160, align: 'center', toolbar: '#updata', fixed: 'right'}
             ]]
             , done: function (res, curr, count) {
-                layui.$('table tbody tr ').each(function () {
-                    if ($(this).children().eq(10).text().trim() == '撤案') {
-                        $(this).css('color', '#FFB90F');
-                    }
-                })
             }
         });
-
+        //修改和禁用
         table.on('tool(staff)', function (obj) {
             var layEvent = obj.event;
             if (layEvent === 'update') {
-                console.log(obj.data)
                 $("input[name='name']").val(obj.data.sName);
                 $("input[name='loginName']").val(obj.data.loginName);
                 $("input[name='oldId']").val(obj.data.loginName);
@@ -146,7 +151,7 @@
                 $("input[name='phone']").val(obj.data.phone);
                 $("input[name='isEnable']").val(obj.data.isEnable);
                 $("input[name='urgeGroup']").val(obj.data.urgeGroup);
-                form.render('select')
+                form.render('select');
                 aaa = layer.open({
                     type: 1
                     ,id:"dd"
@@ -179,7 +184,7 @@
                     , size: 'sm'
                     , cols: [[ //表头
                         {field: 'chk', width: "4%", type: 'checkbox', fixed: 'left'},
-                        {field: 'name', title: '员工名称', width: 150, sort: true, fixed: 'left'}
+                        {field: 'sName', title: '员工名称', width: 150, sort: true, fixed: 'left'}
                     ]]
                 });
                 $.ajax({
@@ -191,10 +196,10 @@
                         if (data.code === 1) {
                             layer.open({
                                 type: 1
-                                , title: obj.data.name + '的案件'
+                                , title: obj.data.sName + '的案件进行调案'
                                 , height: 'full'
                                 , content: $("#del")
-                                , btn: ['添加']
+                                , btn: ['确定']
                                 , yes: function (index, layero) {
                                     var checkStatus = table.checkStatus('sta');
                                     var chksta = [];
@@ -249,6 +254,11 @@
             });
             return false;
         });
+        form.on('submit(search)', function (data) {
+            staff.reload({where: {where: JSON.stringify(data.field)}});
+            return false;
+        });
+
     });
     /*]]>*/
 </script>

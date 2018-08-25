@@ -10,6 +10,7 @@ import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.base.Table;
 import com.cch.cz.common.UtilFun;
 import com.cch.cz.entity.Cases;
+import com.cch.cz.entity.Company;
 import com.cch.cz.entity.Staff;
 import com.cch.cz.entity.enu.IsEnable;
 import com.cch.cz.service.CasesService;
@@ -53,16 +54,20 @@ public class StaffCtrl {
 
     @GetMapping(value = "/list")
     public  String list(Model model){
-         model.addAttribute(staffService.findAll());
         return "/cz/staff/list";
     }
 
     @PostMapping(value = "/list")
     @ResponseBody
-    public Table hKlist(@RequestParam int page , @RequestParam int limit){
+    public Table hKlist(@RequestParam int page , @RequestParam int limit,@RequestParam(defaultValue = "") String where){
         Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
+        Staff wherea = JSON.parseObject(where,Staff.class);
+        if(wherea==null){
+            wherea= new Staff();
+            wherea.setCompanyId(staff.getCompanyId());
+        }
         PageHelper.startPage(page,limit);
-        Page<Map> staffs =(Page<Map>) staffService.listStaff(staff == null ? null : staff.getCompanyId());
+        Page<Map> staffs =(Page<Map>) staffService.listStaff(wherea.getCompanyId());
         Table table = new Table();
         List<Map> staffa = staffService.listByStaff();
         for (Map map : staffs) {
@@ -96,26 +101,6 @@ public class StaffCtrl {
 
         return "/cz/staff/add";
     }
-
-    @GetMapping(value = "/toAddcompany")
-    public String toAddcompany(){
-        return "/cz/staff/addcompany";
-    }
-
-
-
-    //查询公司下的员工
-    @PostMapping(value = "/companycom")
-    @ResponseBody
-    public  Table comp(@RequestParam(defaultValue = "0") int page,
-                       @RequestParam(defaultValue = "0") int limit,
-                       @RequestParam String data){
-        PageHelper.startPage(page, limit);
-        Page<Map> staffq = (Page<Map>) staffService.listBycompanyccaa(data);
-        return new Table((int) staffq.getTotal(), staffq);
-    }
-
-
 
     @PostMapping(value = "/add",produces="application/json;charset=UTF-8")
     @ResponseBody
@@ -180,7 +165,7 @@ public class StaffCtrl {
     public AjaxReturn disenable(@RequestParam("cases") String casess, @RequestParam("staff[]") String[] staff) {
         List<Cases> cases = JSON.parseArray(casess, Cases.class);
         staffService.disable(cases, staff);
-        return new AjaxReturn(0, "分配成功");
+        return new AjaxReturn(0, "操作成功");
     }
 
     @PostMapping(value = "/randomTooStaff")
@@ -192,10 +177,30 @@ public class StaffCtrl {
         table.setCount(staffService.count(new Staff()).intValue());
         return table;
     }
-//    @PostMapping(value = "/randomto")
-//    @ResponseBody
-//    public AjaxReturn random(@RequestParam("cases") String casess, @RequestParam("staff[]") String[] staff ){
-//        Staff staffa = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
-//
-//    }
+
+
+    /**
+     * 获取岗位下来列表
+     */
+    @PostMapping(value = "/getRole")
+    @ResponseBody
+    public AjaxReturn getRole(){
+        Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
+        Map map = new HashMap();
+        map.put("roles",(staff.getPlace()==null)?roleService.findAll():roleService.findByStaff(staff));
+        return new AjaxReturn(0,"",map);
+    }
+    /**
+     * 获取公司下拉列表
+     */
+
+    @PostMapping(value = "/getCompany")
+    @ResponseBody
+    public AjaxReturn getCompany(){
+        Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
+        List<Company> companies = companyService.listBystaff(staff);
+        Map map = new HashMap();
+        map.put("companies",companies);
+        return new AjaxReturn(0,"",map);
+    }
 }

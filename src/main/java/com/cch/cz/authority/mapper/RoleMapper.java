@@ -22,4 +22,8 @@ public interface RoleMapper extends BaseMapper<Role,Long> {
     void savePowers(@Param("roleId")Long roleId, @Param("powerId")String powerId);
     @Select({"select * from t_role where name=#{name}"})
     Role getByName(@Param("name")String name);
+    @Select({"select * from t_role where name != 'superadmin'"})
+    List<Role> findNoSuper();
+    @Select({"select * from t_role where name not in ( 'superadmin','admin')"})
+    List<Role> findNoAdmin();
 }

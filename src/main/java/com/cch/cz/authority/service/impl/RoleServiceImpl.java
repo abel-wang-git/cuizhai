@@ -6,6 +6,7 @@ import com.cch.cz.authority.entity.key.RolePowerKey;
 import com.cch.cz.authority.mapper.RoleMapper;
 import com.cch.cz.authority.service.RoleService;
 import com.cch.cz.base.service.impl.BaseServiceImpl;
+import com.cch.cz.entity.Staff;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -42,5 +43,19 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,Long> implements RoleS
             return roles;
         }
         return null;
+    }
+
+    @Override
+    public List<Role> findByStaff(Staff staff) {
+        Role staffrole= findOne(Long.valueOf(staff.getPlace()));
+        List<Role> result=null;
+        switch (staffrole.getDesign()){
+            case Role.ADMIN:
+                result=roleMapper.findNoSuper();
+                break;
+            default:
+                result=roleMapper.findNoAdmin();
+        }
+        return result;
     }
 }
