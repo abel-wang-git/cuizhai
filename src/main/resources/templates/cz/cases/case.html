@@ -8,11 +8,11 @@
 
 <button type="button" class="layui-btn layui-btn-sm" id="revoke">撤案</button>
 <button type="button" class="layui-btn layui-btn-sm" id="retain" lay-filter="retain">留案</button>
-<button type="button" class="layui-btn layui-btn-sm" id="adjust" lay-filter="adjust">调案</button>
+<!--<button type="button" class="layui-btn layui-btn-sm" id="adjust" lay-filter="adjust">调案</button>-->
 <button type="button" class="layui-btn layui-btn-sm" id="end" lay-filter="end">结案</button>
 <button shiro:hasAnyRoles ="superadmin ,admin" type="button" class="layui-btn layui-btn-sm" id="upload">上传委案</button>
 <button shiro:hasAnyRoles="superadmin,admin" type="button" class="layui-btn layui-btn-sm" id = "supplement">补充信息</button>
-<button type="button" class="layui-btn layui-btn-sm" id="adjusta" lay-filter="adjusta">调案记录</button>
+<!--<button type="button" class="layui-btn layui-btn-sm" id="adjusta" lay-filter="adjusta">调案记录</button>-->
 
 <form class="layui-form where" method="post" id="search">
     <div class="layui-inline">
@@ -76,7 +76,6 @@
 
 <table id="cases" lay-filter="cases"></table>
 <div style="display: none; height: 300px; width: auto" id="adjustbdiv">
-<table id="adjustb" lay-filter="adjustb"></table>
 
 </div>
 <div class="layui-inline" style="display: none;padding-top: 20px" id="day">
@@ -160,21 +159,7 @@
             });
             return o;
         };
-        table.render({
-            elem:'#adjustb',
-            id:'adjustb',
-            height:"full",
-            url:[[${ctx}]] + "/case/listByAdjust",
-            method:'post',
-            page:true,
-            cols:[[
-                {field:'id',title:'编号',width:'5%',sort:true,align:"center"},
-                {field:'caseId',title:'委案编号',width:'13%',sort:true,align:"center" ,toolbar:'#name'},
-                {field:'date',title:'委案时间',width:'15%',sort:true,align:"center"},
-                {field:'oldstaff',title:'调案前员工',width:'13%',sort:true,align:"center"},
-                {field:'newstaff',title:'调案后员工',width:'13%',sort:true,align:"center"},
-            ]]
-        })
+
         $('#adjusta').click(function () {
             layer.open({
                 type: 1
@@ -492,62 +477,64 @@
         });
 
         table.on('tool(cases)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-
             layer.open({
                 type: 1,
                 title:false,
-                area:[600,400],
-                content:'<div style="background-color: lightgreen">' +
-                '<span>姓名：'+obj.data.name+'</span> ' +
-                '<span>性别：'+obj.data.sex+'</span>' +
-                '<p>身份证：'+obj.data.idCard+'</p>' +
-                '<p>案件名称：'+obj.data.caseName+'</p>' +
-                '<p>案件案件类型：'+obj.data.type+'</p>' +
-                '<p>催收员：'+obj.data.staffId+'</p>' +
-                '<p>城市：'+obj.data.city+'</p>' +
-                '<p>客户手机：'+obj.data.customerPhoneNumber+'</p>' +
-                '<p>客户户籍地址：'+obj.data.customerAddress+'</p>' +
-                '<p>客户邮箱：'+obj.data.customerMail+'</p>' +
-                '<p>贷款类型：'+obj.data.loanType+'</p>' +
-                '<p>贷款本金：'+obj.data.loanPrincipal+'</p>' +
-                '<p>期款：'+obj.data.installmentMoney+'</p>' +
-                '<p>期数：'+obj.data.installmentNum+'</p>' +
-                '<p>已还款金额：'+obj.data.repaymentMoney+'</p>' +
-                '<p>最后还款日：'+obj.data.deadline+'</p>' +
-                '<p>逾期天数：'+obj.data.overrangingDay+'</p>' +
-                '<p>取消分期时间：'+obj.data.cancelInstalments+'</p>' +
-                '<p>未付期款：'+obj.data.nnpaidInstallment+'</p>' +
-                '<p>未付滞纳金：'+obj.data.lateFee+'</p>' +
-                '<p>欠款金额：'+obj.data.arrears+'</p>' +
-                '<p>委外催收费：'+obj.data.serviceCharge+'</p>' +
-                '<p>总欠款：'+obj.data.sumArrears+'</p>' +
-                '<p>还款账号：'+obj.data.repaymentAccount+'</p>' +
-//                '<p>客户办公电话：'+obj.data.customerOfficePhone+'</p>' +
-//                '<p>客户公司名称：'+obj.data.customerCompany+'</p>' +
-//                '<p>客户公司地址：'+obj.data.customerCompanyAddress+'</p>' +
-//                '<p>客户公司部门：'+obj.data.customerDepartment+'</p>' +
-//                '<p>客户住宅电话：'+obj.data.customerResidencePhone+'</p>' +
-//                '<p>客户配偶姓名：'+obj.data.customerSpouse+'</p>' +
-//                '<p>客户配偶联系电话：'+obj.data.customerSpousePhone+'</p>' +
-//                '<p>客户亲戚姓名：'+obj.data.customerRelativeName+'</p>' +
-//                '<p>客户与亲戚关系：'+obj.data.customerRelationship+'</p>' +
-//                '<p>客户亲戚联系电话：'+obj.data.customerRelativePhone+'</p>' +
-//                '<p>其他联系人姓名：'+obj.data.customerRelativeOther+'</p>' +
-//                '<p>其他联系人关系：'+obj.data.customerRelaOther+'</p>' +
-                '<p>委外公司：'+obj.data.appointCompany+'</p> ' +
-                '<p>委派日期：'+obj.data.appointData+'</p>' +
-                '<p>退案日期：'+obj.data.stopAppoint+'</p>' +
-                '<p>地区：'+obj.data.region+'</p>' +
-                '<p>合同数量：'+obj.data.contractsNum+'</p>' +
-                '<p>合同申请日：'+obj.data.contractApplyDate+'</p>' +
-                '<p>户名：'+obj.data.accountMaster+'</p>' +
-                '<p>开户行：'+obj.data.bank+'</p>' +
-                '<p>商品：'+obj.data.commodity+'</p>' +
-                '<p>品牌：'+obj.data.brand+'</p>' +
-                '<p>POS点：'+obj.data.posPlace+'</p>' +
-                '<p>代扣开户行：'+obj.data.withholding+'</p>' +
-                '<p>代扣账号：'+obj.data.withholdingAccount+'</p>' +
-                ' </div>'
+                area:[800,400],
+                content:'<table class="layui-table case-table" lay-size="sm"><colgroup> ' +
+                '<col width="100"> <col width="100"> <col width="100"> <col width="100"> ' +
+                '<col width="100"> <col width="100"> <col width="100"> <col width="100"> ' +
+                '</colgroup>'+
+                '<tr>' +
+                '<td class="detail-case"> 姓名</td><td>'+obj.data.name+'</td> ' +
+                '<td class="detail-case"> 身份证</td><td>'+obj.data.idCard+'</td>' +
+                '<td class="detail-case"> 案件名称</td><td>'+obj.data.caseName+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 案件案件类型</td><td>'+obj.data.type+'</td>' +
+                '<td class="detail-case"> 催收员</td><td>'+obj.data.staffId+'</td>' +
+                '<td class="detail-case"> poS点</td><td>'+obj.data.posPlace+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 客户手机</td><td>'+obj.data.customerPhoneNumber+'</td>' +
+                '<td class="detail-case"> 客户邮箱</td><td>'+obj.data.customerMail+'</td>' +
+                '<td class="detail-case"> 客户户籍地址</td><td>'+obj.data.customerAddress+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 贷款类型</td><td>'+obj.data.loanType+'</td>' +
+                '<td class="detail-case"> 贷款本金</td><td>'+obj.data.loanPrincipal+'</td>' +
+                '<td class="detail-case"> 期款</td><td>'+obj.data.installmentMoney+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 期数：</td><td>'+obj.data.installmentNum+'</td>' +
+                '<td class="detail-case"> 已还款金额</td><td>'+obj.data.repaymentMoney+'</td>' +
+                '<td class="detail-case"> 最后还款日</td><td>'+obj.data.deadline+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 逾期天数</td><td>'+obj.data.overrangingDay+'</td>' +
+                '<td class="detail-case"> 取消分期时间</td><td>'+obj.data.cancelInstalments+'</td>' +
+                '<td class="detail-case"> 未付期款</td><td>'+obj.data.nnpaidInstallment+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 未付滞纳金</td><td>'+obj.data.lateFee+'</td>' +
+                '<td class="detail-case"> 欠款金额</td><td>'+obj.data.arrears+'</td>' +
+                '<td class="detail-case"> 委外催收费</td><td>'+obj.data.serviceCharge+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 总欠款</td><td>'+obj.data.sumArrears+'</td>' +
+                '<td class="detail-case"> 还款账号</td><td>'+obj.data.repaymentAccount+'</td>' +
+                '<td class="detail-case"> 委外公司</td><td>'+obj.data.appointCompany+'</td> ' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 委派日期</td><td>'+obj.data.appointData+'</td>' +
+                '<td class="detail-case"> 退案日期</td><td>'+obj.data.stopAppoint+'</td>' +
+                '<td class="detail-case"> 地区</td><td>'+obj.data.region+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 合同数量</td><td>'+obj.data.contractsNum+'</td>' +
+                '<td class="detail-case"> 合同申请日</td><td>'+obj.data.contractApplyDate+'</td>' +
+                '<td class="detail-case"> 户名</td><td>'+obj.data.accountMaster+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 商品</td><td>'+obj.data.commodity+'</td>' +
+                '<td class="detail-case"> 品牌</td><td>'+obj.data.brand+'</td>' +
+                '<td class="detail-case"> 开户行</td><td>'+obj.data.bank+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 城市</td><td>'+obj.data.city+'</td>' +
+                '<td class="detail-case"> 代扣账号</td><td>'+obj.data.withholdingAccount+'</td>' +
+                '<td class="detail-case"> 代扣开户行</td><td>'+obj.data.withholding+'</td>' +
+                '</tr>'+
+                '</table>'
             });
         });
     });
@@ -555,4 +542,12 @@
 </script>
 
 </body>
+<style type="text/css">
+    .detail-case{
+        font-weight: bold;
+    }
+    .case-table tr td{
+        white-space:nowrap;
+    }
+</style>
 </html>

@@ -287,8 +287,18 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
 
     @Override
     public List<Map> listByAdjust() {
-
-        return casesMapper.listByAdjust();
+        List<Map> list=casesMapper.listByAdjust();
+        List<Map> staffs= new ArrayList<>();
+        for(Map map : list){
+            String oldstaff = (String)map.get("oldstaff");
+            String newstaff = (String)map.get("newstaff");
+            Staff staff =staffMapper.findOne(new Staff(),oldstaff);
+            Staff staff1 =staffMapper.findOne(new Staff(),newstaff);
+            if(staff!=null) map.put("oldstaff",staff.getName());
+            if(staff!=null) map.put("newstaff",staff1.getName());
+            staffs.add(map);
+        }
+        return staffs;
     }
 
     @Override

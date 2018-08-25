@@ -287,22 +287,13 @@ public class CaseCtrl {
      */
     @PostMapping(value = "/listByAdjust")
     @ResponseBody
-    public Table listByAdjust() {
+    public Table listByAdjust(@RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "0") int limit) {
+        PageHelper.startPage(page, limit);
         List<Map> list = casesService.listByAdjust();
-        List<Map> staffs= new ArrayList<>();
-        for(Map map : list){
-            String oldstaff = (String)map.get("oldstaff");
-            String newstaff = (String)map.get("newstaff");
-            Staff staff =staffService.findOne(oldstaff);
-            Staff staff1 =staffService.findOne(newstaff);
-            map.put("oldstaff",staff.getName());
-            map.put("newstaff",staff1.getName());
-            staffs.add(map);
-        }
-        Table table = new Table();
-        table.setData(staffs);
-        table.setCount(staffs.size());
-        return table;
+        Page page1 = (Page) list;
+
+        return new Table((int) page1.getTotal(), page1);
     }
 
 

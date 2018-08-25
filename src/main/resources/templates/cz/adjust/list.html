@@ -5,29 +5,280 @@
     <div th:include="fragment/head :: head"></div>
 </head>
 <body>
+<button type="button" class="layui-btn layui-btn-sm" id="adjust" lay-filter="adjust">调案</button>
+<form class="layui-form where" method="post" id="search">
+    <div class="layui-inline">
+        <label class="layui-form-label">状态：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <select name="status" class="layui-input">
+                <option value="-1">全部</option>
+                <option value="0">正常</option>
+                <option value="1">撤案</option>
+                <option value="2">申请留案</option>
+                <option value="5">留案</option>
+                <option value="4">结案</option>
+                <option value="6">承诺还款</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">姓名：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="name" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">委案时间：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="appointData" id="appointData" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">手机：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="customerPhoneNumber" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">身份证：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="idCard" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">归属地：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="customerAddress" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">合同号：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="contractNum" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">操作员工：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <input name="StaffId" type="text" class="layui-input"/>
+        </div>
+    </div>
+    <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
+</form>
+<table id="cases" lay-filter="cases"></table>
+<div th:include="fragment/casestatus :: casestatus"></div>
+<script type="text/html" id="name">
+    <span style="border-bottom:  1px solid #0a0fff;" lay-event="detail">{{ d.name}}</span>
+</script>
 
-<table id="log" lay-filter="log"></table>
+<div style="display: none" id="stafflayer">
+    <table id="staffs" lay-filter="staffs"></table>
+</div>
+<script type="text/html" id="radioTpl">
+    <input type="radio" name="staffradio" value="{{d.loginName}}" title=" " lay-filter="radiodemo"/> {{d.name}}
+</script>
+<!--<table id="log"></table>-->
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
 
     /*<![CDATA[*/
-    layui.use('table', function () {
+    layui.use(['table','form'], function () {
         var table = layui.table
+            ,form=layui.form
             , $ = layui.$;
-        table.render({
-            elem: '#log'
-            , id: 'log'
-            , height: 315
-            , url: [[${ctx}]] + '/cases/listByAdjust' //数据接口
+        // 调案记录
+        // table.render({
+        //     elem: '#log'
+        //     , id: 'log'
+        //     , height: 315
+        //     , url: [[${ctx}]] + '/case/listByAdjust' //数据接口
+        //     , method: 'post'
+        //     , page: true //开启分页
+        //     , cols: [[ //表头
+        //         {field: 'date', title: '日期', width: 300, sort: true, fixed: 'left'}
+        //         ,{field: 'newstaff', title: '当前催收员', width: 300}
+        //         ,{field: 'oldstaff', title: '上一位催收员', width: 300}
+        //     ]]
+        // });
+
+
+        var cases = table.render({
+            elem: '#cases'
+            , id: 'cases'
+            , height: "full-120"
+            , url: ""
             , method: 'post'
+            , limits: [10,50,150,200,250,300,350]
+            , size: 'sm'
             , page: true //开启分页
             , cols: [[ //表头
-                {field: 'name', title: '权限名称', width: 300, sort: true, fixed: 'left'}
-                , {field: 'chk', width: 200, type: 'checkbox', fixed: 'right'}
+                {field: 'chk', width: "4%", type: 'checkbox', fixed: 'left'}
+                , {field: 'name', title: '姓名', width: '8%', sort: true,toolbar: '#name'}
+                , {field: 'customerPhoneNumber', title: '手机', width: '10%'}
+                , {field: 'idCard', title: '身份证', width: '7%'}
+                , {field: 'staffId', title: '催收员', width: '7%', templet: '#staffcol'}
+                , {field: 'appointData', title: '委案日期', width: '9%'}
+                , {field: 'stopAppoint', title: '退案日期', width: '10%'}
+                , {field: 'loanPrincipal', title: '贷款本金', width: '5%'}
+//                , {field: 'installmentMoney', title: '期款', width: '8%'}
+                , {field: 'repaymentAccount', title: '还款账号', width: '10%'}
+//                , {field: 'installmentNum', title: '期数', width: '6%'}
+                , {field: 'customerAddress', title: '户籍地址', width: '11%'}
+//                , {field: 'nnpaidInstallment', title: '未付期款', width: '10%'}
+                , {field: 'contractNum', title: '合同号', width: '8%'}
+                , {field: 'status', title: '状态', width: '10%', templet: '#status'}
+            ]]
+            , done: function (res, curr, count) {
+                layui.$('table tbody tr ').each(function () {
+                    if ($(this).children().eq(11).text().trim().indexOf("撤案") >= 0) {
+                        $(this).css('background-color', '#BEBEBE');
+                        $(this).css('color', '');
+                    }
+                    if ($(this).children().eq(11).text().trim().indexOf("留案") >= 0) {
+                        $(this).css('background-color', '#FFAD86');
+                        $(this).css('color', '');
+                    }
+                    if ($(this).children().eq(11).text().trim().indexOf("结案") >= 0) {
+                        $(this).css('background-color', '#84C1FF');
+                        $(this).css('color', '');
+                    }
+                })
+            }
+        });
+
+
+        form.on('submit(search)', function (data) {
+            cases.reload({url: [[${ctx}]]+'/case/dynamic', where: {data: JSON.stringify(data.field)}});
+            return false;
+        });
+
+
+        table.on('tool(cases)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            layer.open({
+                type: 1,
+                title:false,
+                area:['800px','400px'],
+                content:'<table class="layui-table case-table" lay-size="sm"><colgroup> ' +
+                '<col width="100"> <col width="100"> <col width="100"> <col width="100"> ' +
+                '<col width="100"> <col width="100"> <col width="100"> <col width="100"> ' +
+                '</colgroup>'+
+                '<tr>' +
+                '<td class="detail-case"> 姓名</td><td>'+obj.data.name+'</td> ' +
+                '<td class="detail-case"> 身份证</td><td>'+obj.data.idCard+'</td>' +
+                '<td class="detail-case"> 案件名称</td><td>'+obj.data.caseName+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 案件案件类型</td><td>'+obj.data.type+'</td>' +
+                '<td class="detail-case"> 催收员</td><td>'+obj.data.staffId+'</td>' +
+                '<td class="detail-case"> poS点</td><td>'+obj.data.posPlace+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 客户手机</td><td>'+obj.data.customerPhoneNumber+'</td>' +
+                '<td class="detail-case"> 客户邮箱</td><td>'+obj.data.customerMail+'</td>' +
+                '<td class="detail-case"> 客户户籍地址</td><td>'+obj.data.customerAddress+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 贷款类型</td><td>'+obj.data.loanType+'</td>' +
+                '<td class="detail-case"> 贷款本金</td><td>'+obj.data.loanPrincipal+'</td>' +
+                '<td class="detail-case"> 期款</td><td>'+obj.data.installmentMoney+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 期数：</td><td>'+obj.data.installmentNum+'</td>' +
+                '<td class="detail-case"> 已还款金额</td><td>'+obj.data.repaymentMoney+'</td>' +
+                '<td class="detail-case"> 最后还款日</td><td>'+obj.data.deadline+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 逾期天数</td><td>'+obj.data.overrangingDay+'</td>' +
+                '<td class="detail-case"> 取消分期时间</td><td>'+obj.data.cancelInstalments+'</td>' +
+                '<td class="detail-case"> 未付期款</td><td>'+obj.data.nnpaidInstallment+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 未付滞纳金</td><td>'+obj.data.lateFee+'</td>' +
+                '<td class="detail-case"> 欠款金额</td><td>'+obj.data.arrears+'</td>' +
+                '<td class="detail-case"> 委外催收费</td><td>'+obj.data.serviceCharge+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 总欠款</td><td>'+obj.data.sumArrears+'</td>' +
+                '<td class="detail-case"> 还款账号</td><td>'+obj.data.repaymentAccount+'</td>' +
+                '<td class="detail-case"> 委外公司</td><td>'+obj.data.appointCompany+'</td> ' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 委派日期</td><td>'+obj.data.appointData+'</td>' +
+                '<td class="detail-case"> 退案日期</td><td>'+obj.data.stopAppoint+'</td>' +
+                '<td class="detail-case"> 地区</td><td>'+obj.data.region+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 合同数量</td><td>'+obj.data.contractsNum+'</td>' +
+                '<td class="detail-case"> 合同申请日</td><td>'+obj.data.contractApplyDate+'</td>' +
+                '<td class="detail-case"> 户名</td><td>'+obj.data.accountMaster+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 商品</td><td>'+obj.data.commodity+'</td>' +
+                '<td class="detail-case"> 品牌</td><td>'+obj.data.brand+'</td>' +
+                '<td class="detail-case"> 开户行</td><td>'+obj.data.bank+'</td>' +
+                '</tr><tr>' +
+                '<td class="detail-case"> 城市</td><td>'+obj.data.city+'</td>' +
+                '<td class="detail-case"> 代扣账号</td><td>'+obj.data.withholdingAccount+'</td>' +
+                '<td class="detail-case"> 代扣开户行</td><td>'+obj.data.withholding+'</td>' +
+                '</tr>'+
+                '</table>'
+            });
+        });
+
+        //调案
+        $('#adjust').click(function () {
+            var checkStatus = table.checkStatus('cases');
+            var ids = [];
+            for (var i = 0; i < checkStatus.data.length; i++) {
+                if(checkStatus.data[i].companyId==-1){
+                    layer.msg("选择案件中存在未分配的案件")
+                    return;
+                }
+                if (checkStatus.data[i].status==1||checkStatus.data[i].status==3){
+                    layer.msg("选择案例存在结案或者撤案状态");
+                    return;
+                }
+                ids.push(checkStatus.data[i]);
+            }
+            if (ids.length <= 0) {
+                layer.msg("请选择要调案的委案");
+                return;
+            }
+            layer.open({
+                type: 1
+                , title: false
+                , area: ['311px', '310px']
+                , content: $("#stafflayer")
+                , btn: ['确定']
+                ,yes:function (index) {
+                    var staff=$('input[name="staffradio"]:checked').val();
+                    $.ajax({
+                        url: [[${ctx}]] + "/case/adjust",
+                        type: "post",
+                        dataType: 'json',
+                        data: {cases: JSON.stringify(ids), staff: staff},
+                        success: function (data) {
+                            layer.close(index);
+                            layer.msg(data.message);
+                            cases.reload();
+                        }
+                    });
+                }
+            })
+        })
+
+        //根据公司查到的员工
+        table.render({
+            elem: '#staffs'
+            , id: 'staffs'
+            , url: [[${ctx}]] + '/staff/listbycompany' //数据接口
+            , where: {company: [[${session.staff.companyId}]]}
+            , method: 'post'
+            , cols: [[ //表头
+                {field: 'radio', title: '员工',templet:"#radioTpl",unresize:true, width:300,fixed: 'left'},
+
             ]]
         });
     });
     /*]]>*/
 </script>
 </body>
+<style type="text/css">
+    .detail-case{
+        font-weight: bold;
+    }
+    .case-table tr td{
+        white-space:nowrap;
+    }
+</style>
 </html>

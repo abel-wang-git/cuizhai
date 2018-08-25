@@ -1,0 +1,25 @@
+<div  xmlns:th="http://www.thymeleaf.org" th:fragment="casestatus">
+<script type="text/html" id="status">
+    {{#  if(d.status === 0){ }}
+    正常
+    {{#  } }}
+    {{#  if(d.status === 1){ }}
+    撤案
+    {{#  } }}
+    {{#  if(d.status === 2){ }}
+    留案申请中
+    {{#  } }}
+    {{#  if(d.status === 3){ }}
+    结案申请中
+    {{#  } }}
+    {{#  if(d.status === 4){ }}
+    结案
+    {{#  } }}
+    {{#  if(d.status === 5){ }}
+    留案
+    {{#  } }}
+    {{#  if(d.status === 6){ }}
+    承诺还款
+    {{#  } }}
+</script>
+</div>
