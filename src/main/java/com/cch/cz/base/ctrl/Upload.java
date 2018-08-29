@@ -202,7 +202,7 @@ public class Upload {
             if (title.get(j).toString().trim().equals("城市")) {
                 cases.setCity(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("CUSTOMERID")) {
+            if (title.get(j).toString().trim().equals("CUSTOMERID")||title.get(j).toString().trim().equals("客户id")) {
                 cases.setCUSTOMERID(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("客户姓名")) {
