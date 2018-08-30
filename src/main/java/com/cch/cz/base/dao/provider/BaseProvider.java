@@ -36,7 +36,7 @@ public class BaseProvider<M extends BaseEntity,PK> {
                 clo.append(addUnderscores(f.getName())+",");
 
                 if (f.getType()==String.class){
-                    val.append("'"+f.get(m)+"',");
+                    val.append("'"+f.get(m).toString().replace("'","''")+"',");
                 }else if(f.getType()==Date.class) {
                     SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd KK:mm:ss");
                     String ctime = formatter.format((Date) f.get(m));
