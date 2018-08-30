@@ -88,6 +88,7 @@ public class Upload {
                 return ajaxRetrun;
             }
 
+            int numberOfSheets=workbook.getNumberOfSheets();
             //遍历sheet
             for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
                 Sheet sheet = workbook.getSheetAt(i);
@@ -95,24 +96,25 @@ public class Upload {
                 for (int j =0 ;j<sheet.getRow(0).getLastCellNum();j++) {
                      Cell a=sheet.getRow(0).getCell(j);
                     if(null==sheet.getRow(0).getCell(j)||ExcelTool.getCellValue(sheet.getRow(0).getCell(j)).trim()==null){
-                        throw new UploadException("表头存在空值");
-                    } else {
-                        Iterator<String> iterator = title1.iterator();
-                        while (iterator.hasNext()) {
-                            String t = iterator.next();
-                            if (ExcelTool.getCellValue(sheet.getRow(0).getCell(j)).trim().equals(t))
-                                iterator.remove();
-                        }
+                            throw new UploadException("表头存在空值");
                     }
+//                    else {
+//                        Iterator<String> iterator = title1.iterator();
+//                        while (iterator.hasNext()) {
+//                            String t = iterator.next();
+//                            if (ExcelTool.getCellValue(sheet.getRow(0).getCell(j)).trim().equals(t))
+//                                iterator.remove();
+//                        }
+//                    }
                 }
             }
             String quet = "";
-            if (title1.size() > 0) {
-                for (String t : title1) {
-                    quet += (t + ",");
-                }
-                throw new UploadException("缺少" + quet + "信息");
-            }
+//            if (title1.size() > 0) {
+//                for (String t : title1) {
+//                    quet += (t + ",");
+//                }
+//                throw new UploadException("缺少" + quet + "信息");
+//            }
             md5= DigestUtils.md5Hex(IOUtils.toByteArray(new FileInputStream(name)));
             if(null!=uploadLogService.findOne(md5))throw new UploadException("上传过相同的案件");
             for (int i = 0; i <sheets.size() ; i++) {
@@ -256,7 +258,7 @@ public class Upload {
             if (title.get(j).toString().trim().equals("委外催收费")||title.get(j).toString().equals("催收费")) {
                 cases.setServiceCharge(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("总欠款")||title.get(j).toString().equals("总欠款金额")) {
+            if (title.get(j).toString().trim().equals("总欠款")||title.get(j).toString().equals("总欠款金额")||title.get(j).toString().equals("委案金额")) {
                 cases.setSumArrears(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("还款账号")||title.get(j).toString().trim().equals("银行卡号")) {
