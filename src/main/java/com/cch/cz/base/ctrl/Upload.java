@@ -275,7 +275,8 @@ public class Upload {
             if (title.get(j).toString().trim().equals("POS点")) {
                 cases.setPosPlace(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户手机")) {
+
+            if (title.get(j).toString().trim().equals("客户手机")||title.get(j).toString().trim().equals("本人手机")||title.get(j).toString().trim().equals("手机号")) {
                 cases.setCustomerPhoneNumber(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("客户户籍地址")) {
