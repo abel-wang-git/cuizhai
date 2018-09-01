@@ -96,7 +96,7 @@ public interface CasesMapper extends BaseMapper<Cases,Long> {
     @Update("update t_case set staff_id = #{staffid} where id in (${ids})")
     void adjust(@Param("ids") String ids, @Param("staffid") String staffid);
 
-    @Update("update t_case set status = 1 where appoint_data = ${now} and status =0")
+    @Update("update t_case set status = 1 where stop_appoint = ${now} and status =0")
     void autoRevoke(@Param("now")String now);
 
     @Select("SELECT staff_id from t_case WHERE id_card='${idcard}' and staff_id is not null  limit 1 ,1; ")
