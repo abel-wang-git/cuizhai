@@ -88,7 +88,6 @@ public class Upload {
                 return ajaxRetrun;
             }
 
-            int numberOfSheets=workbook.getNumberOfSheets();
             //遍历sheet
             for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
                 Sheet sheet = workbook.getSheetAt(i);
@@ -96,25 +95,24 @@ public class Upload {
                 for (int j =0 ;j<sheet.getRow(0).getLastCellNum();j++) {
                      Cell a=sheet.getRow(0).getCell(j);
                     if(null==sheet.getRow(0).getCell(j)||ExcelTool.getCellValue(sheet.getRow(0).getCell(j)).trim()==null){
-                            throw new UploadException("表头存在空值");
+                        throw new UploadException("表头存在空值");
+                    } else {
+                        Iterator<String> iterator = title1.iterator();
+                        while (iterator.hasNext()) {
+                            String t = iterator.next();
+                            if (ExcelTool.getCellValue(sheet.getRow(0).getCell(j)).trim().equals(t))
+                                iterator.remove();
+                        }
                     }
-//                    else {
-//                        Iterator<String> iterator = title1.iterator();
-//                        while (iterator.hasNext()) {
-//                            String t = iterator.next();
-//                            if (ExcelTool.getCellValue(sheet.getRow(0).getCell(j)).trim().equals(t))
-//                                iterator.remove();
-//                        }
-//                    }
                 }
             }
             String quet = "";
-//            if (title1.size() > 0) {
-//                for (String t : title1) {
-//                    quet += (t + ",");
-//                }
-//                throw new UploadException("缺少" + quet + "信息");
-//            }
+            if (title1.size() > 0) {
+                for (String t : title1) {
+                    quet += (t + ",");
+                }
+                throw new UploadException("缺少" + quet + "信息");
+            }
             md5= DigestUtils.md5Hex(IOUtils.toByteArray(new FileInputStream(name)));
             if(null!=uploadLogService.findOne(md5))throw new UploadException("上传过相同的案件");
             for (int i = 0; i <sheets.size() ; i++) {
@@ -181,7 +179,7 @@ public class Upload {
                     cases.setCompanyId(staff.getCompanyId());
                 }
             }
-            if (title.get(j).toString().trim().equals("身份证")||title.get(j).toString().trim().equals("身份证号码")) {
+            if (title.get(j).toString().trim().equals("身份证")) {
                 //相同身份证号码分配到同一催收员
                 cases.setIdCard(ExcelTool.getCellValue(curr));
             }
@@ -198,18 +196,16 @@ public class Upload {
                     title.get(j).toString().trim().equals("委案日期")) {
                 cases.setAppointData(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("退案日期")||
-                    title.get(j).toString().trim().equals("退案时间")||
-                    title.get(j).toString().trim().equals("预计退案日")) {
+            if (title.get(j).toString().trim().equals("退案日期")||title.get(j).toString().trim().equals("退案时间")) {
                 cases.setStopAppoint(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("城市")||title.get(j).toString().trim().equals("省份")) {
+            if (title.get(j).toString().trim().equals("城市")) {
                 cases.setCity(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("CUSTOMERID")||title.get(j).toString().trim().equals("客户id") ) {
+            if (title.get(j).toString().trim().equals("CUSTOMERID")||title.get(j).toString().trim().equals("客户id")) {
                 cases.setCUSTOMERID(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户姓名")||title.get(j).toString().trim().equals("姓名")) {
+            if (title.get(j).toString().trim().equals("客户姓名")) {
                 cases.setName(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("性别")) {
@@ -225,22 +221,22 @@ public class Upload {
             if (title.get(j).toString().trim().equals("贷款类型")) {
                 cases.setLoanType(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("贷款本金")||title.get(j).toString().trim().equals("本金")) {
+            if (title.get(j).toString().trim().equals("贷款本金")) {
                 cases.setLoanPrincipal(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("期款")||title.get(j).toString().trim().equals("每月还款")) {
+            if (title.get(j).toString().trim().equals("期款")) {
                 cases.setInstallmentMoney(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("期数")||title.get(j).toString().trim().equals("委案期数")) {
+            if (title.get(j).toString().trim().equals("期数")) {
                 cases.setInstallmentNum(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("已还款金额")||title.get(j).toString().trim().equals("最后还款金额")) {
+            if (title.get(j).toString().trim().equals("已还款金额")) {
                 cases.setRepaymentMoney(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("最后还款日")) {
                 cases.setDeadline(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("逾期天数")||title.get(j).toString().trim().equals("逾期期数")) {
+            if (title.get(j).toString().trim().equals("逾期天数")) {
                 cases.setOverrangingDay(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("取消分期时间")) {
@@ -249,19 +245,19 @@ public class Upload {
             if (title.get(j).toString().trim().equals("未付期款")) {
                 cases.setNnpaidInstallment(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("未付滞纳金")||title.get(j).toString().trim().equals("滞纳金")) {
+            if (title.get(j).toString().trim().equals("未付滞纳金")) {
                 cases.setLateFee(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("欠款金额")||title.get(j).toString().trim().equals("委案金额")) {
+            if (title.get(j).toString().trim().equals("欠款金额")) {
                 cases.setArrears(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("委外催收费")||title.get(j).toString().equals("催收费")) {
                 cases.setServiceCharge(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("总欠款")||title.get(j).toString().equals("总欠款金额")||title.get(j).toString().equals("委案金额")) {
+            if (title.get(j).toString().trim().equals("总欠款")||title.get(j).toString().equals("总欠款金额")) {
                 cases.setSumArrears(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("还款账号")||title.get(j).toString().trim().equals("银行卡号")) {
+            if (title.get(j).toString().trim().equals("还款账号")) {
                 cases.setRepaymentAccount(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("户名")) {
@@ -270,64 +266,64 @@ public class Upload {
             if (title.get(j).toString().trim().equals("开户行")) {
                 cases.setBank(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("商品")||title.get(j).toString().trim().equals("商品名称")) {
+            if (title.get(j).toString().trim().equals("商品")) {
                 cases.setCommodity(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("品牌")) {
                 cases.setBrand(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("POS点")||title.get(j).toString().trim().equals("门店名称")) {
+            if (title.get(j).toString().trim().equals("POS点")) {
                 cases.setPosPlace(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户手机")||title.get(j).toString().trim().equals("本人手机")) {
+            if (title.get(j).toString().trim().equals("客户手机")) {
                 cases.setCustomerPhoneNumber(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户户籍地址")||title.get(j).toString().trim().equals("户籍地址")) {
+            if (title.get(j).toString().trim().equals("客户户籍地址")) {
                 cases.setCustomerAddress(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("客户办公电话")) {
                 cases.setCustomerOfficePhone(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户公司名称")||title.get(j).toString().trim().equals("单位名称")) {
+            if (title.get(j).toString().trim().equals("客户公司名称")) {
                 cases.setCustomerCompany(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户公司地址")||title.get(j).toString().trim().equals("单位地址")) {
+            if (title.get(j).toString().trim().equals("客户公司地址")) {
                 cases.setCustomerCompanyAddress(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户公司部门")||title.get(j).toString().trim().equals("案人职位")) {
+            if (title.get(j).toString().trim().equals("客户公司部门")) {
                 cases.setCustomerDepartment(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("客户住宅电话")) {
                 cases.setCustomerResidencePhone(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户住宅地址")||title.get(j).toString().trim().equals("家庭地址")) {
+            if (title.get(j).toString().trim().equals("客户住宅地址")) {
                 cases.setCustomerResidenceAddress(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户配偶姓名")||title.get(j).toString().trim().equals("联系人2姓名")) {
+            if (title.get(j).toString().trim().equals("客户配偶姓名")) {
                 cases.setCustomerSpouse(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户配偶联系电话")||title.get(j).toString().trim().equals("联系人2手机")) {
+            if (title.get(j).toString().trim().equals("客户配偶联系电话")) {
                 cases.setCustomerSpousePhone(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户亲戚姓名")||title.get(j).toString().trim().equals("联系人1姓名")) {
+            if (title.get(j).toString().trim().equals("客户亲戚姓名")) {
                 cases.setCustomerRelativeName(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户与亲戚关系")||title.get(j).toString().trim().equals("联系人1关系")) {
+            if (title.get(j).toString().trim().equals("客户与亲戚关系")) {
                 cases.setCustomerRelationship(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户亲戚联系电话")||title.get(j).toString().trim().equals("联系人1手机")) {
+            if (title.get(j).toString().trim().equals("客户亲戚联系电话")) {
                 cases.setCustomerRelativePhone(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("其他联系人姓名")||title.get(j).toString().trim().equals("联系人7姓名")) {
+            if (title.get(j).toString().trim().equals("其他联系人姓名")) {
                 cases.setCustomerRelativeOther(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("其他联系人关系")||title.get(j).toString().trim().equals("联系人7关系")) {
+            if (title.get(j).toString().trim().equals("其他联系人关系")) {
                 cases.setCustomerRelaOther(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("其他联系人电话")||title.get(j).toString().trim().equals("联系人7手机")) {
+            if (title.get(j).toString().trim().equals("其他联系人电话")) {
                 cases.setCustomerOtherPhone(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户邮箱")||title.get(j).toString().trim().equals("邮箱")) {
+            if (title.get(j).toString().trim().equals("客户邮箱")) {
                 cases.setCustomerMail(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("代扣开户行")) {
