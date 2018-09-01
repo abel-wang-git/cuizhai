@@ -205,7 +205,7 @@ public class Upload {
             if (title.get(j).toString().trim().equals("CUSTOMERID")||title.get(j).toString().trim().equals("客户id")) {
                 cases.setCUSTOMERID(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("客户姓名")) {
+            if (title.get(j).toString().trim().equals("客户姓名")||title.get(j).toString().trim().equals("姓名")) {
                 cases.setName(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("性别")) {
