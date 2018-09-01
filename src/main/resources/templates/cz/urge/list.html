@@ -676,9 +676,15 @@
 
         function setoption(cases) {
             $("select[name='target']").empty();
+            if(typeof(cases.customerPhoneNumber) !== 'undefined'){
             $("select[name='target']").append("<option value='[本人]"+cases.customerPhoneNumber+"'>[本人]"+cases.customerPhoneNumber+"</option>")
+            }
+            if(typeof(cases.customerResidencePhone) !== 'undefined'){
             $("select[name='target']").append("<option value='[住宅]" + cases.customerResidencePhone + "'>[住宅]" + cases.customerResidencePhone + "</option>")
+            }
+            if(typeof(cases.customerOfficePhone) !== 'undefined'){
             $("select[name='target']").append("<option value='[公司]" + cases.customerOfficePhone + "'>[公司]" + cases.customerOfficePhone + "</option>")
+            }
             form.render('select');
         }
 
@@ -686,14 +692,14 @@
             $.post([[${ctx}]] + "/supplement/bynum", {num: cases.contractNum}, function (data) {
                 if (data.code === 0) {
                     $("select[name='suTarget']").empty();
-                    if (data.data.supplement.customerSpousePhone !== "") {
-                        $("select[name='suTarget']").append("<option value='[配偶]" + data.data.supplement.customerSpousePhone + "'>[配偶:" + data.data.supplement.customerSpouse + "]" + data.data.supplement.customerSpousePhone + "</option>")
+                    if (data.data.supplement.customerSpousePhone !== ""&&typeof(data.data.supplement.customerSpousePhone) !== 'undefined') {
+                        $("select[name='suTarget']").append("<option value='[配偶]" + data.data.supplement.customerSpousePhone + "'>[配偶:" + (typeof(data.data.supplement.customerSpouse) === 'undefined'?'':data.data.supplement.customerSpouse) + "]" + data.data.supplement.customerSpousePhone + "</option>")
                     }
-                    if (data.data.supplement.customerRelativePhone !== "") {
-                        $("select[name='suTarget']").append("<option value='[亲戚]" + data.data.supplement.customerRelativePhone + "'>[" + data.data.supplement.customerRelationship + ":" + data.data.supplement.customerRelativeName + "]" + data.data.supplement.customerRelativePhone + "</option>")
+                    if (data.data.supplement.customerRelativePhone !== ""&&typeof(data.data.supplement.customerRelativePhone) !== 'undefined') {
+                        $("select[name='suTarget']").append("<option value='[亲戚]" + data.data.supplement.customerRelativePhone + "'>[" + (typeof(data.data.supplement.customerRelationship) === 'undefined'?'': data.data.supplement.customerRelationship) + ":"+ (typeof(data.data.supplement.customerRelativeName) === 'undefined'?'': data.data.supplement.customerRelativeName) + "]" + data.data.supplement.customerRelativePhone + "</option>")
                     }
-                    if (data.data.supplement.customerOtherPhone !== "") {
-                        $("select[name='suTarget']").append("<option value='[其他]" + data.data.supplement.customerOtherPhone + "'>[" + data.data.supplement.customerRelaOther + ":" + data.data.supplement.customerRelativeOther + "]" + data.data.supplement.customerOtherPhone + "</option>")
+                    if (data.data.supplement.customerOtherPhone !== ""&&typeof(data.data.supplement.customerOtherPhone) !== 'undefined') {
+                        $("select[name='suTarget']").append("<option value='[其他]" + data.data.supplement.customerOtherPhone + "'>[" + (typeof(data.data.supplement.customerRelaOther) === 'undefined'?'':data.data.supplement.customerRelaOther) + ":" + (typeof(data.data.supplement.customerRelativeOther) === 'undefined'?'': data.data.supplement.customerRelativeOther) + "]" + data.data.supplement.customerOtherPhone + "</option>")
                     }
                     form.render('select');
                 }
