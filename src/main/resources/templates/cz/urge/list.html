@@ -818,10 +818,10 @@
                 success: function (data) {
                     layer.msg(data.message);
                     $('form')[1].reset();
-                    $('#urgeadd').addClass(" layui-btn-disabled");
-                    setTimeout((function () {
-                        $('#urgeadd').removeClass("layui-btn-disabled")
-                    }), 60000)
+                    // $('#urgeadd').addClass(" layui-btn-disabled");
+                    // setTimeout((function () {
+                    //     $('#urgeadd').removeClass("layui-btn-disabled")
+                    // }), 60000)
                     $("#cuishouEnd").hide();
                     log.reload({where:{cases:$("#caseId").val()}});
                 }
@@ -839,10 +839,10 @@
                 success: function (data) {
                     layer.msg(data.message);
                     $('form')[2].reset();
-                    $('#suadd').addClass(" layui-btn-disabled");
-                    setTimeout((function () {
-                        $('#suadd').removeClass("layui-btn-disabled")
-                    }), 60000)
+                    // $('#suadd').addClass(" layui-btn-disabled");
+                    // setTimeout((function () {
+                    //     $('#suadd').removeClass("layui-btn-disabled")
+                    // }), 60000)
                     $("#suEnd").hide();
                     sulog.reload({where: {cases: $("#caseId").val()}});
                 }
