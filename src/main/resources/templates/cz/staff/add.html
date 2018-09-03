@@ -31,9 +31,9 @@
     <div class="layui-form-item">
         <label class="layui-form-label">岗位</label>
         <div class="layui-input-inline">
-            <select th:field="*{place}" required ="required " lay-verify="required" lay-filter="group">
+            <select th:field="*{place}" id="place" required ="required " lay-verify="required" lay-filter="group">
                 <option value=""></option>
-                <option th:unless="${a.name=='superadmin'}" th:each="a:${roles}" th:text="${a.design}" th:value="${a.id}"></option>
+                <!--<option th:unless="${a.name=='superadmin'}" th:each="a:${roles}" th:text="${a.design}" th:value="${a.id}"></option>-->
             </select>
         </div>
     </div>
@@ -70,6 +70,14 @@
     layui.use('form', function(){
         var $ = layui.$,
             form = layui.form;
+        $.post("getRole",{},function (data) {
+            if(data.code===0){
+                for (var i =0;i<data.data.roles.length;i++){
+                    $("#place").append("<option value='"+data.data.roles[i].id+"'>"+data.data.roles[i].design+"</option>");
+                }
+            }
+            form.render('select');
+        });
         //监听提交
         form.on('submit(staff)', function(data){
             $.ajax({

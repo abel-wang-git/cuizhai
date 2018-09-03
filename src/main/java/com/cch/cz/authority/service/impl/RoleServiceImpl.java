@@ -49,7 +49,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role,Long> implements RoleS
     public List<Role> findByStaff(Staff staff) {
         Role staffrole= findOne(Long.valueOf(staff.getPlace()));
         List<Role> result=null;
-        switch (staffrole.getDesign()){
+        switch (staffrole.getName()){
             case Role.ADMIN:
                 result=roleMapper.findNoSuper();
                 break;
