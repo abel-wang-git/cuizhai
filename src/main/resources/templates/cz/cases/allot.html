@@ -57,7 +57,8 @@
 
         <input name="customerAddress" type="hidden"/>
         <input name="status" type="hidden" value="0"/>
-        <input name="companyId" type="hidden" value="-1"/>
+        <input name="staffId" type="hidden" value="-1"/>
+        <input name="companyId" type="hidden" th:value="${session.staff.companyId}"/>
         <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
     </form>
     <table id="casetab" lay-filter="casetab"></table>

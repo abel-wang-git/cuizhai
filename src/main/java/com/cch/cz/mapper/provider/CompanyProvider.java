@@ -15,7 +15,7 @@ public class CompanyProvider extends BaseProvider<Company,Long> {
         String sql= new SQL(){{
             SELECT(BuildSql.select(Company.class));
             FROM(BuildSql.tablename(Company.class));
-            WHERE("id=#{company} or p_id = #{company}");
+            WHERE(" p_id = #{company}");
         }}.toString();
         logger.info(sql);
         return sql;

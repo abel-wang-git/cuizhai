@@ -148,8 +148,13 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
                 where.append(" and DATE_FORMAT(left(appoint_data,10),'%Y-%m-%d') =  DATE_FORMAT(left(TRIM(#{appointData}),10),'%Y-%m-%d')");
             if (UtilFun.isEmptyString(cases.getIdCard()))
                 where.append(" and id_card = #{idCard}");
-            if (UtilFun.isEmptyString(cases.getStaffId()))
-                where.append(" and staff_id = #{StaffId}");
+            if (UtilFun.isEmptyString(cases.getStaffId())) {
+               if(cases.getStaffId().equals("-1")){
+                   where.append(" and staff_id is null");
+               }else {
+                   where.append(" and staff_id = #{StaffId}");
+               }
+            }
             if (UtilFun.isEmptyString(cases.getArrears()))
                 where.append(" and sum_arrears between #{arrears}+0 and #{sumArrears}+0");
             if (null!=cases.getCompanyId())
