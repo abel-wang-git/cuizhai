@@ -110,13 +110,13 @@ public class MyStartupRunner implements CommandLineRunner {
             roleService.save(role);
         }
 
-        Role business = roleService.getByname ("business");
-        if (business==null){
-            Role role = new Role ();
-            role.setName ("business");
-            role.setDesign("业务部");
-            roleService.save (role);
-        }
+//        Role business = roleService.getByname ("business");
+//        if (business==null){
+//            Role role = new Role ();
+//            role.setName ("business");
+//            role.setDesign("业务部");
+//            roleService.save (role);
+//        }
     }
 
 }
