@@ -38,62 +38,64 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
         logger.info(sql);
         return sql;
     }
-
+//select * from t_case c left join (select * from t_urge_record u where create_date in (select max(create_date) from t_urge_record group by case_id)) t on c.id=t.case_id
     public String listByStaff(Cases cases) {
         String sql = new SQL() {{
             StringBuilder where = new StringBuilder();
             SELECT(BuildSql.select(Cases.class));
-            FROM(BuildSql.tablename(Cases.class));
-            where.append(" staff_id =#{staffId} and status !=1 and status !=4");
+            FROM("t_case c left join (select case_id,create_date,result,rmarks,status as phonestatus ,target from t_urge_record u where create_date in (select max(create_date) from t_urge_record group by case_id)) t on (c.id=t.case_id)");
+            where.append(" c.staff_id =#{staffId} and c.status !=1 and c.status !=4");
             if(UtilFun.isEmptyString(cases.getName()))
-                where.append(" and name like '" + cases.getName() + "%'");
+                where.append(" and c.name like '" + cases.getName() + "%'");
             if(UtilFun.isEmptyString(cases.getCustomerPhoneNumber()))
-                where.append( " and customer_phone_number = #{customerPhoneNumber}");
+                where.append( " and c.customer_phone_number = #{customerPhoneNumber}");
             if(UtilFun.isEmptyString(cases.getCustomerAddress()))
-                where.append(" and customer_address like #{customerAddress}");
+                where.append(" and c.customer_address like #{customerAddress}");
             if (UtilFun.isEmptyString(cases.getIdCard()))
-                where.append(" and id_card = #{idCard}");
+                where.append(" and c.id_card = #{idCard}");
             if (UtilFun.isEmptyString(cases.getContractNum()))
-                where.append(" and contract_num= #{contractNum} ");
+                where.append(" and c.contract_num= #{contractNum} ");
             if (UtilFun.isEmptyString(cases.getLastUrge())) {
                 if (cases.getLastUrge().equals("yes"))
-                    where.append(" and last_urge is not null ");
+                    where.append(" and c.last_urge is not null ");
                 if (cases.getLastUrge().equals("no"))
-                    where.append(" and last_urge is  null");
+                    where.append(" and c.last_urge is  null");
             }
             if (UtilFun.isEmptyString(cases.getAppointData()))
-                where.append(" and appoint_data=#{appointData}");
+                where.append(" and c.appoint_data=#{appointData}");
             if (UtilFun.isEmptyString(cases.getType()))
-                where.append(" and type=#{type}");
+                where.append(" and c.type=#{type}");
             if (UtilFun.isEmptyString(cases.getOverrangingDay())) {
                 String d = cases.getOverrangingDay();
                 switch (d) {
                     case "M1":
-                        where.append(" and overranging_day > 0 and overranging_day <31 ");
+                        where.append(" and c.overranging_day > 0 and c.overranging_day <31 ");
                         break;
                     case "M2":
-                        where.append(" and overranging_day > 30 and overranging_day <61 ");
+                        where.append(" and c.overranging_day > 30 and c.overranging_day <61 ");
                         break;
                     case "M3":
-                        where.append(" and overranging_day > 60 and overranging_day <91 ");
+                        where.append(" and c.overranging_day > 60 and c.overranging_day <91 ");
                         break;
                     case "M4-M6":
-                        where.append(" and overranging_day > 90 and overranging_day <181 ");
+                        where.append(" and c.overranging_day > 90 and c.overranging_day <181 ");
                         break;
                     case "M6-M12":
-                        where.append(" and overranging_day > 180 and overranging_day <360 ");
+                        where.append(" and c.overranging_day > 180 and c.overranging_day <360 ");
                         break;
                     case "M12":
-                        where.append(" and overranging_day > 360 ");
+                        where.append(" and c.overranging_day > 360 ");
                         break;
 
                 }
             }
             if (cases.getStatus() != null && cases.getStatus() != -1) {
-                where.append(" and status = #{status}");
+                where.append(" and c.status = #{status}");
             }
             if(UtilFun.isEmptyString(cases.getStopAppoint()))
-                where.append(" and last_urge like concat(#{stopAppoint},'%')");
+                where.append(" and c.last_urge like concat(#{stopAppoint},'%')");
+            if(UtilFun.isEmptyString(cases.getCustomerMail()))
+                where.append( " and t.phonestatus=#{customerMail}");
             WHERE(where.toString());
 
         }}.toString();

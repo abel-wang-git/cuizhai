@@ -22,6 +22,25 @@
         </div>
     </div>
     <div class="layui-inline">
+        <label class="layui-form-label">接通状态：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <select name="customerMail" autocomplete="off" class="layui-input"
+                    lay-filter="customerMail">
+                <option value="">请选择</option>
+                <option value="正常接通">正常接通</option>
+                <option value="无人接听">无人接听</option>
+                <option value="暂停服务">暂停服务</option>
+                <option value="暂时无法接通">暂时无法接通</option>
+                <option value="关机">关机</option>
+                <option value="挂机">挂机</option>
+                <option value="停机">停机</option>
+                <option value="正在通话">正在通话</option>
+                <option value="来电提醒">来电提醒</option>
+                <option value="空号">空号</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-inline">
         <label class="layui-form-label">姓名：</label>
         <div class="layui-input-inline" style="width: 100px;">
             <input name="name" type="text" class="layui-input"/>
