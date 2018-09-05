@@ -501,7 +501,7 @@
             , height:'full-60'
             , url: [[${ctx}]] + '/case/list/bystaff' //数据接口
             , page: {elem: 'pav'} //开启分页
-            , limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+            , limits: [10]
             , where: {staff: JSON.stringify(JSON.parse('{"staffId":"'+[[${session.staff.loginName}]]+'"}'))}
             , method: 'post'
             , cols: [[ //表头
@@ -643,7 +643,6 @@
         });
 
         form.on('submit(search)', function (data) {
-            console.log(data.field)
             cases.reload({page: {curr: 1 },where:{staff:JSON.stringify(data.field)}});
             return false;
         });
@@ -734,7 +733,7 @@
             if (index === 10) {
                 index=0;
                 cursor=0;
-                table.reload("cases",{page:{curr:Number(currpage)+1}
+                table.reload("cases",{page:{curr:Number(currpage)+1},where:{staff:JSON.stringify($('#search').serializeObject())}
                 ,done:function (res, curr, count) {
                         setcase(res.data[index]);
                         setoption(res.data[index]);
@@ -759,7 +758,7 @@
             if (index === 10) {
                 index=0;
                 cursor=0;
-                table.reload("cases",{page:{curr:Number(currpage)-1}
+                table.reload("cases",{page:{curr:Number(currpage)-1},where:{staff:JSON.stringify($('#search').serializeObject())}
                     ,done:function (res, curr, count) {
                         setcase(res.data[index]);
                         setoption(res.data[index]);
