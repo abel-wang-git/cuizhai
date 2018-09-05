@@ -38,7 +38,7 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
     @Resource
     private RoleMapper roleMapper;
     @Resource
-    private SupplementMapper supplementMapper;
+    private ExtendMapper extendMapper;
 
     @Override
     @Transactional
@@ -50,6 +50,7 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
                 idc.add(c.getIdCard());
                 com.add(c.getContractNum());
             }
+
         }
         String idcs = StringUtils.join(idc.toArray(), "','");
         String coms = StringUtils.join(com.toArray(), "','");
@@ -66,27 +67,34 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
             }
         }
 
+
         for (Cases c : casesList) {
             casesMapper.save(c);
-            Supplement supplement = new Supplement();
-            supplement.setContractNum(c.getContractNum());
-            supplement.setCustomerOtherPhone(c.getCustomerOtherPhone());
-            supplement.setCustomerRelaOther(c.getCustomerRelaOther());
-            supplement.setCustomerRelativeOther(c.getCustomerRelativeOther());
-            supplement.setCustomerRelationship(c.getCustomerRelationship());
-            supplement.setCustomerRelativeName(c.getCustomerRelativeName());
-            supplement.setCustomerRelativePhone(c.getCustomerRelativePhone());
-            supplement.setCustomerSpouse(c.getCustomerSpouse());
-            supplement.setCustomerSpousePhone(c.getCustomerSpousePhone());
-            Field[] fields = Supplement.class.getDeclaredFields();
-            for (Field f : fields) {
-                f.setAccessible(true);
-                if (f.get(supplement) != null) {
-                    supplementMapper.save(supplement);
-                    break;
+            for (Extend e:c.getExtend()) {
+                if (UtilFun.isEmptyString(e.getPhone())){
+                    e.setIdCard(c.getIdCard());
+                    extendMapper.save(e);
                 }
-                f.setAccessible(false);
             }
+//            Supplement supplement = new Supplement();
+//            supplement.setContractNum(c.getContractNum());
+//            supplement.setCustomerOtherPhone(c.getCustomerOtherPhone());
+//            supplement.setCustomerRelaOther(c.getCustomerRelaOther());
+//            supplement.setCustomerRelativeOther(c.getCustomerRelativeOther());
+//            supplement.setCustomerRelationship(c.getCustomerRelationship());
+//            supplement.setCustomerRelativeName(c.getCustomerRelativeName());
+//            supplement.setCustomerRelativePhone(c.getCustomerRelativePhone());
+//            supplement.setCustomerSpouse(c.getCustomerSpouse());
+//            supplement.setCustomerSpousePhone(c.getCustomerSpousePhone());
+//            Field[] fields = Supplement.class.getDeclaredFields();
+//            for (Field f : fields) {
+//                f.setAccessible(true);
+//                if (f.get(supplement) != null) {
+//                    supplementMapper.save(supplement);
+//                    break;
+//                }
+//                f.setAccessible(false);
+//            }
         }
 
     }
