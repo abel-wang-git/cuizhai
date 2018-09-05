@@ -43,7 +43,7 @@ public class CasesProvider extends BaseProvider<Cases, Long> {
         String sql = new SQL() {{
             StringBuilder where = new StringBuilder();
             SELECT(BuildSql.select(Cases.class));
-            FROM("t_case c left join (select case_id,create_date,result,rmarks,status as phonestatus ,target from t_urge_record u where create_date in (select max(create_date) from t_urge_record group by case_id)) t on (c.id=t.case_id)");
+            FROM("t_case c left join (select case_id,create_date,result,rmarks,status as phonestatus ,target from t_urge_record u where create_date in (select max(create_date) from t_urge_record group by case_id)  GROUP BY create_date) t on (c.id=t.case_id)");
             where.append(" c.staff_id =#{staffId} and c.status !=1 and c.status !=4");
             if(UtilFun.isEmptyString(cases.getName()))
                 where.append(" and c.name like '" + cases.getName() + "%'");
