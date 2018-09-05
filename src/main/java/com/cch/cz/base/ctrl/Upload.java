@@ -109,12 +109,12 @@ public class Upload {
                 }
             }
             String quet = "";
-            if (title1.size() > 0) {
-                for (String t : title1) {
-                    quet += (t + ",");
-                }
-                throw new UploadException("缺少" + quet + "信息");
-            }
+//            if (title1.size() > 0) {
+//                for (String t : title1) {
+//                    quet += (t + ",");
+//                }
+//                throw new UploadException("缺少" + quet + "信息");
+//            }
             md5= DigestUtils.md5Hex(IOUtils.toByteArray(new FileInputStream(name)));
             if(null!=uploadLogService.findOne(md5))throw new UploadException("上传过相同的案件");
             for (int i = 0; i <sheets.size() ; i++) {
@@ -174,7 +174,7 @@ public class Upload {
             if (title.get(j).toString().trim().equals("催收员")) {
                 Staff staff=staffService.findOne(ExcelTool.getCellValue(curr).trim());
                 if(null==staff){
-                    throw new UploadException("不存在催收员"+ExcelTool.getCellValue(curr).trim());
+                    throw new UploadException("第"+i+"行不存在催收员"+ExcelTool.getCellValue(curr).trim());
                 }
                 if(UtilFun.isEmptyString(ExcelTool.getCellValue(curr))){
                     cases.setStaffId(ExcelTool.getCellValue(curr));
@@ -240,9 +240,8 @@ public class Upload {
             if (title.get(j).toString().trim().equals("最后还款日")) {
                 cases.setDeadline(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("逾期天数")||title.get(j).toString().trim().equals("逾期期数")) {
+            if (title.get(j).toString().trim().equals("逾期天数")||title.get(j).toString().trim().equals("逾期期数"))
                 cases.setOverrangingDay(ExcelTool.getCellValue(curr));
-            }
             if (title.get(j).toString().trim().equals("取消分期时间")) {
                 cases.setCancelInstalments(ExcelTool.getCellValue(curr));
             }
@@ -335,6 +334,31 @@ public class Upload {
             }
             if (title.get(j).toString().trim().equals("代扣账号")) {
                 cases.setWithholdingAccount(ExcelTool.getCellValue(curr));
+            }
+            if (title.get(j).toString().trim().equals("优先联系人")) {
+                String phone = ExcelTool.getCellValue(curr);
+                String [] phones= phone.split("：");
+                for (int k = 1; k <phones.length ; k++) {
+                   String one = phones[k].replace("优先联系人2","").replace("个人信息联系人1","").replace("个人信息联系人2","");
+                   if(k==1){
+                       cases.setCustomerOtherPhone(one.split(",")[2]);
+                       cases.setCustomerRelaOther(one.split(",")[1]);
+                       cases.setCustomerRelativeOther(one.split(",")[0]);
+                   }
+                   if(k==2){
+                       cases.setCustomerSpousePhone(one.split(",")[2]);
+                       cases.setCustomerSpouse(one.split(",")[0]);
+                   }
+                   if(k==3){
+                       cases.setCustomerRelativePhone(one.split(",")[2]);
+                       cases.setCustomerRelativeName(one.split(",")[0]);
+                       cases.setCustomerRelationship(one.split(",")[1]);
+                   }
+                   if(k>3){
+                       cases.setSupplement(cases.getSupplement()+one);
+                   }
+                }
+
             }
             Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
             cases.setCompanyId(staff.getCompanyId()!=null?staff.getCompanyId():null);
