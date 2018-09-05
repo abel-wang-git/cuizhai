@@ -715,7 +715,7 @@
                 if (data.code === 0) {
                     $("select[name='suTarget']").empty();
                     if (data.data.supplement.customerSpousePhone !== ""&&typeof(data.data.supplement.customerSpousePhone) !== 'undefined') {
-                        $("select[name='suTarget']").append("<option value='[配偶]" + data.data.supplement.customerSpousePhone + "'>[配偶:" + (typeof(data.data.supplement.customerSpouse) === 'undefined'?'':data.data.supplement.customerSpouse) + "]" + data.data.supplement.customerSpousePhone + "</option>")
+                        $("select[name='suTarget']").append("<option value='[配偶]" + data.data.supplement.customerSpousePhone + "'>[" + (typeof(data.data.supplement.customerSpouse) === 'undefined'?'':data.data.supplement.customerSpouse) + "]" + data.data.supplement.customerSpousePhone + "</option>")
                     }
                     if (data.data.supplement.customerRelativePhone !== ""&&typeof(data.data.supplement.customerRelativePhone) !== 'undefined') {
                         $("select[name='suTarget']").append("<option value='[亲戚]" + data.data.supplement.customerRelativePhone + "'>[" + (typeof(data.data.supplement.customerRelationship) === 'undefined'?'': data.data.supplement.customerRelationship) + ":"+ (typeof(data.data.supplement.customerRelativeName) === 'undefined'?'': data.data.supplement.customerRelativeName) + "]" + data.data.supplement.customerRelativePhone + "</option>")

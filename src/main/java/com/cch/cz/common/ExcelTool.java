@@ -26,6 +26,7 @@ public class ExcelTool {
                     return cell.getStringCellValue().trim();
                 }
             default:
+                cell.setCellType(CellType.STRING);
                 return cell.getStringCellValue().trim();
         }
     }
