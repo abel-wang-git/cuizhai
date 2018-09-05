@@ -215,6 +215,7 @@ private String customerRelaOther;
     /**
      * 补充信息
      */
+    @Column(length = 80000)
     private String supplement;
 
 
