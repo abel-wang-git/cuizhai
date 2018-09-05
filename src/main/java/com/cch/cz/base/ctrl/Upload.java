@@ -360,6 +360,9 @@ public class Upload {
                 }
 
             }
+            if (title.get(j).toString().trim().equals("淘宝订单地址")||title.get(j).toString().trim().equals("淘宝收货人地址")||title.get(j).toString().trim().equals("京东订单地址")||title.get(j).toString().trim().equals("京东收货人地址") ) {
+                cases.setSupplement(cases.getSupplement()+ExcelTool.getCellValue(curr));
+            }
             Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
             cases.setCompanyId(staff.getCompanyId()!=null?staff.getCompanyId():null);
 
