@@ -138,6 +138,27 @@
 <div style="display: none;" id="reason1">
     <textarea id="endReason1" lay-verify="required" placeholder="结案原因" class="layui-textarea"></textarea>
 </div>
+
+<div style="display: none;" id="type">
+    <form class="layui-form" pane>
+        <div class="layui-form-item">
+        </div>
+        <div id="path" class="layui-form-item" style="text-align: center">
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">案件类型</label>
+            <div class="layui-input-inline">
+                <select name="type" lay-filter="test2">
+                    <option value="0">默认</option>
+                    <option value="1">宜信</option>
+                </select>
+            </div>
+        </div>
+    </form>
+    <div class="layui-form-item" style="text-align: center">
+        <button id="up" class="layui-btn">上传</button>
+    </div>
+</div>
 <script th:src="@{/static/layui/layui.js}"></script>
 <script th:inline="javascript">
 
@@ -234,16 +255,34 @@
 
             ]]
         });
+
+
         //上传委案
-        upload.render({
+          var up=upload.render({
             elem: '#upload'
             , url: [[${ctx}]] + '/upload'
             , accept: 'file'
-            , before: function (obj) {
-                layer.load();
+            , auto: false
+            ,bindAction: '#up'
+            , data:{type:$("select[name='type']").val()}
+            , choose: function (obj) {
+                var files = obj.pushFile();
+                obj.preview(function(index, file, result){
+                    $("#path").text(file.name); //得到文件对象
+                });
+                layer.open({
+                    type: 1
+                    , title: '案件上传'
+                    , area: ['320px', '320px']
+                    , content: $("#type")
+                    });
             }
+            ,before:function(){
+                  up.config.data={type:$("select[name='type']").val()};
+              }
             , done: function (res) {
                 if(res.code==0) {
+                    layer.closeAll('loading');
                     $.ajax({
                         url: "exp",
                         type: "post",
@@ -254,14 +293,13 @@
                             cases.reload();
                             layer.msg(res.message);
                             layer.closeAll('loading');
+                            layer.closeAll();
                         }
                     });
                 }else{
                     layer.msg(res.message)
                     layer.closeAll('loading');
                 }
-
-
             }
             , error: function () {
                 layer.msg('上传出错');
