@@ -263,11 +263,15 @@ public class Upload {
                 //相同身份证号码分配到同一催收员
                 cases.setIdCard(ExcelTool.getCellValue(curr));
             }
+
             if (title.get(j).toString().trim().equals("还款账号")) {
                 cases.setRepaymentAccount(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("还款账号")) {
-                cases.setRepaymentAccount(ExcelTool.getCellValue(curr));
+            if (title.get(j).toString().trim().equals("公司")) {
+                cases.setAppointCompany(ExcelTool.getCellValue(curr));
+            }
+            if (title.get(j).toString().trim().equals("客户类型")) {
+                cases.setLoanType(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("扣款银行")) {
                 cases.setBank(ExcelTool.getCellValue(curr));
