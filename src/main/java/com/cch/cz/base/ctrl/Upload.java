@@ -111,7 +111,6 @@ public class Upload {
                     }
                 }
             }
-
             data.put("path","http://localhost:8080/image/"+name);
             data.put("name",filename);
             data.put("data",result);
@@ -155,7 +154,6 @@ public class Upload {
 
         cases= findCaseBycnum(result, title, r);
         if(cases==null){
-            System.out.println(JSON.toJSONString(cases));
             return;
         }
         for (int j = 0; j < title.size(); j++) {
