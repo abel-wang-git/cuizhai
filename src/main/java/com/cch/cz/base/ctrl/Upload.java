@@ -192,7 +192,7 @@ public class Upload {
                 cases.setCustomerSpousePhone(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("联系人")) {
-                String t=title.get(j+2).toString().trim();
+                String t=r.getCell(j+2).toString().trim();
                 if(t.equals("家庭联系人")){
                     cases.setCustomerSpouse(ExcelTool.getCellValue(curr));
                     cases.setCustomerSpousePhone(ExcelTool.getCellValue(r.getCell(j+1)));
@@ -302,6 +302,8 @@ public class Upload {
                 cases.setLoanPrincipal(ExcelTool.getCellValue(curr));
             }
         }
+        Staff staff = (Staff) SecurityUtils.getSubject().getSession().getAttribute("staff");
+        cases.setCompanyId(staff.getCompanyId()!=null?staff.getCompanyId():null);
         result.add(cases);
 
     }
