@@ -3,6 +3,7 @@ package com.cch.cz.entity;
 import com.cch.cz.base.entity.BaseEntity;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * 委案
@@ -116,36 +117,38 @@ public class Cases extends BaseEntity {
     private String customerCompany;
     /*客户公司地址*/
     private String customerCompanyAddress;
-//    /*客户公司部门*/
-private String customerDepartment;
-//    /*客户住宅电话*/
-private String customerResidencePhone;
-//    /*客户住宅地址*/
-private String customerResidenceAddress;
-//    /*客户配偶姓名*/
-@Transient
-private String customerSpouse;
-//    /*客户配偶联系电话*/
-@Transient
-private String customerSpousePhone;
-//    /*客户亲戚姓名*/
-@Transient
-private String customerRelativeName;
-//    /*客户与亲戚关系*/
-@Transient
-private String customerRelationship;
-//    /*客户亲戚联系电话*/
-@Transient
-private String customerRelativePhone;
-//    /*其他联系人姓名*/
-@Transient
-private String customerRelativeOther;
-//    /*其他联系人关系*/
-@Transient
-private String customerRelaOther;
+    //    /*客户公司部门*/
+    private String customerDepartment;
+    //    /*客户住宅电话*/
+    private String customerResidencePhone;
+    //    /*客户住宅地址*/
+    private String customerResidenceAddress;
+    //    /*客户配偶姓名*/
+    @Transient
+    private String customerSpouse;
+    //    /*客户配偶联系电话*/
+    @Transient
+    private String customerSpousePhone;
+    //    /*客户亲戚姓名*/
+    @Transient
+    private String customerRelativeName;
+    //    /*客户与亲戚关系*/
+    @Transient
+    private String customerRelationship;
+    //    /*客户亲戚联系电话*/
+    @Transient
+    private String customerRelativePhone;
+    //    /*其他联系人姓名*/
+    @Transient
+    private String customerRelativeOther;
+    //    /*其他联系人关系*/
+    @Transient
+    private String customerRelaOther;
     /*其他联系人电话*/
     @Transient
     private String customerOtherPhone;
+    @Transient
+    private List<Extend> extend;
     /*客户邮箱*/
     private String customerMail;
     /*代扣开户行*/
@@ -726,5 +729,13 @@ private String customerRelaOther;
 
     public void setSupplement(String supplement) {
         this.supplement = supplement;
+    }
+
+    public List<Extend> getExtend() {
+        return extend;
+    }
+
+    public void setExtend(List<Extend> extend) {
+        this.extend = extend;
     }
 }

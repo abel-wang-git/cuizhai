@@ -2,10 +2,7 @@ package com.cch.autocode;
 
 
 import com.cch.cz.common.UtilFun;
-import com.cch.cz.entity.Message;
-import com.cch.cz.entity.MessageStatus;
-import com.cch.cz.entity.SupplementUrge;
-import com.cch.cz.entity.UploadLog;
+import com.cch.cz.entity.*;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -28,7 +25,7 @@ public class GenerateBase {
     static String basePath=System.getProperty("user.dir")+"/src/main/java/";
 
     public static void main(String[] args) {
-        generateBase(new SupplementUrge());
+        generateBase(new Extend());
     }
 
     public static void generateBase(Object entity){
