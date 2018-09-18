@@ -50,10 +50,10 @@ public class Upload {
         title1.add("合同号");
         title1.add("委案日期");
         title1.add("退案日期");
-        title1.add("姓名");
+        title1.add("客户姓名");
         title1.add("身份证");
         title1.add("贷款本金");
-        title1.add("总欠款");
+        title1.add("总欠款金额");
         title1.add("客户手机");
         title1.add("身份证");
         AjaxReturn ajaxRetrun = new AjaxReturn();

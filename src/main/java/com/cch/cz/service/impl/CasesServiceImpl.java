@@ -73,6 +73,7 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
             for (Extend e:c.getExtend()) {
                 if (UtilFun.isEmptyString(e.getPhone())){
                     e.setIdCard(c.getIdCard());
+                    e.setContractNum(c.getContractNum());
                     extendMapper.save(e);
                 }
             }

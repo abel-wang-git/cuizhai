@@ -710,9 +710,9 @@
         }
 
         function setsu(cases) {
+            $("select[name='suTarget']").empty();
             $.post([[${ctx}]] + "/supplement/bynum", {num: cases.contractNum}, function (data) {
                 if (data.code === 0) {
-                    $("select[name='suTarget']").empty();
                     if (data.data.supplement.customerSpousePhone !== ""&&typeof(data.data.supplement.customerSpousePhone) !== 'undefined') {
                         $("select[name='suTarget']").append("<option value='[配偶]" + data.data.supplement.customerSpousePhone + "'>[" + (typeof(data.data.supplement.customerSpouse) === 'undefined'?'':data.data.supplement.customerSpouse) + "]" + data.data.supplement.customerSpousePhone + "</option>")
                     }
@@ -723,6 +723,14 @@
                         $("select[name='suTarget']").append("<option value='[其他]" + data.data.supplement.customerOtherPhone + "'>[" + (typeof(data.data.supplement.customerRelaOther) === 'undefined'?'':data.data.supplement.customerRelaOther) + ":" + (typeof(data.data.supplement.customerRelativeOther) === 'undefined'?'': data.data.supplement.customerRelativeOther) + "]" + data.data.supplement.customerOtherPhone + "</option>")
                     }
                     form.render('select');
+                }
+            });
+            $.post([[${ctx}]] + "/extends/bynum", {num: cases.contractNum}, function (data) {
+                if (data.code === 0) {
+                    for (var i=0;i<data.data.extend.length;i++){
+                        var ext=data.data.extend[i]
+                        $("select[name='suTarget']").append("<option value='[其他]" + ext.phone + "'>[" + (typeof(ext.relation) === 'undefined'?'':ext.relation) + ":" + (typeof(ext.name) === 'undefined'?'': ext.name) + "]" + ext.phone + "</option>")
+                    }
                 }
             });
         }

@@ -14,8 +14,6 @@ public class Extend  extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-//    private  Long caseId;
     //姓名
     private String name;
     //关系
@@ -24,6 +22,8 @@ public class Extend  extends BaseEntity{
     private String phone;
     //身份证（与之关联人的）
     private String idCard;
+    /* 合同号*/
+    private String contractNum;
 
     public Long getId() {
         return id;
@@ -63,5 +63,13 @@ public class Extend  extends BaseEntity{
 
     public void setIdCard(String idCard) {
         this.idCard = idCard;
+    }
+
+    public String getContractNum() {
+        return contractNum;
+    }
+
+    public void setContractNum(String contractNum) {
+        this.contractNum = contractNum;
     }
 }
