@@ -1,5 +1,6 @@
 package com.cch.cz.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.cch.cz.authority.entity.Role;
 import com.cch.cz.authority.mapper.RoleMapper;
 import com.cch.cz.base.service.impl.BaseServiceImpl;
@@ -70,7 +71,12 @@ public class CasesServiceImpl extends BaseServiceImpl<Cases, Long> implements Ca
 
         for (Cases c : casesList) {
             casesMapper.save(c);
+            if(c.getExtend()==null)continue;
             for (Extend e:c.getExtend()) {
+                if(e==null){
+                    System.out.println(JSON.toJSONString(c.getExtend()));
+                    continue;
+                }
                 if (UtilFun.isEmptyString(e.getPhone())){
                     e.setIdCard(c.getIdCard());
                     e.setContractNum(c.getContractNum());

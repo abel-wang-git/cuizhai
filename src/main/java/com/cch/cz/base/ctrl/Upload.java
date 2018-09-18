@@ -1,13 +1,14 @@
 package com.cch.cz.base.ctrl;
 
-import com.alibaba.fastjson.JSON;
 import com.cch.cz.authority.entity.User;
 import com.cch.cz.base.AjaxReturn;
 import com.cch.cz.common.ExcelTool;
-import com.cch.cz.common.Execl;
 import com.cch.cz.common.UploadUtil;
 import com.cch.cz.common.UtilFun;
-import com.cch.cz.entity.*;
+import com.cch.cz.entity.Cases;
+import com.cch.cz.entity.Extend;
+import com.cch.cz.entity.Staff;
+import com.cch.cz.entity.UploadLog;
 import com.cch.cz.exception.UploadException;
 import com.cch.cz.service.CasesService;
 import com.cch.cz.service.StaffService;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -56,7 +56,6 @@ public class Upload {
     }
 
     private AjaxReturn uploadyx(HttpServletRequest request) {
-
         List<String> title1 = new ArrayList<>();
         AjaxReturn ajaxRetrun = new AjaxReturn();
         Map data = new HashMap();
@@ -135,7 +134,7 @@ public class Upload {
         log.setDate(new Date());
         User user= (User) SecurityUtils.getSubject().getSession().getAttribute("user");
         log.setUser(user.getUserName());
-//        uploadLogService.save(log);
+        uploadLogService.save(log);
         ajaxRetrun.setData(data);
         ajaxRetrun.setCode(0);
         ajaxRetrun.setMessage("上传成功");
@@ -153,6 +152,7 @@ public class Upload {
         if(cases==null){
             return;
         }
+        List<Extend> extend=cases.getExtend();
         for (int j = 0; j < title.size(); j++) {
             Cell curr = r.getCell(j);
             if (curr == null) continue;
@@ -165,7 +165,7 @@ public class Upload {
             if (title.get(j).toString().trim().equals("现住址")||title.get(j).toString().trim().equals("客户住址地址")) {
                 cases.setCustomerResidenceAddress(ExcelTool.getCellValue(curr));
             }
-            if (title.get(j).toString().trim().equals("户籍地址")) {
+            if (title.get(j).toString().trim().equals("户籍地址")||title.get(j).toString().trim().equals("客户户籍地址")) {
                 cases.setCustomerAddress(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("单位地址")||title.get(j).toString().trim().equals("客户单位地址")) {
@@ -180,34 +180,93 @@ public class Upload {
             if (title.get(j).toString().trim().equals("客户所在部门")) {
                 cases.setCustomerDepartment(ExcelTool.getCellValue(curr));
             }
+
+
             if (title.get(j).toString().trim().equals("配偶姓名")) {
-                cases.setCustomerSpouse(ExcelTool.getCellValue(curr));
+                extend.get(0).setName(ExcelTool.getCellValue(curr));
             }
             if (title.get(j).toString().trim().equals("配偶联系方式")) {
-                cases.setCustomerSpousePhone(ExcelTool.getCellValue(curr));
+                extend.get(0).setPhone(ExcelTool.getCellValue(curr));
+                extend.get(0).setRelation("配偶");
+            }
+            for (int i = 0; i < 2; i++) {
+                if (title.get(j).toString().trim().equals("业务联系人"+(i+1)+"姓名")) {
+                    extend.get(1+i).setName(ExcelTool.getCellValue(curr));
+                }
+                if (title.get(j).toString().trim().equals("业务联系人"+(i+1)+"备注")) {
+                    extend.get(1+i).setRelation(ExcelTool.getCellValue(curr));
+                }
+                if (title.get(j).toString().trim().equals("业务联系人"+(i+1)+"手机号码")) {
+                    extend.get(1+i).setPhone(ExcelTool.getCellValue(curr));
+                }
+            }
+            for (int i = 0; i < 4; i++) {
+                if (title.get(j).toString().trim().equals("家庭联系人姓名"+(i+1))) {
+                    extend.get(3+i).setName(ExcelTool.getCellValue(curr));
+                }
+                if (title.get(j).toString().trim().equals("家庭关系"+(i+1))) {
+                    extend.get(3+i).setRelation(ExcelTool.getCellValue(curr));
+                }
+                if (title.get(j).toString().trim().equals("家庭联系方式"+(i+1))) {
+                    extend.get(3+i).setPhone(ExcelTool.getCellValue(curr));
+                }
+            }
+
+            if (title.get(j).toString().trim().equals("住房房东姓名")) {
+                extend.get(7).setName(ExcelTool.getCellValue(curr));
+            }
+            if (title.get(j).toString().trim().equals("住房房东手机号码")) {
+                extend.get(7).setPhone(ExcelTool.getCellValue(curr));
+                extend.get(7).setRelation("住房房东");
+            }
+
+            if (title.get(j).toString().trim().equals("铺面房东姓名")) {
+                extend.get(8).setName(ExcelTool.getCellValue(curr));
+            }
+            if (title.get(j).toString().trim().equals("铺面房东手机号码")) {
+                extend.get(8).setPhone(ExcelTool.getCellValue(curr));
+                extend.get(8).setRelation("铺面房东");
+            }
+            if (title.get(j).toString().trim().equals("共借人姓名")) {
+                extend.get(9).setName(ExcelTool.getCellValue(curr));
+            }
+            if (title.get(j).toString().trim().equals("共借人手机号码")) {
+                extend.get(9).setPhone(ExcelTool.getCellValue(curr));
+                extend.get(9).setRelation("共借人");
             }
             if (title.get(j).toString().trim().equals("联系人")) {
                 String t=r.getCell(j+2).toString().trim();
-                if(t.equals("家庭联系人")){
-                    cases.setCustomerSpouse(ExcelTool.getCellValue(curr));
-                    cases.setCustomerSpousePhone(ExcelTool.getCellValue(r.getCell(j+1)));
+                for (int i =10; i < 26 ; i++) {
+                    if(extend.get(i).getPhone()!=null||extend.get(i).getName()!=null||extend.get(i).getRelation()!=null) continue;
+                    if(t.equals("家庭联系人")){
+                        extend.get(i).setName(ExcelTool.getCellValue(curr));
+                        extend.get(i).setPhone(ExcelTool.getCellValue(r.getCell(j+1)));
+                        extend.get(i).setRelation("家庭联系人");
+                        return;
+                    }
+                    if(t.equals("工作联系人")){
+                        extend.get(i).setRelation("工作联系人");
+                        extend.get(i).setPhone(ExcelTool.getCellValue(r.getCell(j+1)));
+                        extend.get(i).setName(ExcelTool.getCellValue(curr));
+                        return;
+                    }
+                    if(t.equals("其他联系人")){
+                        extend.get(i).setRelation("其他联系人");
+                        extend.get(i).setName(ExcelTool.getCellValue(curr));
+                        extend.get(i).setPhone(ExcelTool.getCellValue(r.getCell(j+1)));
+                        return;
+                    }
+                    if(t.equals("紧急联系人")){
+                        extend.get(i).setRelation("紧急联系人");
+                        extend.get(i).setName(ExcelTool.getCellValue(curr));
+                        extend.get(i).setPhone(ExcelTool.getCellValue(r.getCell(j+1)));
+                        return;
+                    }
                 }
-                if(t.equals("工作联系人")){
-                    cases.setCustomerRelativeName(ExcelTool.getCellValue(curr));
-                    cases.setCustomerRelativePhone(ExcelTool.getCellValue(r.getCell(j+1)));
-                }
-                if(t.equals("其他联系人")){
-                    cases.setCustomerRelativeOther(ExcelTool.getCellValue(curr));
-                    cases.setCustomerOtherPhone(ExcelTool.getCellValue(r.getCell(j+1)));
 
-                }
-                if(t.equals("紧急联系人")){
-                    cases.setCustomerRelativeName(ExcelTool.getCellValue(curr));
-                    cases.setCustomerRelativePhone(ExcelTool.getCellValue(r.getCell(j+1)));
-                }
+
             }
         }
-
     }
 
     private Cases findCaseBycnum(List<Cases> result, List title, Row r) {
@@ -234,6 +293,8 @@ public class Upload {
         cases.setType(s1);
         cases.setStatus(Cases.NORMAL);
         cases.setCompanyId(-1L);
+        Extend[] extend={new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend(),new Extend()};
+        cases.setExtend(Arrays.asList(extend));
         for (int j = 0; j < title.size(); j++) {
             Cell curr = r.getCell(j);
             if (curr == null) continue;
@@ -251,9 +312,6 @@ public class Upload {
                 cases.setName(ExcelTool.getCellValue(curr));
             }
 
-            if (title.get(j).toString().trim().equals("案件类型")) {
-                cases.setType(ExcelTool.getCellValue(curr));
-            }
             if (title.get(j).toString().trim().equals("身份证号")) {
                 //相同身份证号码分配到同一催收员
                 cases.setIdCard(ExcelTool.getCellValue(curr));
@@ -405,8 +463,7 @@ public class Upload {
         return ajaxRetrun;
     }
 
-    private  void setAttr(List result, Sheet sheet, List title,
-                                int i, String caseName,String caseType) throws UploadException {
+    private  void setAttr(List result, Sheet sheet, List title, int i, String caseName,String caseType) throws UploadException {
         Cases cases = new Cases();
         Row r = sheet.getRow(i);
         if(null==r)return;

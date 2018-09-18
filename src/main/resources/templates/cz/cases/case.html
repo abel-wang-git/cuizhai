@@ -143,7 +143,13 @@
     <form class="layui-form" pane>
         <div class="layui-form-item">
         </div>
-        <div id="path" class="layui-form-item" style="text-align: center">
+        <div  class="layui-form-item" style="text-align: center">
+            <div>
+                案件名称：<span id="path"></span>
+            </div>
+            <div>
+                案件类型：<span id="casename"></span>
+            </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">案件类型</label>
@@ -268,7 +274,9 @@
             , choose: function (obj) {
                 var files = obj.pushFile();
                 obj.preview(function(index, file, result){
-                    $("#path").text(file.name); //得到文件对象
+                     var name=file.name.split(".")[0];
+                    $("#path").text(name.split("-")[0]); //得到文件对象
+                    $("#casename").text(name.split("-")[1]); //得到文件对象
                 });
                 layer.open({
                     type: 1
@@ -368,7 +376,6 @@
                         dataType: 'json',
                         data: {cases: JSON.stringify(checkStatus.data)},
                         success: function (data) {
-                            console.log();
                             layer.msg(data.message);
                             cases.reload();
                             layer.close(index);
@@ -496,7 +503,6 @@
                         dataType: 'json',
                         data: {cases: JSON.stringify(checkStatus.data)},
                         success: function (data) {
-                            console.log();
                             layer.msg(data.message);
                             cases.reload();
                             layer.close(index);
