@@ -732,6 +732,7 @@
                         var ext=data.data.extend[i]
                         $("select[name='suTarget']").append("<option value=["+ (typeof(ext.relation) === 'undefined'?'':ext.relation)+"]" + ext.phone + "'>[" + (typeof(ext.relation) === 'undefined'?'':ext.relation) + ":" + (typeof(ext.name) === 'undefined'?'': ext.name) + "]" + ext.phone + "</option>")
                     }
+                    form.render('select');
                 }
             });
         }
