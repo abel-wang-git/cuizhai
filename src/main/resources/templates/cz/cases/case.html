@@ -287,6 +287,7 @@
             }
             ,before:function(){
                   up.config.data={type:$("select[name='type']").val()};
+                  $("#up").addClass(" layui-btn-disabled")
               }
             , done: function (res) {
                 if(res.code==0) {
@@ -308,10 +309,12 @@
                     layer.msg(res.message)
                     layer.closeAll('loading');
                 }
+                  $("#up").removeClass(" layui-btn-disabled")
             }
             , error: function () {
                 layer.msg('上传出错');
                 layer.closeAll('loading');
+                $("#up").removeClass(" layui-btn-disabled")
             }
         });
 //补充信息
