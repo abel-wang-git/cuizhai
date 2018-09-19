@@ -79,7 +79,6 @@ public class UrgeRecordCtrl {
         Map c=new HashMap();
         if(UtilFun.isEmptyString(where))c= JSON.parseObject(where,Map.class);
         PageHelper.startPage(page, limit);
-
         List<Map> list = urgeRecordService.manager(c);
         Page<Map> p=(Page<Map>)list;
         Table table = new Table();
@@ -104,16 +103,11 @@ public class UrgeRecordCtrl {
         Map c= new HashMap();
         if(UtilFun.isEmptyString(where))c=JSON.parseObject(where,Map.class);
         List<Map> list = urgeRecordService.manager(c);
-        List<String> title = new ArrayList<>();
         //表头
-//        "客户办公电话","客户配偶姓名","客户配偶联系电话","客户亲戚姓名","客户与亲戚关系","客户亲戚联系电话","其他联系人姓名","其他联系人关系","其他联系人电话"
-        String[] title1 = {"合同号", "客户姓名", "性别", "身份证", "总欠款", "客户手机", "催收时间", "催收记录", "催收员", "备注"};
-        String[] title2 = {"提线流水号","债务人姓名","催收拨打号码","催收日期","催收时间","催收方式","催收员","案件状态","催收详细情况"};
-        if (type.equals("1")){
-            title= Arrays.asList(title1);
-        }else {
-            title=Arrays.asList(title2);
-        }
+        String[] title = {"合同号", "客户姓名", "性别", "身份证", "总欠款", "客户手机", "催收时间", "催收记录", "催收员", "备注"};
+        String[] title1 = {"公司名称", "委托日期", "客户姓名", "合同号", "联络时间", "联络类型", "联络号码", "联络人", "结果代码", "催收记录"};
+
+
         String realPath = request.getSession().getServletContext().getRealPath("");
         File realPathDirectory = new File(realPath);
         File downDir = new File(realPathDirectory.getParent() + File.separator + "urge" + File.separator);
@@ -124,52 +118,78 @@ public class UrgeRecordCtrl {
         Workbook w = new XSSFWorkbook();
         Sheet sheet = w.createSheet("sheet1");
         //表頭信息
+        if (c.size()>0&&c.get("type").equals("宜信")){
+            title= title1;
+            setyiContent(list, title, sheet);
+        }else {
+            setContent(list, title, sheet);
+        }
         Row row = sheet.createRow(0);
-        for(int i = 0;i<title.size();i++){
+        for(int i = 0;i<title.length;i++){
             Cell cell = row.createCell(i);
             cell.setCellType(CellType.STRING);
-            cell.setCellValue(title.get(i));
+            cell.setCellValue(title[i]);
         }
+
         //内容
-        for (int i = 0; i <list.size() ; i++) {
-            Row crow = sheet.createRow(i+1);
-            for (int j = 0; j <title.size() ; j++) {
-                Cell cell = crow.createCell(j);
-                cell.setCellType(CellType.STRING);
-                if(title.get(j).equals("合同号"))cell.setCellValue((String) list.get(i).get("contractNum"));
-                if(title.get(j).equals("客户姓名")|| title.get(j).equals("债务人姓名"))cell.setCellValue((String) list.get(i).get("cname"));
-                if(title.get(j).equals("性别"))cell.setCellValue((String) list.get(i).get("sex"));
-                if(title.get(j).equals("身份证"))cell.setCellValue((String) list.get(i).get("idCard"));
-                if(title.get(j).equals("总欠款"))cell.setCellValue((String) list.get(i).get("sumArrears"));
-                if(title.get(j).equals("客户手机"))cell.setCellValue((String) list.get(i).get("customerPhoneNumber"));
-//                if(title.get(j).equals("客户办公电话"))cell.setCellValue((String) list.get(i).get("customerOfficePhone"));
-//                if(title.get(j).equals("客户配偶姓名"))cell.setCellValue((String) list.get(i).get("customerSpouse"));
-//                if(title.get(j).equals("客户配偶联系电话"))cell.setCellValue((String) list.get(i).get("customerSpousePhone"));
-//                if(title.get(j).equals("客户亲戚姓名"))cell.setCellValue((String) list.get(i).get("customerRelativeName"));
-//                if(title.get(j).equals("客户与亲戚关系"))cell.setCellValue((String) list.get(i).get("customerRelationship"));
-//                if(title.get(j).equals("客户亲戚联系电话"))cell.setCellValue((String) list.get(i).get("customerRelativePhone"));
-//                if(title.get(j).equals("其他联系人姓名"))cell.setCellValue((String) list.get(i).get("customerRelativeOther"));
-//                if(title.get(j).equals("其他联系人关系"))cell.setCellValue((String) list.get(i).get("customerRelaOther"));
-//                if(title.get(j).equals("其他联系人电话"))cell.setCellValue((String) list.get(i).get("customerOtherPhone"));
-                if(title.get(j).equals("催收时间"))cell.setCellValue( UtilFun.DateToString(UtilFun.StringToDate(list.get(i).get("createDate").toString(),UtilFun.YMD),UtilFun.YMD));
-                if(title.get(j).equals("催收日期"))cell.setCellValue( UtilFun.DateToString(UtilFun.StringToDate(list.get(i).get("createDate").toString(),UtilFun.YYYYMMDD),UtilFun.YYYYMMDD));
-                if(title.get(j).equals("催收记录"))cell.setCellValue((String) list.get(i).get("result"));
-                if(title.get(j).equals("催收拨打号码"))cell.setCellValue((String) list.get(i).get("target"));
-                if(title.get(j).equals("催收方式"))cell.setCellValue("电联");
-                if(title.get(j).equals("案件状态"))cell.setCellValue((String) list.get(i).get("status"));
-                if(title.get(j).equals("催收详细情况"))cell.setCellValue((String) list.get(i).get("rmarks"));
-                if(title.get(j).equals("催收员"))cell.setCellValue((String) list.get(i).get("sname"));
-                if (title.get(j).equals("备注")) cell.setCellValue((String) list.get(i).get("rmarks"));
-//                if(title.get(j).equals("提线流水号"))cell.setCellValue((String) list.get(i).get("result"));
-            }
-        }
         response.setContentType("application/octet-stream");
         response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode( (type.equals("1")?(UtilFun.DateToString(new Date(),UtilFun.YMD)+"-佰仟.xlsx"):(UtilFun.DateToString(new Date(),UtilFun.YMD)+"-有贝.xlsx")),"UTF-8"));
         response.flushBuffer();
         w.write(response.getOutputStream());
     }
 
+    private void setyiContent(List<Map> list, String[] title, Sheet sheet) {
+        for (int i = 0; i < list.size(); i++) {
+            Row crow = sheet.createRow(i + 1);
+            for (int j = 0; j < title.length; j++) {
+                Cell cell = crow.createCell(j);
+                cell.setCellType(CellType.STRING);
+                if (title[j].equals("公司名称")) cell.setCellValue("宏鑫通");
+                if (title[j].equals("委托日期")) cell.setCellValue((String) list.get(i).get("appointData"));
+                if (title[j].equals("客户姓名") || title[j].equals("债务人姓名")) cell.setCellValue((String) list.get(i).get("cname"));
+                if (title[j].equals("合同号")) cell.setCellValue((String) list.get(i).get("contractNum"));
+                if (title[j].equals("联络时间")) cell.setCellValue(UtilFun.DateToString(UtilFun.StringToDate(list.get(i).get("createDate").toString(), UtilFun.YYYYMMDD), UtilFun.YYYYMMDD));
+                if (title[j].equals("联络类型")) cell.setCellValue("01");
+                if (title[j].equals("联络号码")) cell.setCellValue(list.get(i).get("target").toString().split("]")[1].replace("'",""));
+                if (title[j].equals("联络人")) cell.setCellValue(list.get(i).get("target").toString().split("]")[0].replace("[",""));
+                if (title[j].equals("结果代码")){
+                    if(list.get(i).get("status").equals("正常接通")){
+                        cell.setCellValue("W03");
+                    }else{
+                        cell.setCellValue("W04");
+                    }
+                }
+                if (title[j].equals("催收记录")) cell.setCellValue(list.get(i).get("rmarks").toString());
+            }
+        }
 
+
+    }
+
+    private void setContent(List<Map> list, String[] title, Sheet sheet) {
+        for (int i = 0; i <list.size() ; i++) {
+            Row crow = sheet.createRow(i+1);
+            for (int j = 0; j <title.length ; j++) {
+                Cell cell = crow.createCell(j);
+                cell.setCellType(CellType.STRING);
+                if(title[j].equals("合同号"))cell.setCellValue((String) list.get(i).get("contractNum"));
+                if(title[j].equals("客户姓名")|| title[j].equals("债务人姓名"))cell.setCellValue((String) list.get(i).get("cname"));
+                if(title[j].equals("性别"))cell.setCellValue((String) list.get(i).get("sex"));
+                if(title[j].equals("身份证"))cell.setCellValue((String) list.get(i).get("idCard"));
+                if(title[j].equals("总欠款"))cell.setCellValue((String) list.get(i).get("sumArrears"));
+                if(title[j].equals("客户手机"))cell.setCellValue((String) list.get(i).get("customerPhoneNumber"));
+                if(title[j].equals("催收时间"))cell.setCellValue( UtilFun.DateToString(UtilFun.StringToDate(list.get(i).get("createDate").toString(),UtilFun.YMD),UtilFun.YMD));
+                if(title[j].equals("催收日期"))cell.setCellValue( UtilFun.DateToString(UtilFun.StringToDate(list.get(i).get("createDate").toString(),UtilFun.YYYYMMDD),UtilFun.YYYYMMDD));
+                if(title[j].equals("催收记录"))cell.setCellValue((String) list.get(i).get("result"));
+                if(title[j].equals("催收拨打号码"))cell.setCellValue((String) list.get(i).get("target"));
+                if(title[j].equals("催收方式"))cell.setCellValue("电联");
+                if(title[j].equals("案件状态"))cell.setCellValue((String) list.get(i).get("status"));
+                if(title[j].equals("催收详细情况"))cell.setCellValue((String) list.get(i).get("rmarks"));
+                if(title[j].equals("催收员"))cell.setCellValue((String) list.get(i).get("sname"));
+                if(title[j].equals("备注")) cell.setCellValue((String) list.get(i).get("rmarks"));
+            }
+        }
+    }
 
 
 }

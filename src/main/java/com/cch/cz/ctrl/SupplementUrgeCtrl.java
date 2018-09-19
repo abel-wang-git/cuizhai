@@ -107,7 +107,7 @@ public class SupplementUrgeCtrl {
         File outputFile = new File(downDir + File.separator + new Date().getTime() + "-" + "催记.xlsx");
         Workbook w = new XSSFWorkbook();
         Sheet sheet = w.createSheet("sheet1");
-        if(c.get("type").equals("宜信")){
+        if(c.size()>0&&c.get("type").equals("宜信")){
             title=title1;
             setyiContent(list,title,sheet);
 
@@ -130,8 +130,6 @@ public class SupplementUrgeCtrl {
         for (int i = 0; i < list.size(); i++) {
             Row crow = sheet.createRow(i + 1);
             for (int j = 0; j < title.length; j++) {
-                String[] title1 = {"公司名称", "委托日期", "客户姓名", "合同号", "联络时间", "联络类型", "联络号码", "联络人", "结果代码", "催收记录"};
-
                 Cell cell = crow.createCell(j);
                 cell.setCellType(CellType.STRING);
                 if (title[j].equals("公司名称")) cell.setCellValue("宏鑫通");

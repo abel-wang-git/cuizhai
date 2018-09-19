@@ -25,7 +25,7 @@ public class UrgeRecordProvider extends BaseProvider<UrgeRecord,Long> {
     public String manager(Map<String, Object> para){
         String sql=new SQL(){{
             StringBuilder where =  new StringBuilder(" u.case_id=c.id and u.staff_id=s.login_name ");
-            SELECT(" u.result,u.rmarks,u.status,u.target,u.create_date as createDate, s.name as sname,c.name as cname,c.contract_num as contractNum ,c.sex,c.id_card as idCard,c.sum_arrears as sumArrears" +
+            SELECT(" u.result,u.rmarks,u.status,u.target,u.create_date as createDate, s.name as sname,c.name as cname,c.contract_num as contractNum ,c.sex,c.id_card as idCard,c.sum_arrears as sumArrears ,c.appoint_data as appointData " +
                     "  ,c.customer_phone_number as customerPhoneNumber ,c.status,c.customer_address as customerAddress ");
             FROM(" t_urge_record as u ,t_case as c,t_staff as s");
             if(UtilFun.isEmptyString((String) para.get("sname"))) where.append(" and s.name=#{sname}");
@@ -35,6 +35,7 @@ public class UrgeRecordProvider extends BaseProvider<UrgeRecord,Long> {
             if(UtilFun.isEmptyString((String) para.get("cname"))) where.append(" and c.name=#{cname}");
             if(UtilFun.isEmptyString((String) para.get("customerPhoneNumber"))) where.append(" and c.customer_phone_number=#{customerPhoneNumber} ");
             if(UtilFun.isEmptyString((String) para.get("createDate"))) where.append(" and u.create_date like  concat(#{createDate},'%') ");
+            if(UtilFun.isEmptyString((String) para.get("type"))) where.append(" and c.type=#{type} ");
             WHERE(where.toString());
         }}.toString();
 

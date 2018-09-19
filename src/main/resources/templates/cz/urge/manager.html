@@ -29,6 +29,19 @@
             </select>
         </div>
     </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">案件类型：</label>
+        <div class="layui-input-inline" style="width: 100px;">
+            <select name="type" class="layui-input">
+                <option value="">全部</option>
+                <option value="正常委外">正常委外</option>
+                <option value="360+">360+</option>
+                <option value="佰赢专案">佰赢专案</option>
+                <option value="提前委外">提前委外</option>
+                <option value="宜信">宜信</option>
+            </select>
+        </div>
+    </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label">委案时间：</label>
@@ -50,8 +63,8 @@
     </div>
     <button class="layui-btn layui-btn-sm" lay-submit="lay-submit" lay-filter="search">查询</button>
 </form>
-<button id="bqexp" class="layui-btn layui-btn-sm">佰仟导出记录</button>
-<button id="ybexp" class="layui-btn layui-btn-sm">有贝导出记录</button>
+<button id="bqexp" class="layui-btn layui-btn-sm">导出记录</button>
+<!--<button id="ybexp" class="layui-btn layui-btn-sm">有贝导出记录</button>-->
 <table id="cases" lay-filter="cases"></table>
 
 <script th:src="@{/static/layui/layui.js}"></script>
@@ -105,7 +118,7 @@
             //1为佰仟
             down("2");
         });
-        var where = "";
+        var where = "{}";
 
         function down(extype) {
             var form = $("<form>");//定义一个form表单
