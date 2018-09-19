@@ -303,13 +303,14 @@
                             layer.msg(res.message);
                             layer.closeAll('loading');
                             layer.closeAll();
+                            $("#up").removeClass(" layui-btn-disabled")
                         }
                     });
                 }else{
                     layer.msg(res.message)
                     layer.closeAll('loading');
+                    $("#up").removeClass(" layui-btn-disabled")
                 }
-                  $("#up").removeClass(" layui-btn-disabled")
             }
             , error: function () {
                 layer.msg('上传出错');
