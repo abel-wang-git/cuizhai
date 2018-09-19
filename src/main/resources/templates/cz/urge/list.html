@@ -730,7 +730,7 @@
                 if (data.code === 0) {
                     for (var i=0;i<data.data.extend.length;i++){
                         var ext=data.data.extend[i]
-                        $("select[name='suTarget']").append("<option value='[其他]" + ext.phone + "'>[" + (typeof(ext.relation) === 'undefined'?'':ext.relation) + ":" + (typeof(ext.name) === 'undefined'?'': ext.name) + "]" + ext.phone + "</option>")
+                        $("select[name='suTarget']").append("<option value=["+ (typeof(ext.relation) === 'undefined'?'':ext.relation)+"]" + ext.phone + "'>[" + (typeof(ext.relation) === 'undefined'?'':ext.relation) + ":" + (typeof(ext.name) === 'undefined'?'': ext.name) + "]" + ext.phone + "</option>")
                     }
                 }
             });
