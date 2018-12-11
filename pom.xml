@@ -33,7 +33,7 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <version>${spring-boot.version}</version>
             <!--打包时取消注解 idea的bug-->
-            <!--<scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -223,15 +223,15 @@
             </plugin>
         </plugins>
 
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/*.ftl</include>
-                </includes>
-                <filtering>false</filtering>
-            </resource>
-        </resources>
+        <!--<resources>-->
+            <!--<resource>-->
+                <!--<directory>src/main/java</directory>-->
+                <!--<includes>-->
+                    <!--<include>**/*.ftl</include>-->
+                <!--</includes>-->
+                <!--<filtering>false</filtering>-->
+            <!--</resource>-->
+        <!--</resources>-->
     </build>
 
 </project>
