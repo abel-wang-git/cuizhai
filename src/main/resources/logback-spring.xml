@@ -42,4 +42,6 @@
         <appender-ref ref="FILE" />
         <!--<appender-ref ref="DB-CLASSIC-MYSQL-POOL" />-->
     </root>
+    <logger name="org.apache" level="WARN" />
+    <logger name="httpclient" level="WARN" />
 </configuration>
